@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Rating } from "react-simple-star-rating";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
-// internal
+// Internal
 import { Cart, QuickView } from "@/svg";
 import Timer from "@/components/common/timer";
 import { handleProductModal } from "@/redux/features/productModalSlice";
@@ -12,22 +12,25 @@ import { add_cart_product } from "@/redux/features/cartSlice";
 import { add_to_wishlist } from "@/redux/features/wishlist-slice";
 
 const ProductItem = ({ product, offer_style = false }) => {
-  const { id, name, image, category, reviews, price, discount, status, offerDate } = product || {};
+  const { id, name, images, categories, sku, price, stock_quantity,product_id, status, offerDate } = product || {};
   const dispatch = useDispatch();
-  
+
   // Redux state for cart and wishlist
   const { cart_products } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
-  
+
   const isAddedToCart = cart_products.some((prd) => prd.id === id);
   const isAddedToWishlist = wishlist.some((prd) => prd.id === id);
-  
+
   // State for rating
   const [ratingVal, setRatingVal] = useState(0);
-  
+
+  // Dummy reviews for illustration, replace this with actual review data
+  const reviews = [];
+
   // Calculate average rating from reviews
   useEffect(() => {
-    if (reviews && reviews.length > 0) {
+    if (reviews.length > 0) {
       const rating = reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
       setRatingVal(rating);
     } else {
@@ -38,11 +41,11 @@ const ProductItem = ({ product, offer_style = false }) => {
   // Handle adding product to cart
   const handleAddProduct = () => {
     const productToAdd = {
-      id,
+      product_id,
       name,
-      image,
+      image: images[0], // Use the first image
       price,
-      discount, // Include discount if needed
+      // Assuming there's a discount logic to be included here
     };
     dispatch(add_cart_product(productToAdd));
   };
@@ -55,9 +58,9 @@ const ProductItem = ({ product, offer_style = false }) => {
   return (
     <div className={`${offer_style ? "tp-product-offer-item" : "mb-25"} tp-product-item transition-3`}>
       <div className="tp-product-thumb p-relative fix">
-        <Link href={`/product-details/${id}`}>
+        <Link href={`/product-details/${product_id}`}>
           <Image
-            src={image}
+            src={images[0]} // Use the first image
             width={300} // Adjust width based on your layout
             height={300} // Adjust height based on your layout
             alt={name} // Use product name for alt text
@@ -113,7 +116,7 @@ const ProductItem = ({ product, offer_style = false }) => {
       {/* Product content */}
       <div className="tp-product-content">
         <div className="tp-product-category">
-          <Link href={`/category/${category?.id}`}>{category?.name}</Link> {/* Link to category page */}
+          <Link href={`/category/${categories[0]}`}>{categories[0]}</Link> {/* Use the first category for display */}
         </div>
         <h3 className="tp-product-title">
           <Link href={`/product-details/${id}`}>{name}</Link>
@@ -123,27 +126,18 @@ const ProductItem = ({ product, offer_style = false }) => {
             <Rating allowFraction size={16} initialValue={ratingVal} readonly={true} />
           </div>
           <div className="tp-product-rating-text">
-            <span>({reviews?.length || 0} Reviews)</span>
+            <span>({reviews.length || 0} Reviews)</span>
           </div>
         </div>
         <div className="tp-product-price-wrapper">
-          {discount > 0 ? (
-            <>
-              <span className="tp-product-price old-price">{price}</span>
-              <span className="tp-product-price new-price">
-                ${(Number(price) - (Number(price) * Number(discount)) / 100).toFixed(2)}
-              </span>
-            </>
-          ) : (
-            <span className="tp-product-price new-price">price:{parseFloat(price).toFixed(2)}</span>
-          )}
+          <span className="tp-product-price new-price">Price: ${parseFloat(price).toFixed(2)}</span>
         </div>
 
         {/* Countdown timer for offers */}
-        {offer_style && (
+        {offer_style && offerDate && (
           <div className="tp-product-countdown">
             <div className="tp-product-countdown-inner">
-              {dayjs().isAfter(offerDate?.endDate) ? (
+              {dayjs().isAfter(offerDate.endDate) ? (
                 <ul>
                   <li><span>{0}</span> Days</li>
                   <li><span>{0}</span> Hrs</li>
@@ -151,7 +145,7 @@ const ProductItem = ({ product, offer_style = false }) => {
                   <li><span>{0}</span> Sec</li>
                 </ul>
               ) : (
-                <Timer expiryTimestamp={new Date(offerDate?.endDate)} />
+                <Timer expiryTimestamp={new Date(offerDate.endDate)} />
               )}
             </div>
           </div>

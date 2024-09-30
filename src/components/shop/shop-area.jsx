@@ -105,8 +105,8 @@ const ShopArea = ({ all_products, products, otherProps }) => {
                             <div className="col-xl-12">
                               {filteredRows
                                 .slice(pageStart, pageStart + countOfPage)
-                                .map((item) => (
-                                  <ShopListItem  product={item} />
+                                .map((item,key) => (
+                                  <ShopListItem  product={item} key={key} />
                                 ))}
                             </div>
                           </div>

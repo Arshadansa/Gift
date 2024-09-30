@@ -1,84 +1,101 @@
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Pagination, EffectFade } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-// internal
-import offer_img from '@assets/img/banner/banner-slider-offer.png';
-import banner_img_1 from '@assets/img/banner/banner-slider-1.png';
-import banner_img_2 from '@assets/img/banner/banner-slider-2.png';
-import banner_img_3 from '@assets/img/banner/banner-slider-3.png';
-
-// banner products
-const bannerProducts = [
-  {
-    id: 1,
-    banner_bg_txt: 'tablet',
-    subtitle: 'Tablet Collection 2023',
-    title: 'Galaxy Tab S6 Lite Android Tablet',
-    oldPrice: 320,
-    newPrice: 288,
-    img: banner_img_1,
-  },
-
-]
-
-// slider setting 
-const slider_setting = {
-  slidesPerView: 1,
-  spaceBetween: 0,
-  effect: 'fade',
-  pagination: {
-    el: ".tp-product-banner-slider-dot",
-    clickable: true,
-  }
-}
+import React, { useState } from "react";
+import { Navigation, Pagination, EffectFade } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import Image from "next/image";
+import Link from "next/link";
+import { useGetHeroSliderDataQuery } from "@/redux/api/apiSlice"; // Import the query hook
+import { ArrowRightLong, SliderNextBtn, SliderPrevBtn } from "@/svg";
+import ErrorMsg from "@/components/common/error-msg";
 
 const ProductBanner = () => {
+  const [active, setActive] = useState(false);
+
+  // Fetch data from the API
+  const { data: sliderData, error, isLoading } = useGetHeroSliderDataQuery();
+
+  const handleActiveIndex = (index) => {
+    setActive(index === 2);
+  };
+
+  let content = null;
+  // if (isLoading){ content = <ErrorMsg msg="Loging" />};
+  if (error){ content = <ErrorMsg msg="There was an error" />};
+
+  // Get the fourth image
+  const fourthImage =
+    sliderData && sliderData.length >= 4 ? sliderData[3] : null;
+
   return (
-    <>
-      <div className="tp-product-banner-area pb-90">
+    fourthImage && (
+      <section className="tp-product-banner-area pb-90">
         <div className="container">
           <div className="tp-product-banner-slider fix">
-            <Swiper {...slider_setting} modules={[Pagination, EffectFade]} className="tp-product-banner-slider-active swiper-container">
-              {bannerProducts.map((item, i) => (
-                <SwiperSlide key={item.id} className="tp-product-banner-inner theme-bg p-relative z-index-1 fix">
-                  <h4 className="tp-product-banner-bg-text">{item.banner_bg_txt}</h4>
-                  <div className="row align-items-center">
-                    <div className="col-xl-6 col-lg-6">
-                      <div className="tp-product-banner-content p-relative z-index-1">
-                        <span className="tp-product-banner-subtitle">{item.subtitle}</span>
-                        <h3 className="tp-product-banner-title">{item.title}</h3>
-                        <div className="tp-product-banner-price mb-40">
-                          <span className="old-price">${item.oldPrice.toFixed(2)}</span>
-                          <p className="new-price">${item.newPrice.toFixed(2)}</p>
-                        </div>
-                        <div className="tp-product-banner-btn">
-                          <Link href="/shop" className="tp-btn tp-btn-2">Shop now</Link>
+            <Swiper
+              slidesPerView={1}
+              spaceBetween={30}
+              loop={false}
+              effect="fade"
+              navigation={{
+                nextEl: ".tp-slider-button-next",
+                prevEl: ".tp-slider-button-prev",
+              }}
+              onSlideChange={(swiper) => handleActiveIndex(swiper.activeIndex)}
+              pagination={{ el: ".tp-slider-dot", clickable: true }}
+              modules={[Navigation, Pagination, EffectFade]}
+              className={`tp-slider-active tp-slider-variation swiper-container ${
+                active ? "is-light" : ""
+              }`}
+            >
+              {sliderData?.map((item) => (
+                <SwiperSlide
+                  key={item.id}
+                  className="tp-slider-item tp-slider-height d-flex align-items-center"
+                  style={{ backgroundColor: item.bg_color || "#FFFFFF" }}
+                >
+                  <div className="container">
+                    <div className="row align-items-center">
+                      <div className="col-xl-5 col-lg-6 col-md-6">
+                        <div className="tp-slider-content p-relative z-index-1">
+                          <h3 className="tp-slider-title">{item.heading}</h3>
+                          <p>{item.subheading}</p>
+                          <div className="tp-slider-btn">
+                            <Link href={item.button_link} legacyBehavior>
+                              <a className="btn btn-danger">
+                                {item.button_text} <ArrowRightLong />
+                              </a>
+                            </Link>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-xl-6 col-lg-6">
-                      <div className="tp-product-banner-thumb-wrapper p-relative">
-                        <div className="tp-product-banner-thumb-shape">
-                          <span className="tp-product-banner-thumb-gradient"></span>
-                          <Image className="tp-offer-shape" src={offer_img} alt="tp-offer-shape" />
-                        </div>
-
-                        <div className="tp-product-banner-thumb text-end p-relative z-index-1">
-                          <Image src={item.img} alt="banner-slider img" />
+                      <div className="col-xl-7 col-lg-6 col-md-6">
+                        <div className="tp-slider-thumb text-end">
+                          <Image
+                            src={fourthImage.image}
+                            alt="slider-img"
+                            width={800}
+                            height={525}
+                            objectFit="cover"
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </SwiperSlide>
               ))}
-              <div className="tp-product-banner-slider-dot tp-swiper-dot"></div>
+              {/* <div className="tp-slider-arrow tp-swiper-arrow">
+                <button type="button" className="tp-slider-button-prev">
+                  <SliderPrevBtn />
+                </button>
+                <button type="button" className="tp-slider-button-next">
+                  <SliderNextBtn />
+                </button>
+              </div> */}
+              {/* <div className="tp-slider-dot tp-swiper-dot"></div> */}
             </Swiper>
           </div>
         </div>
-      </div>
-    </>
+      </section>
+    )
   );
 };
 

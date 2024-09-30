@@ -1,48 +1,20 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation, Autoplay } from 'swiper';
-// internal
-import { ArrowRightLong, ShapeLine } from '@/svg';
-import blogData from '@/data/blog-data';
+import React, { useState } from 'react';
+import { useFetchBlogsQuery } from '@/redux/features/auth/authApi'; // Ensure this path is correct
+import Link from 'next/link'; // Adjust based on your routing
 import BlogItem from './blog-item';
-import Link from 'next/link';
 
-// slider setting 
-const slider_setting = {
-  slidesPerView: 3,
-  spaceBetween: 20,
-  autoplay: {
-    delay: 4000,
-  },
-  navigation: {
-    nextEl: ".tp-blog-main-slider-button-next",
-    prevEl: ".tp-blog-main-slider-button-prev",
-  },
-  pagination: {
-    el: ".tp-blog-main-slider-dot",
-    clickable: true,
-  },
-  breakpoints: {
-    '1200': {
-      slidesPerView: 3,
-    },
-    '992': {
-      slidesPerView: 2,
-    },
-    '768': {
-      slidesPerView: 2,
-    },
-    '576': {
-      slidesPerView: 1,
-    },
-    '0': {
-      slidesPerView: 1,
-    },
-  }
-}
+import { ArrowRightLong } from "@/svg";
+import { ShapeLine } from '@/svg';
 
 const BlogArea = () => {
-  const blogs = blogData.filter(b => b.blog === 'electronics')
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data: blogData = {}, isLoading, isError } = useFetchBlogsQuery(currentPage);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error fetching blogs</div>;
+
+  const { data: blogs = [], total_blogs } = blogData;
+
   return (
     <section className="tp-blog-area pt-50 pb-75">
       <div className="container">
@@ -57,7 +29,8 @@ const BlogArea = () => {
           <div className="col-xl-8 col-md-6">
             <div className="tp-blog-more-wrapper d-flex justify-content-md-end">
               <div className="tp-blog-more mb-50 text-md-end">
-                <Link href="/blog" className="tp-btn tp-btn-2 tp-btn-blue">View All Blog
+                <Link href="/blog" className="tp-btn tp-btn-2 tp-btn-blue">
+                  View All Blog
                   <ArrowRightLong />
                 </Link>
                 <span className="tp-blog-more-border"></span>
@@ -65,19 +38,27 @@ const BlogArea = () => {
             </div>
           </div>
         </div>
+
+        {/* Blog grid layout */}
         <div className="row">
-          <div className="col-xl-12">
-            <div className="tp-blog-main-slider">
-              <Swiper {...slider_setting} modules={[Pagination,Navigation,Autoplay]} className="tp-blog-main-slider-active swiper-container">
-                {blogs.map((blog) => (
-                  <SwiperSlide key={blog.id}>
-                    <BlogItem blog={blog} />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+          {blogs.slice(0, 3).map((blog) => (
+            <div key={blog.id} className="col-md-4">
+              <BlogItem blog={blog} />
             </div>
-          </div>
+          ))}
         </div>
+{/* 
+        <div className="row">
+          <div className="col-md-12 text-center">
+            <button 
+              className="tp-btn tp-btn-blue" 
+              onClick={() => setCurrentPage(prev => prev + 1)}
+              disabled={currentPage * 3 >= total_blogs}
+            >
+              Load More
+            </button>
+          </div>
+        </div> */}
       </div>
     </section>
   );

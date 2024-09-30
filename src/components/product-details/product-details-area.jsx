@@ -6,23 +6,34 @@ import DetailsTabNav from "./details-tab-nav";
 import RelatedProducts from "./related-products";
 
 const ProductDetailsArea = ({ productItem }) => {
-  const { data } = productItem; // Assuming productItem has a data property with product details
-  const product = data[0]; // Get the first product object
-  const { _id, images = [], videoId, stock_quantity, name } = product || {}; // Default to empty array if images is undefined
+  // Destructuring productItem directly and providing default values if fields are missing
+  const {
+    id,
+    images = [],
+    videoId = null,
+    stock_quantity = 0,
+    name = "Product Name",
+    description = "",
+    price = "0.00",
+    categories = [],
+    sku = "",
+  } = productItem || {}; 
 
-  const [activeImg, setActiveImg] = useState(images[0] || ''); // Set the first image as active or default to an empty string
-  const dispatch = useDispatch();
+  // Set the initial active image
+  const [activeImg, setActiveImg] = useState(images[0] || '');
 
-  // Update active image when the images change
+  const dispatch = useDispatch(); // Redux actions if needed
+
+  // Update the active image when images change
   useEffect(() => {
     if (images.length > 0) {
-      setActiveImg(images[0]); // Initialize active image with the first image
+      setActiveImg(images[0]); // Default to the first image
     }
   }, [images]);
 
-  // Handle active image change
-  const handleImageActive = (item) => {
-    setActiveImg(item.img || item); // Check if item has img property or is a URL directly
+  // Handle active image selection
+  const handleImageActive = (img) => {
+    setActiveImg(img); // Set the clicked image as active
   };
 
   return (
@@ -30,46 +41,44 @@ const ProductDetailsArea = ({ productItem }) => {
       <div className="tp-product-details-top pb-115">
         <div className="container">
           <div className="row">
+            {/* Image Gallery and Thumbnails */}
             <div className="col-xl-7 col-lg-6">
-              {/* product-details-thumb-wrapper start */}
               <DetailsThumbWrapper
-                images={images} // Pass the images array from your JSON data
-                handleImageActive={handleImageActive} // Function to handle active image state
+                images={images} // Pass product images
+                handleImageActive={handleImageActive} // Update active image
                 activeImg={activeImg} // Currently active image
-                imgWidth={416} // Default image width
-                imgHeight={480} // Default image height
-                videoId={videoId} // Optional video ID
-                status={stock_quantity <= 0 ? 'out-of-stock' : 'in-stock'} // Determine stock status
+                imgWidth={416} // Set image width
+                imgHeight={480} // Set image height
+                videoId={videoId} // Video ID if applicable
+                status={stock_quantity > 0 ? 'in-stock' : 'out-of-stock'} // Stock status
               />
-              {/* product-details-thumb-wrapper end */}
             </div>
+
+            {/* Product Details */}
             <div className="col-xl-5 col-lg-6">
-              {/* product-details-wrapper start */}
               <DetailsWrapper
-                productItem={product} // Pass the product object
-                handleImageActive={handleImageActive} // Pass the handle function
-                activeImg={activeImg} // Pass the currently active image
-                detailsBottom={true} // Whether to show details at the bottom
+                productItem={productItem} // Pass the full product object
+                handleImageActive={handleImageActive} // Handle image selection
+                activeImg={activeImg} // Active image in gallery
+                detailsBottom={true} // Enable additional details at the bottom
               />
-              {/* product-details-wrapper end */}
             </div>
           </div>
         </div>
       </div>
 
-      {/* product details description */}
+      {/* Product Description & Tabs */}
       <div className="tp-product-details-bottom pb-140">
         <div className="container">
           <div className="row">
             <div className="col-xl-12">
-              <DetailsTabNav product={product} /> {/* Pass the product object */}
+              <DetailsTabNav product={productItem} /> {/* Pass the full product to tabs */}
             </div>
           </div>
         </div>
       </div>
-      {/* product details description */}
 
-      {/* related products start */}
+      {/* Related Products Section */}
       <section className="tp-related-product pt-95 pb-50">
         <div className="container">
           <div className="row">
@@ -79,11 +88,10 @@ const ProductDetailsArea = ({ productItem }) => {
             </div>
           </div>
           <div className="row">
-            <RelatedProducts id={_id} /> {/* Pass the product ID to related products */}
+            <RelatedProducts id={id} /> {/* Use the current product's ID */}
           </div>
         </div>
       </section>
-      {/* related products end */}
     </section>
   );
 };

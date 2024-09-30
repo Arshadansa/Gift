@@ -7,10 +7,12 @@ import { useGetShowCategoryQuery } from "@/redux/features/categoryApi";
 import HomeCateLoader from "../loader/home/home-cate-loader";
 
 const ElectronicCategory = () => {
-  const { data: categories, isLoading, isError } = useGetShowCategoryQuery(); // Fetch categories
+  const { data: categories, isLoading, isError } = useGetShowCategoryQuery(); 
   const router = useRouter();
 
   // Handle category route
+  console.log(categories,"cccccccccccc");
+  
   const handleCategoryRoute = (name) => {
     router.push(
       `/shop?category=${name
@@ -35,7 +37,7 @@ const ElectronicCategory = () => {
   }
   if (!isLoading && !isError && categories?.length > 0) {
     content = categories.map((item) => (
-      <div className="col border" key={item.id}>
+      <div className="col " key={item.id}>
         <div className="tp-product-category-item text-center mb-40">
           <div className="tp-product-category-thumb fix">
             <a
@@ -62,11 +64,7 @@ const ElectronicCategory = () => {
               </a>
             </h3>
             {/* Assuming you have a 'products' property in the category data */}
-            <p>
-              {item.products
-                ? `${item.products.length} Product`
-                : "No Products"}
-            </p>
+            <p>{item.products_count} Product</p>
           </div>
         </div>
       </div>

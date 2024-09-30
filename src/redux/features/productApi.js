@@ -8,7 +8,7 @@ export const productApi = apiSlice.injectEndpoints({
       providesTags:['Products']
     }),
     getProductType: builder.query({
-      query: (type) => `https://api.mysweetwishes.com/api/categories`, // Update to fetch all categories
+      query: (type) => `https://api.mysweetwishes.com/api/products/category/${type}`, 
       providesTags: ['ProductType'],
     }),
     
@@ -26,7 +26,7 @@ export const productApi = apiSlice.injectEndpoints({
     }),
     // get single product
     getProduct: builder.query({
-      query: (id) => `https://api.mysweetwishes.com/api/products/single-product/${id}`,
+      query: (id) => `https://api.mysweetwishes.com/api/products/${id}`,
       providesTags: (result, error, arg) => [{ type: "Product", id: arg }],
       invalidatesTags: (result, error, arg) => [
         { type: "RelatedProducts", id:arg },

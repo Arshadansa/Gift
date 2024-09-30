@@ -47,7 +47,7 @@ const DetailsTabNav = ({ product }) => {
           <div className="nav nav-tabs justify-content-center p-relative tp-product-tab" id="navPresentationTab" role="tablist">
             <NavItem active={true} linkRef={activeRef} id="desc" title="Description" />
             <NavItem id="additional" title="Additional information" />
-            <NavItem id="review" title={`Reviews (${reviews.length})`} />
+            <NavItem id="review" title={`Reviews (${reviews?.length})`} />
 
             <span ref={marker} id="productTabMarker" className="tp-product-details-tab-line"></span>
           </div>
@@ -101,11 +101,11 @@ const DetailsTabNav = ({ product }) => {
                     {/* reviews */}
                     <div className="tp-product-details-review-list pr-110">
                       <h3 className="tp-product-details-review-title">Rating & Review</h3>
-                      {reviews.length === 0 && <h3 className="tp-product-details-review-title">
+                      {reviews?.length === 0 && <h3 className="tp-product-details-review-title">
                         There are no reviews yet.
                       </h3>
                       }
-                      {reviews.length > 0 && reviews.map(item => (
+                      {reviews?.length > 0 && reviews.map(item => (
                         <ReviewItem key={item._id} review={item} />
                       ))}
                     </div>

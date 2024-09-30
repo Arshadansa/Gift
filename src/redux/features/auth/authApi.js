@@ -2,12 +2,14 @@ import { apiSlice } from "@/redux/api/apiSlice";
 import { userLoggedIn } from "./authSlice";
 import Cookies from "js-cookie";
 
+const BASE_URL = "https://api.mysweetwishes.com/api";
+
 export const authApi = apiSlice.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     registerUser: builder.mutation({
       query: (data) => ({
-        url: "https://api.mysweetwishes.com/api/register",
+        url: `${BASE_URL}/register`,
         method: "POST",
         body: data,
       }),
@@ -15,10 +17,9 @@ export const authApi = apiSlice.injectEndpoints({
     // signUpProvider
     signUpProvider: builder.mutation({
       query: (token) => ({
-        url: `https://api.mysweetwishes.com/api/register/${token}`,
+        url: `${BASE_URL}/register/${token}`,
         method: "POST",
       }),
-
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -39,21 +40,17 @@ export const authApi = apiSlice.injectEndpoints({
             })
           );
         } catch (err) {
-          // do nothing
+          // Handle error if needed
         }
       },
     }),
-
-
-
     // login
     loginUser: builder.mutation({
       query: (data) => ({
-        url: "https://api.mysweetwishes.com/api/login",
+        url: `${BASE_URL}/login`,
         method: "POST",
         body: data,
       }),
-
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -74,14 +71,13 @@ export const authApi = apiSlice.injectEndpoints({
             })
           );
         } catch (err) {
-          // do nothing
+          // Handle error if needed
         }
       },
     }),
     // get me
     getUser: builder.query({
-      query: () => "https://api.mysweetwishes.com/me",
-
+      query: () => `${BASE_URL}/me`,
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -91,14 +87,13 @@ export const authApi = apiSlice.injectEndpoints({
             })
           );
         } catch (err) {
-          // do nothing
+          // Handle error if needed
         }
       },
     }),
     // confirmEmail
     confirmEmail: builder.query({
-      query: (token) => `https://api.mysweetwishes.com/api/user/confirmEmail/${token}`,
-
+      query: (token) => `${BASE_URL}/user/confirmEmail/${token}`,
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -119,14 +114,14 @@ export const authApi = apiSlice.injectEndpoints({
             })
           );
         } catch (err) {
-          // do nothing
+          // Handle error if needed
         }
       },
     }),
     // reset password
     resetPassword: builder.mutation({
       query: (data) => ({
-        url: "https://api.mysweetwishes.com/api/user/forget-password",
+        url: `${BASE_URL}/user/forget-password`,
         method: "PATCH",
         body: data,
       }),
@@ -134,7 +129,7 @@ export const authApi = apiSlice.injectEndpoints({
     // confirmForgotPassword
     confirmForgotPassword: builder.mutation({
       query: (data) => ({
-        url: "https://api.mysweetwishes.com/api/user/confirm-forget-password",
+        url: `${BASE_URL}/user/confirm-forget-password`,
         method: "PATCH",
         body: data,
       }),
@@ -142,7 +137,7 @@ export const authApi = apiSlice.injectEndpoints({
     // change password
     changePassword: builder.mutation({
       query: (data) => ({
-        url: "https://api.mysweetwishes.com/api/user/change-password",
+        url: `${BASE_URL}/user/change-password`,
         method: "PATCH",
         body: data,
       }),
@@ -150,11 +145,10 @@ export const authApi = apiSlice.injectEndpoints({
     // updateProfile password
     updateProfile: builder.mutation({
       query: ({ id, ...data }) => ({
-        url: `https://api.mysweetwishes.com/api/user/update-user/${id}`,
+        url: `${BASE_URL}/user/update-user/${id}`,
         method: "PUT",
         body: data,
       }),
-
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -175,9 +169,13 @@ export const authApi = apiSlice.injectEndpoints({
             })
           );
         } catch (err) {
-          // do nothing
+          // Handle error if needed
         }
       },
+    }),
+    // blog 
+    fetchBlogs: builder.query({
+      query: ({ page = 1, perPage = 10 }) => `${BASE_URL}/blog/blogs-${page}-${perPage}`,
     }),
   }),
 });
@@ -185,6 +183,7 @@ export const authApi = apiSlice.injectEndpoints({
 export const {
   useLoginUserMutation,
   useRegisterUserMutation,
+  useFetchBlogsQuery,
   useConfirmEmailQuery,
   useResetPasswordMutation,
   useConfirmForgotPasswordMutation,

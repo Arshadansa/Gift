@@ -42,7 +42,7 @@ const LoginForm = () => {
           router.push(redirect || "/");
         }
         else {
-          notifyError(data?.error?.data?.error)
+          notifyError(data?.error?.data?.message)
         }
       })
     reset();

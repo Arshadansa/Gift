@@ -17,6 +17,8 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
   const [ratingVal, setRatingVal] = useState(0);
   const [textMore, setTextMore] = useState(false);
   const dispatch = useDispatch();
+  console.log(productItem,"EEEEEEEEEEEE");
+  
 
   // Assuming you might fetch reviews separately if applicable
   const reviews = []; // Replace with actual reviews if available
@@ -67,21 +69,16 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
         </div>
       </div>
       <p>
-        {textMore ? description : `${description.substring(0, 100)}...`}
+        {textMore ? description : `${description?.substring(0, 100)}...`}
         <span onClick={() => setTextMore(!textMore)}>{textMore ? 'See less' : 'See more'}</span>
       </p>
 
       {/* price */}
       <div className="tp-product-details-price-wrapper mb-20">
-        <span className="tp-product-details-price new-price">${parseFloat(price).toFixed(2)}</span>
+        <span className="tp-product-details-price new-price">Price: ${parseFloat(price).toFixed(2)}</span>
       </div>
 
-      {/* image display */}
-      <div className="tp-product-details-image-gallery">
-        {images.map((image, index) => (
-          <img src={image} alt={`Product Image ${index + 1}`} key={index} />
-        ))}
-      </div>
+    
 
       {/* actions */}
       <div className="tp-product-details-action-wrapper">

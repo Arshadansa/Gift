@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { PaginationNext, PaginationPrev } from "@/svg";
 
 const Pagination = ({
@@ -8,21 +8,20 @@ const Pagination = ({
   currPage,
   setCurrPage,
 }) => {
-  const pageStart = (currPage - 1) * countOfPage;
-  const totalPage = Math.ceil(items.length / countOfPage);
+  const totalPage = Math.ceil(items.length / countOfPage); // Calculate total pages
 
   function setPage(idx) {
     if (idx <= 0 || idx > totalPage) {
-      return;
+      return; // Prevent setting invalid page numbers
     }
     setCurrPage(idx);
-    window.scrollTo(0, 0);
-    paginatedData(items, pageStart, countOfPage);
+    window.scrollTo(0, 0); // Scroll to top
+    paginatedData(items, (idx - 1) * countOfPage, countOfPage); // Update paginated data
   }
 
   useEffect(() => {
-    paginatedData(items, pageStart, countOfPage);
-  }, [items, pageStart, countOfPage]);
+    paginatedData(items, (currPage - 1) * countOfPage, countOfPage); // Update paginated data on current page change
+  }, [items, currPage, countOfPage]); // Dependencies
 
   return (
     <nav>
@@ -32,8 +31,9 @@ const Pagination = ({
             <button
               onClick={() => setPage(currPage - 1)}
               className={`tp-pagination-prev prev page-numbers ${
-                currPage === 1 && "disabled"
+                currPage === 1 ? "disabled" : ""
               }`}
+              disabled={currPage === 1}
             >
               <PaginationPrev />
             </button>
@@ -51,6 +51,7 @@ const Pagination = ({
               className={`next page-numbers ${
                 currPage === totalPage ? "disabled" : ""
               }`}
+              disabled={currPage === totalPage}
             >
               <PaginationNext />
             </button>

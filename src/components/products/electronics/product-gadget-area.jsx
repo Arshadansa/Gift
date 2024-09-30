@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade, Pagination } from 'swiper';
@@ -15,34 +15,29 @@ import gadget_girl from '@assets/img/product/gadget/gadget-girl.png';
 import HomeGadgetPrdLoader from '@/components/loader/home/home-gadget-prd-loader';
 
 const ProductGadgetArea = () => {
-  const { data: products, isError, isLoading } = useGetProductTypeQuery({type:'electronics'});
+  const [activeTab, setActiveTab] = useState("featured");
+  const { data: products, isError, isLoading } = useGetProductTypeQuery(activeTab);
 
-  // decide what to render
+  console.log("Products from API:", products); // Log the entire products object
+
   let content = null;
 
   if (isLoading) {
-    content = (
-      <HomeGadgetPrdLoader loading={isLoading} />
-    );
-  }
-  if (!isLoading && isError) {
+    content = <HomeGadgetPrdLoader loading={isLoading} />;
+  } else if (isError) {
     content = <ErrorMsg msg="There was an error" />;
-  }
-  if (!isLoading && !isError && products?.data?.length === 0) {
+  } else if (!products || products.length === 0) {
     content = <ErrorMsg msg="No Products found!" />;
-  }
-  if (!isLoading && !isError && products?.data?.length > 0) {
-    const product_items = products.data.slice(0, 6);
-    content = product_items.map((prd, i) => (
-      <div key={i} className="col-xl-4 col-sm-6">
+  } else {
+    // Loop through the products array directly
+    content = products.map((prd) => (
+      <div key={prd.id} className="col-xl-3 col-lg-3 col-sm-6">
         <ProductItem product={prd} />
       </div>
-    ))
+    ));
   }
 
-  // gadget banner 
   function GadgetBanner() {
-
     const settings = {
       slidesPerView: 1,
       spaceBetween: 0,
@@ -50,17 +45,18 @@ const ProductGadgetArea = () => {
         el: ".tp-product-gadget-banner-slider-dot",
         clickable: true,
       },
-    }
+    };
 
     const banner_data = [
       { bg: b_bg_1, title: <>Selected novelty <br /> Products</>, price: 99 },
       { bg: b_bg_2, title: <>Top Rated <br /> Products</>, price: 55 },
-    ]
+    ];
+
     return (
       <Swiper {...settings} effect='fade' modules={[Pagination, EffectFade]} className="tp-product-gadget-banner-slider-active swiper-container">
         {banner_data.map((b, i) => (
-          <SwiperSlide key={i} className="tp-product-gadget-banner-item include-bg" 
-          style={{ backgroundImage: `url(${b.bg.src})`}}>
+          <SwiperSlide key={i} className="tp-product-gadget-banner-item include-bg"
+            style={{ backgroundImage: `url(${b.bg.src})` }}>
             <div className="tp-product-gadget-banner-content">
               <span className="tp-product-gadget-banner-price">Only ${b.price.toFixed(2)}</span>
               <h3 className="tp-product-gadget-banner-title">
@@ -71,11 +67,12 @@ const ProductGadgetArea = () => {
         ))}
         <div className="tp-product-gadget-banner-slider-dot tp-swiper-dot"></div>
       </Swiper>
-    )
+    );
   }
+
   return (
     <>
-      <section className="tp-product-gadget-area pt-80 pb-75">
+      <section className="tp-product-gadget-area BORDER pt-80 pb-75">
         <div className="container">
           <div className="row">
             <div className="col-xl-4 col-lg-5">
@@ -84,7 +81,7 @@ const ProductGadgetArea = () => {
                   <div className="tp-product-gadget-thumb">
                     <Image src={gadget_girl} alt="gadget_girl img" priority />
                   </div>
-                  <h3 className="tp-product-gadget-categories-title">Electronics <br /> Gadgets</h3>
+                  <h3 className="tp-product-gadget-categories-title">Featured <br /> Products</h3>
 
                   <div className="tp-product-gadget-categories-list">
                     <PrdCategoryList />
@@ -96,14 +93,14 @@ const ProductGadgetArea = () => {
                     </Link>
                   </div>
                 </div>
-                <div className="tp-product-gadget-banner">
+                <div className="tp-product-gadget-banner ">
                   <GadgetBanner />
                 </div>
               </div>
             </div>
-            <div className="col-xl-8 col-lg-7">
+            <div className="col-xl-8  col-lg-7">
               <div className="tp-product-gadget-wrapper">
-                <div className="row">
+                <div className=" ">
                   {content}
                 </div>
               </div>

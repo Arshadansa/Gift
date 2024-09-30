@@ -10,9 +10,11 @@ const PrdCategoryList = () => {
     data: categories,
     isError,
     isLoading,
-  } = useGetProductTypeCategoryQuery("electronics");
+  } = useGetProductTypeCategoryQuery("featured");
   const router = useRouter()
 
+  console.log(categories,"ggggggggggg");
+  
   // handle category route
   const handleCategoryRoute = (title) => {
     router.push(
@@ -43,7 +45,7 @@ const PrdCategoryList = () => {
       </li>
     ));
   }
-  return <ul>{content}</ul>;
+  return <ul classname="border">{content}</ul>;
 };
 
 export default PrdCategoryList;

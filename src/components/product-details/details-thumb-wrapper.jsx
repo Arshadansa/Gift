@@ -16,20 +16,18 @@ const DetailsThumbWrapper = ({
   return (
     <>
       <div className="tp-product-details-thumb-wrapper tp-tab d-sm-flex">
-        <nav>
+        {/* Thumbnails */}
+        <nav style={{ maxHeight: "800px", overflowY: "auto",marginRight:"8px" }}>
           <div className="nav nav-tabs flex-sm-column">
             {images?.map((item, i) => (
               <button
                 key={i}
-                className={`nav-link ${item.img === activeImg ? "active" : ""}`}
-                onClick={() => {
-                  console.log("Image clicked:", item.img); // Check clicked image
-                  handleImageActive(item);
-                }}
+                className={`nav-link ${item === activeImg ? "active" : ""}`} // Highlight the active thumbnail
+                onClick={() => handleImageActive(item)} // Set the clicked image as the active image
               >
                 <Image
-                  src={activeImg || "/default-image.png"} // Use the correct path to the default image
-                  alt="Product image"
+                  src={item || "/default-image.png"} // Use the item for thumbnails
+                  alt={`Product thumbnail ${i + 1}`}
                   width={imgWidth}
                   height={imgHeight}
                   layout="responsive"
@@ -38,16 +36,18 @@ const DetailsThumbWrapper = ({
             ))}
           </div>
         </nav>
+
+        {/* Main Image */}
         <div className="tab-content m-img">
           <div className="tab-pane fade show active">
             <div className="tp-product-details-nav-main-thumb p-relative">
-              {/* Check if activeImg is valid before rendering */}
-              <Image
-                src={activeImg || "/default-image.png"} // Fallback to a default image
+            <Image
+                src={activeImg || "/default-image.png"}
                 alt="Product image"
                 width={imgWidth}
                 height={imgHeight}
                 layout="responsive"
+                style={{ borderRadius: "8px" }} // Optional: add rounded corners
               />
               <div className="tp-product-badge">
                 {status === "out-of-stock" && (
@@ -68,7 +68,8 @@ const DetailsThumbWrapper = ({
           </div>
         </div>
       </div>
-      {/* modal popup start */}
+
+      {/* Video Popup */}
       {videoId && (
         <PopupVideo
           isVideoOpen={isVideoOpen}
@@ -76,7 +77,6 @@ const DetailsThumbWrapper = ({
           videoId={videoId}
         />
       )}
-      {/* modal popup end */}
     </>
   );
 };

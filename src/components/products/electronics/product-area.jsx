@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useGetProductTypeQuery } from "@/redux/features/productApi";
+import { useGetProductTypeQuery } from "@/redux/features/productApi"; // Ensure this hook is updated to fetch products based on category
 import { ShapeLine, TabLine } from "@/svg";
 import ProductItem from "./product-item";
 import ErrorMsg from "@/components/common/error-msg";
 import HomePrdLoader from "@/components/loader/home/home-prd-loader";
 
-const tabs = ["HAPPYCARDS", "RETURNGIFT", "CUDDLYCLASS", "SUPERNATURALCLASS"];
+ const tabs = ["Trending",];
 
 const ProductArea = () => {
-  const [activeTab, setActiveTab] = useState("HAPPYCARDS");
-  const { data: products, isError, isLoading, refetch } = useGetProductTypeQuery();
+  const [activeTab, setActiveTab] = useState("trending");
+  const { data: products, isError, isLoading, refetch } = useGetProductTypeQuery(activeTab); // Pass activeTab to the query
 
   // Log product data
   useEffect(() => {
-    console.log(products);
+
   }, [products]);
 
   const handleActiveTab = (tab) => {
@@ -21,7 +21,7 @@ const ProductArea = () => {
   };
 
   useEffect(() => {
-    refetch();
+    refetch(); // Refetch when the active tab changes
   }, [activeTab, refetch]);
 
   let content = null;
@@ -34,7 +34,15 @@ const ProductArea = () => {
     content = <ErrorMsg msg="No Products found!" />;
   } else {
     // Filter products based on the active tab
-    const filteredProducts = products.filter(product => product.name === activeTab);
+    const filteredProducts = products.filter(product => {
+      // Check if categories is defined and is an array
+      if (Array.isArray(product.categories)) {
+        // Assuming `tabs` have matching values with categories
+        return product.categories;
+      }
+      return false; // Exclude products without categories
+    });
+    
 
     if (filteredProducts.length === 0) {
       content = <ErrorMsg msg="No Products found in this category!" />;
@@ -50,16 +58,16 @@ const ProductArea = () => {
   return (
     <section className="tp-product-area pb-55">
       <div className="container">
-        <div className="row align-items-end">
-          <div className="col-xl-5 col-lg-6 col-md-5">
+        <div className="row align-items-start">
+          <div className="col-xl-4 col-lg-5  col-md-5">
             <div className="tp-section-title-wrapper mb-40">
-              <h3 className="tp-section-title">
+              <h3 className="tp-section-title text-20">
                 Trending Products
                 <ShapeLine />
               </h3>
             </div>
           </div>
-          <div className="col-xl-7 col-lg-6 col-md-7">
+          <div className="col-xl-8 col-lg-6 col-1 col-md-7">
             <div className="tp-product-tab tp-product-tab-border mb-45 tp-tab d-flex justify-content-md-end">
               <ul className="nav nav-tabs justify-content-sm-end">
                 {tabs.map((tab, i) => (
