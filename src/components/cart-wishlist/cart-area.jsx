@@ -10,6 +10,10 @@ import RenderCartProgress from '../common/render-cart-progress';
 const CartArea = () => {
   const { cart_products } = useSelector((state) => state.cart);
   const dispatch = useDispatch()
+
+console.log(cart_products,"sdfsdfsdfsdf");
+
+
   return (
     <>
       <section className="tp-cart-area pb-120">

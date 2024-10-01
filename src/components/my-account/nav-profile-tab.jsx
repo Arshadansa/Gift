@@ -1,19 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
-// internal
-import { Box, DeliveryTwo, Processing, Truck } from "@/svg";
-import { userLoggedOut } from "@/redux/features/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { Box, DeliveryTwo, Processing, Truck } from "@/svg"; // SVGs used for icons
+import { userLoggedOut, userLoggedIn } from "@/redux/features/auth/authSlice";
+import { useGetUserQuery } from "@/redux/features/auth/authApi";
 
 const NavProfileTab = ({ orderData }) => {
-  const {user} = useSelector(state => state.auth)
   const dispatch = useDispatch();
   const router = useRouter();
-  // handle logout
+
+  // Fetch user info using RTK query
+  const { data: userInfo, isLoading, error } = useGetUserQuery();
+
+  useEffect(() => {
+    // Sync user state with Redux when component mounts
+    if (userInfo) {
+      const { user, token } = userInfo;
+      if (user && token) {
+        dispatch(userLoggedIn({ user, accessToken: token }));
+      }
+    }
+  }, [userInfo, dispatch]);
+
+  // Handle Logout
   const handleLogout = () => {
     dispatch(userLoggedOut());
-    router.push('/')
-  }
+    router.push('/');
+  };
+
+  // Calculate total orders, pending orders, and placeholders for processing/delivered
+  const totalOrders = orderData?.length || 0;
+  const pendingOrders = orderData?.data?.filter(order => order.data.status === "pending").length || 0;
+  const processingOrders = orderData?.data?.filter(order => order.data.status === "processing").length || 0;
+  const deliveredOrders = orderData?.data?.filter(order => order.data.status === "delivered").length || 0;
+
   return (
     <div className="profile__main">
       <div className="profile__main-top pb-80">
@@ -21,7 +41,7 @@ const NavProfileTab = ({ orderData }) => {
           <div className="col-md-6">
             <div className="profile__main-inner d-flex flex-wrap align-items-center">
               <div className="profile__main-content">
-                <h4 className="profile__main-title">Welcome Mr. {user?.name}</h4>
+                <h4 className="profile__main-title">Welcome Mr. {userInfo?.user?.name}</h4>
               </div>
             </div>
           </div>
@@ -40,7 +60,7 @@ const NavProfileTab = ({ orderData }) => {
             <div className="profile__main-info-item">
               <div className="profile__main-info-icon">
                 <span>
-                  <span className="profile-icon-count profile-download">{orderData?.totalDoc}</span>
+                  <span className="profile-icon-count profile-download">{totalOrders}</span>
                   <Box />
                 </span>
               </div>
@@ -51,7 +71,7 @@ const NavProfileTab = ({ orderData }) => {
             <div className="profile__main-info-item">
               <div className="profile__main-info-icon">
                 <span>
-                  <span className="profile-icon-count profile-order">{orderData?.pending}</span>
+                  <span className="profile-icon-count profile-order">{pendingOrders}</span>
                   <Processing />
                 </span>
               </div>
@@ -62,9 +82,7 @@ const NavProfileTab = ({ orderData }) => {
             <div className="profile__main-info-item">
               <div className="profile__main-info-icon">
                 <span>
-                  <span className="profile-icon-count profile-wishlist">
-                    {orderData?.processing}
-                  </span>
+                  <span className="profile-icon-count profile-wishlist">{processingOrders}</span>
                   <Truck />
                 </span>
               </div>
@@ -75,9 +93,7 @@ const NavProfileTab = ({ orderData }) => {
             <div className="profile__main-info-item">
               <div className="profile__main-info-icon">
                 <span>
-                  <span className="profile-icon-count profile-wishlist">
-                    {orderData?.delivered}
-                  </span>
+                  <span className="profile-icon-count profile-wishlist">{deliveredOrders}</span>
                   <DeliveryTwo />
                 </span>
               </div>

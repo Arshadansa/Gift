@@ -39,7 +39,7 @@ const CheckoutOrderArea = ({ checkoutData }) => {
               <p>
                 {item.title} <span> x {item.orderQuantity}</span>
               </p>
-              <span>${item.price.toFixed(2)}</span>
+              <span>${Number(item.price).toFixed(2)}</span>
             </li>
           ))}
 
@@ -156,7 +156,7 @@ const CheckoutOrderArea = ({ checkoutData }) => {
             type="radio"
             id="cod"
             name="payment"
-            value="COD"
+            value="cod"
           />
           <label htmlFor="cod">Cash on Delivery</label>
           <ErrorMsg msg={errors?.payment?.message} />

@@ -4,24 +4,26 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-// internal
+import Cookies from "js-cookie"; // Import js-cookie for cookie management
+// Internal imports
 import { CloseEye, OpenEye } from '@/svg';
 import ErrorMsg from '../common/error-msg';
 import { useLoginUserMutation } from '@/redux/features/auth/authApi';
 import { notifyError, notifySuccess } from '@/utils/toast';
 
-
-// schema
+// Validation schema
 const schema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(6).label("Password"),
 });
+
 const LoginForm = () => {
   const [showPass, setShowPass] = useState(false);
-  const [loginUser, { }] = useLoginUserMutation();
+  const [loginUser] = useLoginUserMutation(); // Removed unnecessary destructuring
   const router = useRouter();
   const { redirect } = router.query;
-  // react hook form
+
+  // React Hook Form setup
   const {
     register,
     handleSubmit,
@@ -30,29 +32,47 @@ const LoginForm = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  // onSubmit
-  const onSubmit = (data) => {
-    loginUser({
-      email: data.email,
-      password: data.password,
-    })
-      .then((data) => {
-        if (data?.data) {
-          notifySuccess("Login successfully");
-          router.push(redirect || "/");
-        }
-        else {
-          notifyError(data?.error?.data?.message)
-        }
-      })
-    reset();
+
+  // onSubmit handler
+  const onSubmit = async (data) => {
+    try {
+      const result = await loginUser({
+        email: data.email,
+        password: data.password,
+      }).unwrap(); // Using unwrap to get the result or throw an error
+
+      // If login is successful, set the user info in cookies
+      if (result) {
+        notifySuccess("Login successfully");
+        const userInfo = {
+          accessToken: result.access_token,
+          ...result.user,
+        };
+        Cookies.set("userInfo", JSON.stringify(userInfo), { expires: 7 });
+        dispatch(userLoggedIn({
+          user: result.user,
+          accessToken: result.access_token,
+        }));
+        router.push(redirect || "/"); // Redirect to home or specified page
+      }
+    } catch (error) {
+      notifyError(error?.data?.message || "Login failed"); // Handle error
+    }
+    reset(); // Reset form fields
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="tp-login-input-wrapper">
         <div className="tp-login-input-box">
           <div className="tp-login-input">
-            <input {...register("email", { required: `Email is required!` })} name="email" id="email" type="email" placeholder="shofy@mail.com" />
+            <input
+              {...register("email", { required: `Email is required!` })}
+              name="email"
+              id="email"
+              type="email"
+              placeholder="shofy@mail.com"
+            />
           </div>
           <div className="tp-login-input-title">
             <label htmlFor="email">Your Email</label>
@@ -66,7 +86,7 @@ const LoginForm = () => {
                 {...register("password", { required: `Password is required!` })}
                 id="password"
                 type={showPass ? "text" : "password"}
-                placeholder="Min. 6 character"
+                placeholder="Min. 6 characters"
               />
             </div>
             <div className="tp-login-input-eye" id="password-show-toggle">
@@ -78,13 +98,13 @@ const LoginForm = () => {
               <label htmlFor="password">Password</label>
             </div>
           </div>
-          <ErrorMsg msg={errors.password?.message}/>
+          <ErrorMsg msg={errors.password?.message} />
         </div>
       </div>
       <div className="tp-login-suggetions d-sm-flex align-items-center justify-content-between mb-20">
         <div className="tp-login-remeber">
-          <input id="remeber" type="checkbox" />
-          <label htmlFor="remeber">Remember me</label>
+          <input id="remember" type="checkbox" />
+          <label htmlFor="remember">Remember me</label>
         </div>
         <div className="tp-login-forgot">
           <Link href="/forgot">Forgot Password?</Link>

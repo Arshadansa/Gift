@@ -6,7 +6,6 @@ import { useRegisterUserMutation } from "@/redux/features/auth/authApi";
 import { CloseEye, OpenEye } from "@/svg";
 import ErrorMsg from "../common/error-msg";
 import { notifyError, notifySuccess } from "@/utils/toast";
-import Cookies from "js-cookie";  // Assuming you are using Cookies to handle tokens
 
 // Validation Schema
 const schema = Yup.object().shape({
@@ -18,8 +17,6 @@ const schema = Yup.object().shape({
   password_confirmation: Yup.string()
     .required("Confirm Password is required!")
     .oneOf([Yup.ref("password"), null], "Passwords must match"),
-  remember: Yup.bool()
-    .oneOf([true], "You must agree to the terms and conditions to proceed."),
 });
 
 const RegisterForm = () => {
@@ -29,14 +26,13 @@ const RegisterForm = () => {
 
   const [showPass, setShowPass] = useState(false);
   const [registerUser, { isLoading }] = useRegisterUserMutation();
-  
-  // Get token from cookies (if applicable)
-  const token = Cookies.get("accessToken"); // Adjust this based on how you store the token
 
   const onSubmit = async (data) => {
+    console.log(data);
+    
     try {
-      // Call registerUser with both form data and token
-      const result = await registerUser({ data, token }).unwrap(); 
+      // Call registerUser with the form data directly
+      const result = await registerUser(data).unwrap(); 
       
       // Notify user of success
       notifySuccess(result?.message || "Registration successful!");
@@ -125,22 +121,6 @@ const RegisterForm = () => {
           </div>
         </div>
         <ErrorMsg msg={errors.password_confirmation?.message} />
-      </div>
-
-      {/* Remember Checkbox */}
-      <div className="tp-login-suggestions mb-20">
-        <div className="tp-login-remember">
-          <input
-            {...register("remember")}
-            id="remember"
-            type="checkbox"
-          />
-          <label htmlFor="remember">
-            I accept the terms of the Service &{" "}
-            <a href="#">Privacy Policy</a>.
-          </label>
-        </div>
-        <ErrorMsg msg={errors.remember?.message} />
       </div>
 
       {/* Submit Button */}

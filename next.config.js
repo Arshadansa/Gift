@@ -6,16 +6,17 @@ const nextConfig = {
     domains: [
       'api.mysweetwishes.com',
       'gratisography.com',
+      'www.radiustheme.com',
       'image.shutterstock.com',
       'i.ibb.co',
       'lh3.googleusercontent.com',
       'res.cloudinary.com',
     ],
-   unoptimized: true,  
+    // unoptimized: true,  
   },
 
   // // Enable static export
-   output: 'export',
+  // output: 'export',
 
  
 };

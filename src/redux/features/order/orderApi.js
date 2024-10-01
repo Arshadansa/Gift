@@ -1,17 +1,25 @@
 import { apiSlice } from "../../api/apiSlice";
 import { set_client_secret } from "./orderSlice";
+import { useSelector } from "react-redux";
 
 export const authApi = apiSlice.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     // createPaymentIntent
     createPaymentIntent: builder.mutation({
-      query: (data) => ({
-        url: "https://shofy-backend.vercel.app/api/order/create-payment-intent",
-        method: "POST",
-        body: data,
-      }),
-
+      query: (data) => {
+        const { accessToken } = data; // Access token passed in data
+        console.log("Access Token:", accessToken); // Log the access token
+        return {
+          url: "https://apiv2.mysweetwishes.com/api/user/orders",
+          method: "POST",
+          body: data,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+      },
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -20,16 +28,24 @@ export const authApi = apiSlice.injectEndpoints({
           // do nothing
         }
       },
-
     }),
+
     // saveOrder
     saveOrder: builder.mutation({
-      query: (data) => ({
-        url: "https://shofy-backend.vercel.app/api/order/saveOrder",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags:['UserOrders'],
+      query: (data) => {
+        const { accessToken, ...rest } = data; // Destructure access token and rest of the data
+        console.log("Access Token order:", accessToken); // Log the access token
+        return {
+          url: "https://apiv2.mysweetwishes.com/api/orders",
+          method: "POST",
+          body: rest, // Send the rest of the data without the accessToken
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+      },
+      invalidatesTags: ['UserOrders'],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -42,17 +58,36 @@ export const authApi = apiSlice.injectEndpoints({
           // do nothing
         }
       },
-
     }),
+    
+
     // getUserOrders
     getUserOrders: builder.query({
-      query: () => `https://shofy-backend.vercel.app/api/user-order`,
-      providesTags:["UserOrders"],
+      query: (accessToken) => {
+        console.log("Access Token:", accessToken); // Log the access token
+        return {
+          url: "https://apiv2.mysweetwishes.com/api/user/orders",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
+      providesTags: ["UserOrders"],
       keepUnusedDataFor: 600,
     }),
-    // getUserOrders
+
+    // getUserOrderById
     getUserOrderById: builder.query({
-      query: (id) => `https://shofy-backend.vercel.app/api/user-order/${id}`,
+      query: ({ id, accessToken }) => {
+      
+        console.log("Access Token:", accessToken,"sdaasd",id); // Log the access token
+        return {
+          url: `https://apiv2.mysweetwishes.com/api/orders/${id}`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
       providesTags: (result, error, arg) => [{ type: "UserOrder", id: arg }],
       keepUnusedDataFor: 600,
     }),

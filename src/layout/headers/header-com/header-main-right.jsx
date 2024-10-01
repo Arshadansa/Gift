@@ -1,36 +1,53 @@
+import { useGetUserQuery } from "@/redux/features/auth/authApi";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
-// internal
 import useCartInfo from "@/hooks/use-cart-info";
-import { CartTwo, Compare, Menu, User, Wishlist } from "@/svg";
+import { CartTwo, Menu, User } from "@/svg";
 import { openCartMini } from "@/redux/features/cartSlice";
 
 const HeaderMainRight = ({ setIsCanvasOpen }) => {
-  const { user: userInfo } = useSelector((state) => state.auth);
+  const { data: userInfo, error, isLoading } = useGetUserQuery(); // Automatically fetch user info including token
   const { wishlist } = useSelector((state) => state.wishlist);
   const { quantity } = useCartInfo();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  // Optional: Handle loading and error states
+  if (isLoading) {
+    return <div>Loading...</div>; // Optional loading state
+  }
+
+  if (error) {
+    console.error("Error fetching user data:", error);
+    return <div>Error fetching user data. Please try again later.</div>; // Optional error handling
+  }
+
+  // Debugging log
+  console.log(userInfo, "myinfo"); // Check what the userInfo object contains
+
+  const user = userInfo?.user; // Extract user object from userInfo
+  
   return (
     <div className="tp-header-main-right d-flex align-items-center justify-content-end">
       <div className="tp-header-login d-none d-lg-block">
         <div className="d-flex align-items-center">
           <div className="tp-header-login-icon">
             <span>
-              {userInfo?.imageURL ? (
+              {user?.imageURL ? (
                 <Link href="/profile">
                   <Image
-                    src={userInfo.imageURL}
-                    alt="user img"
+                    src={user.imageURL}
+                    alt="User Profile Image"
                     width={35}
                     height={35}
+                    className="rounded-full" // Optional: Adds round shape to image
                   />
                 </Link>
-              ) : userInfo?.name ? (
+              ) : user?.name ? (
                 <Link href="/profile">
                   <h2 className="text-uppercase login_text">
-                    {userInfo?.name[0]}
+                    {user.name[0]} {/* Display the first letter of user's name */}
                   </h2>
                 </Link>
               ) : (
@@ -39,21 +56,27 @@ const HeaderMainRight = ({ setIsCanvasOpen }) => {
             </span>
           </div>
           <div className="tp-header-login-content d-none d-xl-block">
-            {!userInfo?.name && (
-              <Link href="/login">
-                <span>Hello,</span>
-              </Link>
+            {!user ? (
+              <>
+                <Link href="/login">
+                  <span>Hello,</span>
+                </Link>
+                <div className="tp-header-login-title">
+                  <Link href="/login">Sign In</Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <span>Hello, {user.name}</span>
+                <div className="tp-header-login-title">
+                  <Link href="/profile">Your Account</Link>
+                </div>
+              </>
             )}
-            {userInfo?.name && <span>Hello, {userInfo?.name}</span>}
-            <div className="tp-header-login-title">
-              {!userInfo?.name && <Link href="/login">Sign In</Link>}
-              {userInfo?.name && <Link href="/profile">Your Account</Link>}
-            </div>
           </div>
         </div>
       </div>
-      <div className="tp-header-action d-flex align-items-center ml-40 ">
-       
+      <div className="tp-header-action d-flex align-items-center ml-40">
         <div className="tp-header-action-item">
           <button
             onClick={() => dispatch(openCartMini())}

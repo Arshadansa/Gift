@@ -7,7 +7,7 @@ import { Close, Minus, Plus } from "@/svg";
 import { add_cart_product, quantityDecrement, remove_product } from "@/redux/features/cartSlice";
 
 const CartItem = ({product}) => {
-  const {_id, img,title,price, orderQuantity = 0 } = product || {};
+  const {title,price, orderQuantity = 0 } = product || {};
 
   const dispatch = useDispatch();
 
@@ -24,13 +24,21 @@ const CartItem = ({product}) => {
     const handleRemovePrd = (prd) => {
       dispatch(remove_product(prd))
     }
-
+    const img = product.images || []; // Default to an empty array if images are not present
+    const _id = product.product_id; // Assuming product_id is used as the identifier
   return (
     <tr>
       {/* img */}
       <td className="tp-cart-img">
-        <Link href={`/product-details/${_id}`}>
-          <Image src={img} alt="product img" width={70} height={100} />
+      <Link href={`/product-details/${_id}`}>
+          {/* Use the first image from the images array */}
+          <Image 
+            src={img[0] || '/path/to/default/image.jpg'} // Use a default image if none is available
+            alt={product.name} // Use the product name for accessibility
+            width={70}
+            height={100}
+            quality={100} // Optional: set quality for better image clarity
+          />
         </Link>
       </td>
       {/* title */}

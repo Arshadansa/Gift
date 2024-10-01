@@ -2,7 +2,7 @@ import { apiSlice } from "@/redux/api/apiSlice";
 import { userLoggedIn } from "./authSlice";
 import Cookies from "js-cookie";
 
-const BASE_URL = "https://api.mysweetwishes.com/api";
+const BASE_URL = "https://apiv2.mysweetwishes.com";
 
 export const authApi = apiSlice.injectEndpoints({
   overrideExisting: true,
@@ -77,23 +77,40 @@ export const authApi = apiSlice.injectEndpoints({
     }),
     // get me
     getUser: builder.query({
-      query: () => `${BASE_URL}/me`,
+      query: () => {
+        const token = Cookies.get("userInfo") ? JSON.parse(Cookies.get("userInfo")).accessToken : '';
+        return {
+          url: `${BASE_URL}/is-logged-in`,
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
+    
+          // Dispatch userLoggedIn to sync Redux state
           dispatch(
             userLoggedIn({
-              user: result.data,
+              accessToken: result.data.data.token,  // Assuming API response returns updated token
+              user: result.data.data.user,
             })
           );
         } catch (err) {
-          // Handle error if needed
+          console.error('Error fetching user:', err);
         }
       },
     }),
+    
+    
     // confirmEmail
     confirmEmail: builder.query({
-      query: (token) => `${BASE_URL}/user/confirmEmail/${token}`,
+      query: (token) => ({
+        url: `${BASE_URL}/user/confirmEmail/${token}`,
+        method: "GET",
+      }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -136,13 +153,22 @@ export const authApi = apiSlice.injectEndpoints({
     }),
     // change password
     changePassword: builder.mutation({
-      query: (data) => ({
-        url: `${BASE_URL}/user/change-password`,
-        method: "PATCH",
-        body: data,
+      query: ({ current_password, new_password, new_password_confirmation, accessToken }) => ({
+        url: `${BASE_URL}/change-password`,
+        method: "POST",
+        body: {
+          current_password,
+          new_password,
+          new_password_confirmation,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
       }),
     }),
-    // updateProfile password
+    
+    // updateProfile
     updateProfile: builder.mutation({
       query: ({ id, ...data }) => ({
         url: `${BASE_URL}/user/update-user/${id}`,
@@ -190,4 +216,5 @@ export const {
   useChangePasswordMutation,
   useUpdateProfileMutation,
   useSignUpProviderMutation,
+  useGetUserQuery, 
 } = authApi;

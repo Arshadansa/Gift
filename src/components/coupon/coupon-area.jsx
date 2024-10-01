@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import ErrorMsg from "../common/error-msg";
 import CouponItem from "./coupon-item";
 import { useGetOfferCouponsQuery } from "@/redux/features/coupon/couponApi";
@@ -17,11 +17,11 @@ const CouponArea = () => {
   };
 
   const { data: offerCoupons, isError, isLoading } = useGetOfferCouponsQuery();
-  // decide what to render
+
   let content = null;
 
   if (isLoading) {
-    content = <CouponLoader loading={isLoading}/>;
+    content = <CouponLoader loading={isLoading} />;
   }
 
   if (!isLoading && isError) {
@@ -33,10 +33,8 @@ const CouponArea = () => {
   }
 
   if (!isLoading && !isError && offerCoupons?.length > 0) {
-    const coupon_items = offerCoupons;
-    // const coupon_items = offerCoupons.slice(0, 2);
-    content = coupon_items.map((coupon) => (
-      <div key={coupon._id} className="col-xl-6">
+    content = offerCoupons.map((coupon) => (
+      <div key={coupon.id} className="col-xl-6">
         <CouponItem
           coupon={coupon}
           handleCopied={handleCopied}
@@ -46,14 +44,13 @@ const CouponArea = () => {
       </div>
     ));
   }
+
   return (
-    <>
-      <div className="tp-coupon-area pb-120">
-        <div className="container">
-          <div className="row">{content}</div>
-        </div>
+    <div className="tp-coupon-area pb-120">
+      <div className="container">
+        <div className="row">{content}</div>
       </div>
-    </>
+    </div>
   );
 };
 
