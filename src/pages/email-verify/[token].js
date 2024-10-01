@@ -33,9 +33,9 @@ const EmailVerification = ({ params }) => {
       </div>
     </Wrapper>
   );
-};
+};   
 
-export const getServerSideProps = async ({ params }) => {
+export const getStaticPaths= async ({ params }) => {
   return {
     props: { params },
   };

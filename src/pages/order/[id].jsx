@@ -227,7 +227,7 @@ const SingleOrder = ({ params }) => {
   );
 };
 
-export const getServerSideProps = async ({ params }) => {
+export const getStaticPaths= async ({ params }) => {
   return {
     props: { params },
   };

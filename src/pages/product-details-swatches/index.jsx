@@ -40,7 +40,7 @@ const ProductDetailsPage = ({ query }) => {
 
 export default ProductDetailsPage;
 
-export const getServerSideProps = async (context) => {
+export const getStaticPaths= async (context) => {
   const { query } = context;
 
   return {

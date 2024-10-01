@@ -168,7 +168,7 @@ const ShopPage = ({ query }) => {
 
 export default ShopPage;
 
-export const getServerSideProps = async (context) => {
+export const getStaticPaths= async (context) => {
   const { query } = context;
 
   return {

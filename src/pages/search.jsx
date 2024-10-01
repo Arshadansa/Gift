@@ -161,7 +161,7 @@ export default function SearchPage({ query }) {
   );
 }
 
-export const getServerSideProps = async (context) => {
+export const getStaticPaths= async (context) => {
   const { query } = context;
 
   return {
