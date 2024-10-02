@@ -1,8 +1,9 @@
 import React from "react";
-import { Comment, Date, UserTwo } from "@/svg";
+import { Comment, Data, UserTwo } from "@/svg";
 
 const PostboxDetailsTop = ({blog}) => {
-  const {category,title,date,comments,author} = blog || {};
+  const {category,title,created_at,comments,author} = blog || {};
+  const formattedDate = new Date(created_at).toLocaleDateString();
   return ( 
     <div className="tp-postbox-details-top">
       <div className="tp-postbox-details-category">
@@ -20,12 +21,12 @@ const PostboxDetailsTop = ({blog}) => {
         </span>
         <span>
           <Date />
-          {" "}{date}
+          {" "}{formattedDate}
         </span>
-        <span>
+        {/* <span>
           <Comment />
           <a href="#">Comments ({comments})</a>
-        </span>
+        </span> */}
       </div>
     </div>
   );

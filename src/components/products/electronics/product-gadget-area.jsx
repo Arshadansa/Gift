@@ -87,7 +87,7 @@ const ProductGadgetArea = () => {
           >
             <div className="tp-product-gadget-banner-content">
               <span className="tp-product-gadget-banner-price">
-                Only ${b.price.toFixed(2)}
+                Only ₹ {b.price.toFixed(2)}
               </span>
               <h3 className="tp-product-gadget-banner-title">
                 <Link href="/shop">{b.title}</Link>
@@ -115,11 +115,7 @@ const ProductGadgetArea = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xl-8  col-lg-7">
-              <div className="tp-product-gadget-wrapper">
-                <div className=" ">{content}</div>
-              </div>
-            </div>
+            <div className="row ">{content}</div>
           </div>
         </div>
       </section>

@@ -6,13 +6,17 @@ import { useRegisterUserMutation } from "@/redux/features/auth/authApi";
 import { CloseEye, OpenEye } from "@/svg";
 import ErrorMsg from "../common/error-msg";
 import { notifyError, notifySuccess } from "@/utils/toast";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie"; // Make sure to import js-cookie
+import { userLoggedIn } from "@/redux/features/auth/authSlice"; // Import the action for logging in
 
 // Validation Schema
 const schema = Yup.object().shape({
   name: Yup.string().required("Name is required!"),
   email: Yup.string().email("Invalid email").required("Email is required!"),
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .required("Password is required!"),
   password_confirmation: Yup.string()
     .required("Confirm Password is required!")
@@ -23,23 +27,49 @@ const RegisterForm = () => {
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm({
     resolver: yupResolver(schema),
   });
+  
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { redirect } = router.query; // Get redirect query if available
 
   const [showPass, setShowPass] = useState(false);
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    
     try {
-      // Call registerUser with the form data directly
-      const result = await registerUser(data).unwrap(); 
+      // Call registerUser with the form data
+      const result = await registerUser(data).unwrap();
       
       // Notify user of success
       notifySuccess(result?.message || "Registration successful!");
+      
+      // Prepare user info for cookies
+      const userInfo = {
+        accessToken: result.access_token,
+        ...result.user,
+      };
+
+      // Save userInfo in cookies
+      Cookies.set("userInfo", JSON.stringify(userInfo), {
+        expires: 7,
+        secure: process.env.NODE_ENV === 'production', // Secure for production
+        sameSite: 'Strict', // Secure from CSRF
+      });
+
+      // Dispatch login action to the Redux store
+      dispatch(userLoggedIn({
+        user: result.user,
+        accessToken: result.access_token,
+      }));
+
+      // Reset the form
       reset();
+
+      // Redirect user
+      router.push(redirect || "/"); // Redirect to the specified route or default to "/"
     } catch (error) {
-      // Handle registration error
-      notifyError(error?.data?.message || "Registration failed!");
+      // Notify user of error
+      notifyError(error?.data?.message || "Registration failed!"); // Fixed the error handling
     }
   };
 
@@ -85,7 +115,7 @@ const RegisterForm = () => {
               {...register("password")}
               id="password"
               type={showPass ? "text" : "password"}
-              placeholder="Min. 6 characters"
+              placeholder="Min. 8 characters"
             />
           </div>
           <div className="tp-login-input-eye">

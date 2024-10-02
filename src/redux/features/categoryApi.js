@@ -5,16 +5,16 @@ export const categoryApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addCategory: builder.mutation({
       query: (data) => ({
-        url: "https://api.mysweetwishes.com/api/categories",
+        url: "https://apiv2.mysweetwishes.com/api/categories",
         method: "POST",
         body: data,
       }),
     }),
     getShowCategory: builder.query({
-      query: () => `https://api.mysweetwishes.com/api/categories`
+      query: () => `https://apiv2.mysweetwishes.com/api/categories`
     }),
     getProductTypeCategory: builder.query({
-      query: (type) => `https://api.mysweetwishes.com/api/categories/${type}`
+      query: (type) => `https://apiv2.mysweetwishes.com/api/categories/${type}`
     }),
   }),
 });

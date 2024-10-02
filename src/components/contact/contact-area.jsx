@@ -5,6 +5,7 @@ import ContactForm from "../forms/contact-form";
 import contact_icon_1 from "@assets/img/contact/contact-icon-1.png";
 import contact_icon_2 from "@assets/img/contact/contact-icon-2.png";
 import contact_icon_3 from "@assets/img/contact/contact-icon-3.png";
+import ContactSocialMedia from "../SocialMedial/ContactSocialMedia";
 
 const ContactArea = () => {
   return (
@@ -74,15 +75,7 @@ const ContactArea = () => {
                         </h4>
 
                         <div className="tp-contact-social-icon">
-                          <a href="#">
-                            <i className="fa-brands fa-facebook-f"></i>
-                          </a>
-                          <a href="#">
-                            <i className="fa-brands fa-twitter"></i>
-                          </a>
-                          <a href="#">
-                            <i className="fa-brands fa-linkedin-in"></i>
-                          </a>
+                          <ContactSocialMedia/>
                         </div>
                       </div>
                     </div>

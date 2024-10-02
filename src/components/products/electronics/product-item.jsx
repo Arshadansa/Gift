@@ -75,7 +75,10 @@ const ProductItem = ({ product, offer_style = false }) => {
         offer_style ? "tp-product-offer-item" : "mb-25"
       } tp-product-item transition-3`}
     >
-      <div className="tp-product-thumb p-relative fix">
+      <div
+        style={{ height: "300px" }}
+        className="tp-product-thumb p-relative fix"
+      >
         <Link href={`/product-details/${product_id}`}>
           <Image
             src={images[0]} // Use the first image
@@ -83,6 +86,7 @@ const ProductItem = ({ product, offer_style = false }) => {
             height={300} // Adjust height based on your layout
             alt={name} // Use product name for alt text
             className="w-full h-auto"
+            style={{ objectFit: "contain" }}
           />
         </Link>
 
@@ -104,8 +108,8 @@ const ProductItem = ({ product, offer_style = false }) => {
             }
 
             .tp-product-action-btn:hover {
-              background-color: red;
-              border-color: red;
+              background-color: #990100;
+              border-color: #990100;
               color: white;
             }
           `}</style>
@@ -146,32 +150,31 @@ const ProductItem = ({ product, offer_style = false }) => {
 
       {/* Product content */}
       <div className="tp-product-content">
-        <div className="tp-product-category">
+        <div className="">
           <Link href={`/category/${categories[0]}`}>{categories[0]}</Link>{" "}
-          {/* Use the first category for display */}
         </div>
         <h3 className="tp-product-title">
-          <Link href={`/product-details/${id}`}>{name}</Link>
+          <Link href={`/product-details/${id}`}>
+            <span
+              style={{
+                fontSize: "14px",
+                textTransform: "uppercase",
+                transition: "color 0.3s",
+              }}
+              onMouseEnter={(e) => (e.target.style.color = "#990100")}
+              onMouseLeave={(e) => (e.target.style.color = "")}
+            >
+              {name}
+            </span>
+          </Link>
         </h3>
-        <div className="tp-product-rating d-flex align-items-center">
-          <div className="tp-product-rating-icon">
-            <Rating
-              allowFraction
-              size={16}
-              initialValue={ratingVal}
-              readonly={true}
-            />
-          </div>
-          <div className="tp-product-rating-text">
-            <span>({reviews.length || 0} Reviews)</span>
-          </div>
-        </div>
+
         <div className="tp-product-price-wrapper">
           <span
             className="tp-product-price new-price "
-            style={{ color: "#ff5733" }}
+            style={{ color: "#990100" }}
           >
-          ₹ {parseFloat(price).toFixed(2)}
+            ₹ {parseFloat(price).toFixed(2)}
           </span>
         </div>
 

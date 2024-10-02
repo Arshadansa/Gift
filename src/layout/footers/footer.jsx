@@ -6,7 +6,7 @@ import logo from "@assets/img/logo/logo.svg";
 import pay from "@assets/img/footer/footer-pay.png";
 import social_data from "@/data/social-data";
 import { Email, Location } from "@/svg";
-
+import SocialMedia from "@/components/SocialMedial/SocialMedia";
 const Footer = ({
   style_2 = false,
   style_3 = false,
@@ -26,7 +26,7 @@ const Footer = ({
             ? "tp-footer-style-2 tp-footer-style-3"
             : ""
         }`}
-        data-bg-color={`${style_2 ? "footer-bg-white" : "footer-bg-grey"}`}
+        style={{ backgroundColor: "#990100", color: "#FFFFFF" }}
       >
         <div className="tp-footer-top pt-95 pb-40">
           <div className="container">
@@ -41,28 +41,62 @@ const Footer = ({
                     </div>
 
                     <div className="tp-footer-social">
-                      {social_data.map((s) => (
-                        <a href={s.link} key={s.id} target="_blank">
-                          <i className={s.icon}></i>
-                        </a>
-                      ))}
+                      <SocialMedia/>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div className="tp-footer-widget footer-col-2 mb-50">
-                  <h4 className="tp-footer-widget-title">My Account</h4>
+                  <h4
+                    className="tp-footer-widget-title"
+                    style={{ color: "#FFFFFF" }}
+                  >
+                    My Account
+                  </h4>
                   <div className="tp-footer-widget-content">
                     <ul>
                       <li>
-                        <a href="profile">Track Orders</a>
+                        <a
+                          href="profile"
+                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          } // Change to black on hover
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          } // Revert to white on leave
+                        >
+                          Track Orders
+                        </a>
                       </li>
                       <li>
-                        <a href="profile">My Account</a>
+                        <a
+                          href="profile"
+                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          }
+                        >
+                          My Account
+                        </a>
                       </li>
                       <li>
-                        <a href="profile">Order History</a>
+                        <a
+                          href="profile"
+                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          }
+                        >
+                          Order History
+                        </a>
                       </li>
                     </ul>
                   </div>
@@ -70,36 +104,114 @@ const Footer = ({
               </div>
               <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                 <div className="tp-footer-widget footer-col-3 mb-50">
-                  <h4 className="tp-footer-widget-title">Information</h4>
+                  <h4
+                    className="tp-footer-widget-title"
+                    style={{ color: "#FFFFFF" }}
+                  >
+                    Information
+                  </h4>
                   <div className="tp-footer-widget-content">
                     <ul>
                       <li>
-                        <a href="privacypolicy">Privacy Policy</a>
+                        <a
+                          href="privacypolicy"
+                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          }
+                        >
+                          Privacy Policy
+                        </a>
                       </li>
                       <li>
-                        <a href="termsandconditions">Terms & Conditions</a>
+                        <a
+                          href="termsandconditions"
+                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          }
+                        >
+                          Terms & Conditions
+                        </a>
                       </li>
                       <li>
-                        <a href="refundpolicy">refundpolicy</a>
+                        <a
+                          href="refundpolicy"
+                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          }
+                        >
+                          Refund Policy
+                        </a>
                       </li>
                       <li>
-                        <a href="contact">Contact Us</a>
+                        <a
+                          href="contact"
+                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          }
+                        >
+                          Contact Us
+                        </a>
                       </li>
-                      <li>
-                        <a href="contact">About Us</a>
-                      </li>
+                      {/* <li>
+                        <a
+                          href="contact"
+                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          }
+                        >
+                          About Us
+                        </a>
+                      </li> */}
                     </ul>
                   </div>
                 </div>
               </div>
               <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                 <div className="tp-footer-widget footer-col-4 mb-50">
-                  <h4 className="tp-footer-widget-title">Talk To Us</h4>
+                  <h4
+                    className="tp-footer-widget-title"
+                    style={{ color: "#FFFFFF" }}
+                  >
+                    Talk To Us
+                  </h4>
                   <div className="tp-footer-widget-content">
                     <div className="tp-footer-talk mb-20">
-                      <span>Got Questions? Call us</span>
+                      <span style={{ color: "#FFFFFF" }}>
+                        Got Questions? Call us
+                      </span>
                       <h4>
-                        <a href="tel:999-606-10-15">+(91) 9996061015</a>
+                        <a
+                          href="tel:999-606-10-15"
+                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          }
+                        >
+                          +(91) 9996061015
+                        </a>
                       </h4>
                     </div>
                     <div className="tp-footer-contact">
@@ -111,8 +223,20 @@ const Footer = ({
                         </div>
                         <div className="tp-footer-contact-content">
                           <p>
-                            <a href="mailto:shofy@support.com">
-                             ankit@mysweetwishes.com
+                            <a
+                              href="mailto:ankit@mysweetwishes.com"
+                              style={{
+                                color: "#FFFFFF",
+                                transition: "color 0.3s",
+                              }}
+                              onMouseEnter={(e) =>
+                                (e.target.style.color = "#000000")
+                              }
+                              onMouseLeave={(e) =>
+                                (e.target.style.color = "#FFFFFF")
+                              }
+                            >
+                              ankit@mysweetwishes.com
                             </a>
                           </p>
                         </div>
@@ -128,8 +252,18 @@ const Footer = ({
                             <a
                               href="https://maps.app.goo.gl/5RLdim7adFE5E8Ri7"
                               target="_blank"
+                              style={{
+                                color: "#FFFFFF",
+                                transition: "color 0.3s",
+                              }}
+                              onMouseEnter={(e) =>
+                                (e.target.style.color = "#000000")
+                              }
+                              onMouseLeave={(e) =>
+                                (e.target.style.color = "#FFFFFF")
+                              }
                             >
-                              83, mahaveer complex Kurukshetra <br /> 136118
+                              83, Mahaveer Complex, Kurukshetra <br /> 136118
                               Haryana
                             </a>
                           </p>
@@ -148,10 +282,18 @@ const Footer = ({
               <div className="row align-items-center">
                 <div className="col-md-6">
                   <div className="tp-footer-copyright">
-                    <p>
+                    <p style={{ color: "#FFFFFF" }}>
                       © {new Date().getFullYear()} All Rights Reserved | Fly
                       Your Tech by
-                      <Link href="/"> ❤</Link>.
+                      <Link
+                        href="/"
+                        style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                        onMouseEnter={(e) => (e.target.style.color = "#000000")}
+                        onMouseLeave={(e) => (e.target.style.color = "#FFFFFF")}
+                      >
+                        ❤
+                      </Link>
+                      .
                     </p>
                   </div>
                 </div>

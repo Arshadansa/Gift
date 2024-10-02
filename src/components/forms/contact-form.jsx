@@ -81,9 +81,28 @@ const ContactForm = () => {
           <ErrorMsg msg={errors.remember?.message} />
         </div>
       </div>
-      <div className="tp-contact-btn">
-        <button type="submit">Send Message</button>
-      </div>
+      <div className="">
+  <button
+    type="submit"
+    style={{
+      backgroundColor: "#000000", // Initial background color
+      color: "#FFFFFF", // Text color
+      border: "none", // Remove border
+      padding: "10px 20px", // Add padding
+      borderRadius: "5px", // Rounded corners
+      transition: "background-color 0.3s", // Smooth transition
+    }}
+    onMouseEnter={(e) => {
+      e.target.style.backgroundColor = "#990100"; // Change background on hover
+    }}
+    onMouseLeave={(e) => {
+      e.target.style.backgroundColor = "#000000"; // Revert background on mouse leave
+    }}
+  >
+    Send Message
+  </button>
+</div>
+
     </form>
   );
 };

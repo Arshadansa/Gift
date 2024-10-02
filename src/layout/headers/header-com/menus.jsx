@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import menu_data from "@/data/menu-data";
 import Link from "next/link";
 import Image from "next/image";
@@ -49,22 +49,50 @@ const Menus = () => {
   }
   return (
     <ul>
-      {menu_data.map((menu) =>
-        menu.homes ? (
-          <li key={menu.id} className=" has-mega-menu" >
-            <Link  href={menu.link}>{menu.title}</Link>
-          </li>
-        ) : menu.products ? (
-          <li key={menu.id} className=" has-mega-menu ">
-            <Link href={menu.link}>{menu.title}</Link>
-          </li>
-        ) : (
-          <li key={menu.id}>
-            <Link href={menu.link}>{menu.title}</Link>
-          </li>
-        )
-      )}
-    </ul>
+    {menu_data.map((menu) => {
+      const [isHovered, setIsHovered] = useState(false); // State to track hover
+
+      const linkStyle = {
+        color: isHovered ? "#990100" : "#000000", // Change color on hover
+        transition: "color 0.3s", // Smooth transition for the text color
+      };
+
+      return menu.homes ? (
+        <li
+          key={menu.id}
+          className="has-mega-menu"
+          onMouseEnter={() => setIsHovered(true)} // Set hover state to true
+          onMouseLeave={() => setIsHovered(false)} // Set hover state to false
+        >
+          <Link style={linkStyle} href={menu.link}>
+            {menu.title}
+          </Link>
+        </li>
+      ) : menu.products ? (
+        <li
+          key={menu.id}
+          className="has-mega-menu"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <Link style={linkStyle} href={menu.link}>
+            {menu.title}
+          </Link>
+        </li>
+      ) : (
+        <li key={menu.id}>
+          <Link
+            style={linkStyle}
+            href={menu.link}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {menu.title}
+          </Link>
+        </li>
+      );
+    })}
+  </ul>
   );
 };
 

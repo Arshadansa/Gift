@@ -12,7 +12,7 @@ const BlogDetailsPageTwo = ({query}) => {
     <Wrapper>
       <SEO pageTitle="Blog Details" />
       <HeaderTwo style_2={true} />
-      <BlogDetailsAreaTwo blog={blogItem} />
+      <BlogDetailsAreaTwo  />
       <Footer primary_style={true} />
     </Wrapper>
   );

@@ -28,11 +28,19 @@ const BlogItem = ({ item = {} }) => {
       return null; // Don't show image if it's a blockquote, video, audio, or slider
     }
     return (
-      <div className="tp-postbox-thumb w-img">
-        <Link href={`/blog-details/${item.id}`}>
-          <Image src={item.image_url} alt="blog img" layout="responsive" />
-        </Link>
-      </div>
+      <div className="tp-postbox-thumb w-img" style={{ height: '350px', overflow: 'hidden' }}>
+      <Link href={`/blog-details/${item.id}`}>
+        <Image
+          src={item.image_url}
+          width={10}
+          height={10}
+          alt="blog img"
+          layout="responsive"
+          style={{ objectFit: 'cover' }}
+        />
+      </Link>
+    </div>
+    
     );
   };
 
@@ -40,7 +48,7 @@ const BlogItem = ({ item = {} }) => {
   const renderVideoThumbnail = () => (
     <div className="tp-postbox-thumb tp-postbox-video w-img p-relative">
       <Link href={`/blog-details/${item.id}`}>
-        <Image src={item.img} alt="blog img" layout="responsive" />
+        <Image src={item.image_url} width={10} height={10} alt="blog img" layout="responsive" />
       </Link>
       <a
         onClick={() => setIsVideoOpen(true)}
@@ -63,7 +71,7 @@ const BlogItem = ({ item = {} }) => {
     <Swiper {...sliderSettings} modules={[Navigation, Autoplay]} className="tp-postbox-thumb tp-postbox-slider swiper-container w-img p-relative">
       {item.slider_images.map((img, i) => (
         <SwiperSlide key={i} className="tp-postbox-slider-item">
-          <Image src={img.image} alt="slider img" layout="responsive" />
+          <Image src={img.image_url} width={10} height={10} alt="slider img" layout="responsive" />
         </SwiperSlide>
       ))}
       <div className="tp-postbox-nav">
@@ -89,7 +97,7 @@ const BlogItem = ({ item = {} }) => {
           <div className="tp-postbox-content">
             <div className="tp-postbox-meta">
               <span>
-                <i className="far fa-calendar-check"></i> {item.date}
+                <i className="far fa-calendar-check"></i> {item.created_at}
               </span>
               <span>
                 <a href="#">

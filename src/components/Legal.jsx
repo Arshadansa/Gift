@@ -8,7 +8,7 @@ const Legal = ({ terms }) => {
           key={index}
           className="section mb-10 p-6 "
         >
-          <h2 className="text-3xl font-bold mb-4 text-purple-700">
+          <h2 style={{fontSize:"18px"}} className=" font-bold mb-4 text-purple-700">
             {section.title}
           </h2>
           <p className="text-lg leading-relaxed text-gray-700">{section.content}</p>

@@ -4,13 +4,14 @@ const nextConfig = {
 
   images: {
     domains: [
-      'api.mysweetwishes.com',
+      'apiv2.mysweetwishes.com',
       'gratisography.com',
       'www.radiustheme.com',
       'image.shutterstock.com',
       'i.ibb.co',
       'lh3.googleusercontent.com',
       'res.cloudinary.com',
+      'api.mysweetwishes.com'
     ],
     // unoptimized: true,  
   },

@@ -13,6 +13,8 @@ import social_data from '@/data/social-data';
 import comment_data from '@/data/blog-comment-data';
 
 const BlogDetailsArea = ({ blog }) => {
+  console.log(blog.image_url,"single blog");
+  
   return (
     <section className="tp-postbox-details-area pb-120 pt-95">
       <div className="container">
@@ -23,13 +25,14 @@ const BlogDetailsArea = ({ blog }) => {
             {/* PostboxDetailsTop */}
           </div>
           <div className="col-xl-12">
-            <div className="tp-postbox-details-thumb">
+            <div style={{ height: '300px', overflow: 'hidden' }}className="tp-postbox-details-thumb">
               <Image
-                src={`/${blog.image}`} // Added leading slash
+                src={`${blog.image_url}`} // Added leading slash
                 alt="blog-big-img"
                 layout="responsive"
-                width={800}
+                width={200}
                 height={400}
+                style={{ objectFit: 'cover' }}
               />
             </div>
           </div>
@@ -45,13 +48,13 @@ const BlogDetailsArea = ({ blog }) => {
 
                 <div className="tp-postbox-details-desc-thumb text-center">
                   <Image
-                    src={`/${blog.image}`} // Added leading slash
+                    src={`${blog.image_url}`} // Added leading slash
                     alt="details-sm-img"
                     layout="responsive"
                     width={400}
                     height={200}
                   />
-                  <span className="tp-postbox-details-desc-thumb-caption">Gucci&lsquo;s Women&lsquo;s Cruise Collection 2023 Lookbook Has Arrived</span>
+                  {/* <span className="tp-postbox-details-desc-thumb-caption">Gucci&lsquo;s Women&lsquo;s Cruise Collection 2023 Lookbook Has Arrived</span> */}
                 </div>
                 
                 <div className="tp-postbox-details-quote">
@@ -65,19 +68,19 @@ const BlogDetailsArea = ({ blog }) => {
                   </blockquote>
                 </div>
 
-                <h4 className="tp-postbox-details-heading">Exploring the English Countryside</h4>
-                <p>Lorem ligula eget dolor. Aenean massa. Cum sociis que penatibus et magnis dis parturient montes lorem, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque euro, pretium quis, sem. Nulla onsequat massa quis enim.</p>
+                {/* <h4 className="tp-postbox-details-heading">Exploring the English Countryside</h4>
+                <p>Lorem ligula eget dolor. Aenean massa. Cum sociis que penatibus et magnis dis parturient montes lorem, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque euro, pretium quis, sem. Nulla onsequat massa quis enim.</p> */}
 
-                <div className="tp-postbox-details-list">
+                {/* <div className="tp-postbox-details-list">
                   <ul>
                     <li>Lorem ipsum dolor sit amet.</li>
                     <li>At vero eos et accusamus et iusto odio.</li>
                     <li>Excepteur sint occaecat cupidatat non proident.</li>
                   </ul>
-                </div>
-                <p>Rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer cidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae lorem.</p>
+                </div> */}
+                {/* <p>Rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer cidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae lorem.</p> */}
 
-                <div className="tp-postbox-details-share-wrapper">
+                {/* <div className="tp-postbox-details-share-wrapper">
                   <div className="row">
                     <div className="col-xl-8 col-lg-6">
                       <div className="tp-postbox-details-tags tagcloud">
@@ -99,39 +102,33 @@ const BlogDetailsArea = ({ blog }) => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 {/* PostboxDetailsNav */}
-                <PostboxDetailsNav />
+                {/* <PostboxDetailsNav /> */}
                 {/* PostboxDetailsNav */}
 
                 {/* author details start */}
-                <BlogDetailsAuthor />
+                {/* <BlogDetailsAuthor /> */}
                 {/* author details end */}
 
-                <div className="tp-postbox-details-comment-wrapper">
+                {/* <div className="tp-postbox-details-comment-wrapper">
                   <h3 className="tp-postbox-details-comment-title">Comments ({comment_data.length})</h3>
-                  {/* BlogDetailsComments */}
-                  <BlogDetailsComments />
-                  {/* BlogDetailsComments */}
-                </div>
+                 
+                </div> */}
 
-                <div className="tp-postbox-details-form">
+                {/* <div className="tp-postbox-details-form">
                   <h3 className="tp-postbox-details-form-title">Leave a Reply</h3>
                   <p>Your email address will not be published. Required fields are marked *</p>
 
-                  {/* form start */}
+              
                   <BlogPostCommentForm />
-                  {/* form end */}
-                </div>
+                
+                </div> */}
               </div>
             </div>
           </div>
-          <div className="col-xl-3 col-lg-4">
-            {/* sidebar start */}
-            <BlogSidebar />
-            {/* sidebar end */}
-          </div>
+      
         </div>
       </div>
     </section>

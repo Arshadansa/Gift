@@ -1,32 +1,25 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { ArrowRightLong } from '@/svg';
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRightLong } from "@/svg";
 
 const BlogItem = ({ blog }) => {
   const formattedDate = new Date(blog.created_at).toLocaleDateString();
 
-console.log(blog);
-
-  const imageUrl = `https://api.mysweetwishes.com/${blog.image}`; // Ensures the URL is correct
-
-  // Local state to manage the image source
-  const [imgSrc, setImgSrc] = useState(imageUrl);
-
   const handleError = () => {
-    setImgSrc('/fallback-image.png'); // Set to fallback image on error
+    setImgSrc("/fallback-image.png"); // Set to fallback image on error
   };
 
   return (
-    <div className="tp-blog-item mb-30">
+    <div className="tp-blog-item  mb-30">
       <div className="tp-blog-thumb p-relative fix">
         <Link href={`/blog-details/${blog.id}`}>
-          <Image 
-            src={imgSrc} // Use the state for the image
-            alt={blog.title} 
-            layout="responsive" 
-            width={600} 
-            height={400} 
+          <Image
+            src={blog.image_url} // Use the state for the image
+            alt={blog.title}
+            layout="responsive"
+            width={600}
+            height={400}
             objectFit="cover"
             onError={handleError} // Handle image error
           />
@@ -39,7 +32,7 @@ console.log(blog);
         <h3 className="tp-blog-title">
           <Link href={`/blog-details/${blog.id}`}>{blog.title}</Link>
         </h3>
-        
+
         <p>{blog.content}</p>
 
         <div className="tp-blog-author">
@@ -47,11 +40,27 @@ console.log(blog);
         </div>
 
         <div className="tp-blog-btn">
-          <Link href={`/blog-details/${blog.id}`} className="tp-btn-2 tp-btn-border-2">
+          <Link
+            href={`/blog-details/${blog.id}`}
+            style={{
+              backgroundColor: "#990100", // Initial background color (black)
+              color: "#FFFFFF", // Initial text color (white)
+              padding: "10px 15px", // Optional: add some padding for better visibility
+              display: "inline-flex", // Optional: align text and icon horizontally
+              alignItems: "center",
+              transition: "background-color 0.3s, color 0.3s", // Smooth transitions
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "#000000"; // Change background to #990100 on hover
+              e.target.style.color = "#FFFFFF"; // Ensure text remains white on hover
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "#990100"; // Revert background to black
+              e.target.style.color = "#FFFFFF"; // Revert text color to white
+            }}
+          >
             Read More
-            <span>
-              <ArrowRightLong />
-            </span>
+            <ArrowRightLong />
           </Link>
         </div>
       </div>

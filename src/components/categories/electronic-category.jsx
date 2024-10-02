@@ -7,12 +7,11 @@ import { useGetShowCategoryQuery } from "@/redux/features/categoryApi";
 import HomeCateLoader from "../loader/home/home-cate-loader";
 
 const ElectronicCategory = () => {
-  const { data: categories, isLoading, isError } = useGetShowCategoryQuery(); 
+  const { data: categories, isLoading, isError } = useGetShowCategoryQuery();
   const router = useRouter();
 
   // Handle category route
-  console.log(categories,"cccccccccccc");
-  
+
   const handleCategoryRoute = (name) => {
     router.push(
       `/shop?category=${name
@@ -55,14 +54,18 @@ const ElectronicCategory = () => {
             </a>
           </div>
           <div className="tp-product-category-content">
-            <h3 className="tp-product-category-title">
+            <h3 style={{ fontSize: "14px" }}>
               <a
                 className="cursor-pointer"
                 onClick={() => handleCategoryRoute(item.name)}
+                style={{ fontSize: "14px", transition: "color 0.3s", textTransform: "uppercase" } } // Transition for smooth hover effect
+                onMouseEnter={(e) => (e.target.style.color = "#990100")}
+                onMouseLeave={(e) => (e.target.style.color = "")} // Reverts to original color on mouse leave
               >
                 {item.name}
               </a>
             </h3>
+
             {/* Assuming you have a 'products' property in the category data */}
             <p>{item.products_count} Product</p>
           </div>

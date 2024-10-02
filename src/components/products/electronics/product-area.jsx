@@ -67,27 +67,9 @@ const ProductArea = () => {
               </h3>
             </div>
           </div>
-          <div className="col-xl-8 col-lg-6 col-1 col-md-7">
-            <div className="tp-product-tab tp-product-tab-border mb-45 tp-tab d-flex justify-content-md-end">
-              <ul className="nav nav-tabs justify-content-sm-end">
-                {tabs.map((tab, i) => (
-                  <li key={i} className="nav-item">
-                    <button
-                      onClick={() => handleActiveTab(tab)}
-                      className={`nav-link text-capitalize ${activeTab === tab ? "active" : ""}`}
-                    >
-                      {tab.split("-").join(" ")}
-                      <span className="tp-product-tab-line">
-                        <TabLine />
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+     
         </div>
-        <div className="row">
+        <div className="row ">
           {content}
         </div>
       </div>
