@@ -30,8 +30,8 @@ function ProfileSetting({ active, handleActive }) {
   };
   
 
-  if (isLoading) return <div>Loading...</div>; // Optional loading state
-  if (error) return <div>Error fetching user data</div>; // Error state
+  // if (isLoading) return <div>Loading...</div>; // Optional loading state
+  // if (error) return <div>Error fetching user data</div>; // Error state
 
   const user = userInfo?.user; // Extract user object
 

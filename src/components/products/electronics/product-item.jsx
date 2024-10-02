@@ -12,7 +12,18 @@ import { add_cart_product } from "@/redux/features/cartSlice";
 import { add_to_wishlist } from "@/redux/features/wishlist-slice";
 
 const ProductItem = ({ product, offer_style = false }) => {
-  const { id, name, images, categories, sku, price, stock_quantity,product_id, status, offerDate } = product || {};
+  const {
+    id,
+    name,
+    images,
+    categories,
+    sku,
+    price,
+    stock_quantity,
+    product_id,
+    status,
+    offerDate,
+  } = product || {};
   const dispatch = useDispatch();
 
   // Redux state for cart and wishlist
@@ -31,7 +42,9 @@ const ProductItem = ({ product, offer_style = false }) => {
   // Calculate average rating from reviews
   useEffect(() => {
     if (reviews.length > 0) {
-      const rating = reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
+      const rating =
+        reviews.reduce((acc, review) => acc + review.rating, 0) /
+        reviews.length;
       setRatingVal(rating);
     } else {
       setRatingVal(0);
@@ -54,9 +67,14 @@ const ProductItem = ({ product, offer_style = false }) => {
   const handleWishlistProduct = () => {
     dispatch(add_to_wishlist(product));
   };
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className={`${offer_style ? "tp-product-offer-item" : "mb-25"} tp-product-item transition-3`}>
+    <div
+      className={`${
+        offer_style ? "tp-product-offer-item" : "mb-25"
+      } tp-product-item transition-3`}
+    >
       <div className="tp-product-thumb p-relative fix">
         <Link href={`/product-details/${product_id}`}>
           <Image
@@ -70,16 +88,34 @@ const ProductItem = ({ product, offer_style = false }) => {
 
         {/* Product badge for out-of-stock status */}
         <div className="tp-product-badge">
-          {status === 'out-of-stock' && <span className="product-hot">Out of Stock</span>}
+          {status === "out-of-stock" && (
+            <span className="product-hot">Out of Stock</span>
+          )}
         </div>
 
         {/* Product action buttons */}
         <div className="tp-product-action">
+          <style jsx>{`
+            .tp-product-action-btn {
+              background-color: white;
+              border: 2px solid white;
+              color: black;
+              transition: background-color 0.3s ease, border-color 0.3s ease;
+            }
+
+            .tp-product-action-btn:hover {
+              background-color: red;
+              border-color: red;
+              color: white;
+            }
+          `}</style>
           <div className="tp-product-action-item d-flex flex-column">
             {isAddedToCart ? (
               <Link
                 href="/cart"
-                className={`tp-product-action-btn ${isAddedToCart ? 'active' : ''} tp-product-add-cart-btn`}
+                className={`tp-product-action-btn ${
+                  isAddedToCart ? "active" : ""
+                } tp-product-add-cart-btn`}
               >
                 <Cart /> <span className="tp-product-tooltip">View Cart</span>
               </Link>
@@ -87,8 +123,10 @@ const ProductItem = ({ product, offer_style = false }) => {
               <button
                 onClick={handleAddProduct}
                 type="button"
-                className={`tp-product-action-btn ${isAddedToCart ? 'active' : ''} tp-product-add-cart-btn`}
-                disabled={status === 'out-of-stock'}
+                className={`tp-product-action-btn ${
+                  isAddedToCart ? "active" : ""
+                } tp-product-add-cart-btn`}
+                disabled={status === "out-of-stock"}
               >
                 <Cart />
                 <span className="tp-product-tooltip">Add to Cart</span>
@@ -102,13 +140,6 @@ const ProductItem = ({ product, offer_style = false }) => {
               <QuickView />
               <span className="tp-product-tooltip">Quick View</span>
             </button>
-            <button
-              onClick={handleWishlistProduct}
-              type="button"
-              className={`tp-product-action-btn tp-product-wishlist-btn ${isAddedToWishlist ? 'active' : ''}`}
-            >
-              <span className="tp-product-tooltip">{isAddedToWishlist ? 'Added to Wishlist' : 'Add to Wishlist'}</span>
-            </button>
           </div>
         </div>
       </div>
@@ -116,21 +147,32 @@ const ProductItem = ({ product, offer_style = false }) => {
       {/* Product content */}
       <div className="tp-product-content">
         <div className="tp-product-category">
-          <Link href={`/category/${categories[0]}`}>{categories[0]}</Link> {/* Use the first category for display */}
+          <Link href={`/category/${categories[0]}`}>{categories[0]}</Link>{" "}
+          {/* Use the first category for display */}
         </div>
         <h3 className="tp-product-title">
           <Link href={`/product-details/${id}`}>{name}</Link>
         </h3>
         <div className="tp-product-rating d-flex align-items-center">
           <div className="tp-product-rating-icon">
-            <Rating allowFraction size={16} initialValue={ratingVal} readonly={true} />
+            <Rating
+              allowFraction
+              size={16}
+              initialValue={ratingVal}
+              readonly={true}
+            />
           </div>
           <div className="tp-product-rating-text">
             <span>({reviews.length || 0} Reviews)</span>
           </div>
         </div>
         <div className="tp-product-price-wrapper">
-          <span className="tp-product-price new-price">Price: ${parseFloat(price).toFixed(2)}</span>
+          <span
+            className="tp-product-price new-price "
+            style={{ color: "#ff5733" }}
+          >
+          ₹ {parseFloat(price).toFixed(2)}
+          </span>
         </div>
 
         {/* Countdown timer for offers */}
@@ -139,10 +181,18 @@ const ProductItem = ({ product, offer_style = false }) => {
             <div className="tp-product-countdown-inner">
               {dayjs().isAfter(offerDate.endDate) ? (
                 <ul>
-                  <li><span>{0}</span> Days</li>
-                  <li><span>{0}</span> Hrs</li>
-                  <li><span>{0}</span> Min</li>
-                  <li><span>{0}</span> Sec</li>
+                  <li>
+                    <span>{0}</span> Days
+                  </li>
+                  <li>
+                    <span>{0}</span> Hrs
+                  </li>
+                  <li>
+                    <span>{0}</span> Min
+                  </li>
+                  <li>
+                    <span>{0}</span> Sec
+                  </li>
                 </ul>
               ) : (
                 <Timer expiryTimestamp={new Date(offerDate.endDate)} />

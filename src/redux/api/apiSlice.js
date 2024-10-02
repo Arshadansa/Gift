@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const NEXT_PUBLIC_API_BASE_URL = 'https://apiv2.mysweetwishes.com/';
+const NEXT_PUBLIC_API_BASE_URL = 'https://apiv2.mysweetwishes.com/api/';
 
 export const apiSlice = createApi({
   reducerPath: "api",

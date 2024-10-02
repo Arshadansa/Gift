@@ -101,19 +101,13 @@ const ShopPage = ({ query }) => {
     if (query.category) {
       product_items = product_items.filter(
         (p) =>
-          p.parent.toLowerCase().replace("&", "").split(" ").join("-") ===
+          p.parent?.toLowerCase().replace("&", "").split(" ").join("-") ===
           query.category
       );
     }
 
     // category filter
-    if (query.subCategory) {
-      product_items = product_items.filter(
-        (p) =>
-          p.children.toLowerCase().replace("&", "").split(" ").join("-") ===
-          query.subCategory
-      );
-    }
+   
 
     // color filter
     if (query.color) {
@@ -122,7 +116,7 @@ const ShopPage = ({ query }) => {
           const color = product.imageURLs[i]?.color;
           if (
             color &&
-            color?.name.toLowerCase().replace("&", "").split(" ").join("-") ===
+            color?.name?.toLowerCase().replace("&", "").split(" ").join("-") ===
               query.color
           ) {
             return true; // match found, include product in result
@@ -168,7 +162,7 @@ const ShopPage = ({ query }) => {
 
 export default ShopPage;
 
-export const getStaticPaths= async (context) => {
+export const getServerSideProps= async (context) => {
   const { query } = context;
 
   return {

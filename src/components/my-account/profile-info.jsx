@@ -19,8 +19,7 @@ const ProfileInfo = () => {
       }
     }
   }, [userInfo, dispatch]);
-  console.log(userInfo,"sfsdfsdgdfgdfg");
-  
+
 
   return (
     <div className="profile__info">

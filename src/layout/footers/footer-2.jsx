@@ -25,7 +25,7 @@ const FooterTwo = () => {
                     <div className="tp-footer-widget-content">
                       <div className="tp-footer-talk mb-20">
                         <span>Got Questions? Call us</span>
-                        <h4><a href="tel:670-413-90-762">+670 413 90 762</a></h4>
+                        <h4><a href="tel:670-413-90-762">+(91) 9996061015</a></h4>
                       </div>
                       <div className="tp-footer-contact">
                         <div className="tp-footer-contact-item d-flex align-items-start">
@@ -35,7 +35,7 @@ const FooterTwo = () => {
                             </span>
                           </div>
                           <div className="tp-footer-contact-content">
-                            <p><a href="mailto:shofy@support.com">shofy@mail.com</a></p>
+                            <p><a href="mailto:shofy@support.com">ankit@mysweetwishes.com</a></p>
                           </div>
                         </div>
                         <div className="tp-footer-contact-item d-flex align-items-start">
@@ -59,7 +59,6 @@ const FooterTwo = () => {
                       <ul>
                         <li><a href="#">Track Orders</a></li>
                         <li><a href="#">Shipping</a></li>
-                        <li><a href="#">Wishlist</a></li>
                         <li><a href="#">My Account</a></li>
                         <li><a href="#">Order History</a></li>
                         <li><a href="#">Returns</a></li>
@@ -125,9 +124,10 @@ const FooterTwo = () => {
                 <div className="row align-items-center">
                   <div className="col-md-6">
                     <div className="tp-footer-copyright">
-                      <p>© {new Date().getFullYear()} All Rights Reserved  |  Next js Template by
-                        <Link href="/">ThemePure</Link>.
-                      </p>
+                    <p>
+                      © {new Date().getFullYear()} All Rights Reserved | Fly Your Tech by
+                      <Link href="/"> ❤</Link>.
+                    </p>
                     </div>
                   </div>
                   <div className="col-md-6">

@@ -15,7 +15,7 @@ const privacypolicy = {
         If we ask for your personal information for a secondary reason, like marketing, we will either ask you directly for your expressed consent, or provide you with an opportunity to say no.
   
         How do I withdraw my consent?
-        If after you opt-in, you change your mind, you may withdraw your consent for us to contact you, for the continued collection, use or disclosure of your information, at any time, by contacting us at theankit.ankit@gmail.com or mailing us at 622 Manglam Electronic Market Jaipur Rajasthan India 302001.
+        If after you opt-in, you change your mind, you may withdraw your consent for us to contact you, for the continued collection, use or disclosure of your information, at any time, by contacting us atankit@mysweetwishes.com or mailing us at 622 Manglam Electronic Market Jaipur Rajasthan India 302001.
       `,
     },
     section3: {
@@ -69,7 +69,7 @@ const privacypolicy = {
     section10: {
       title: "QUESTIONS AND CONTACT INFORMATION",
       content: `
-        If you would like to access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information, contact our Privacy Compliance Officer at theankit.ankit@gmail.com or by mail at 622 Manglam Electronic Market Jaipur Rajasthan India 302001.
+        If you would like to access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information, contact our Privacy Compliance Officer atankit@mysweetwishes.com or by mail at 622 Manglam Electronic Market Jaipur Rajasthan India 302001.
         [Re: Privacy Compliance Officer]
         [622 Manglam Electronic Market Jaipur Rajasthan India 302001]
       `,

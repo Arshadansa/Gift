@@ -8,7 +8,7 @@ const BlogItem = ({ blog }) => {
 
 console.log(blog);
 
-  const imageUrl = `https://apiv2.mysweetwishes.com/${blog.image}`; // Ensures the URL is correct
+  const imageUrl = `https://api.mysweetwishes.com/${blog.image}`; // Ensures the URL is correct
 
   // Local state to manage the image source
   const [imgSrc, setImgSrc] = useState(imageUrl);

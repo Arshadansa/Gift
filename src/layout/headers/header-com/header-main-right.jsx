@@ -18,10 +18,10 @@ const HeaderMainRight = ({ setIsCanvasOpen }) => {
     return <div>Loading...</div>; // Optional loading state
   }
 
-  if (error) {
-    console.error("Error fetching user data:", error);
-    return <div>Error fetching user data. Please try again later.</div>; // Optional error handling
-  }
+  // if (error) {
+  //   console.error("Error fetching user data:", error);
+  //   return <div>Error fetching user data. Please try again later.</div>; // Optional error handling
+  // }
 
   // Debugging log
   console.log(userInfo, "myinfo"); // Check what the userInfo object contains

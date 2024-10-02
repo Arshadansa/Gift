@@ -51,8 +51,8 @@ const Menus = () => {
     <ul>
       {menu_data.map((menu) =>
         menu.homes ? (
-          <li key={menu.id} className=" has-mega-menu">
-            <Link href={menu.link}>{menu.title}</Link>
+          <li key={menu.id} className=" has-mega-menu" >
+            <Link  href={menu.link}>{menu.title}</Link>
           </li>
         ) : menu.products ? (
           <li key={menu.id} className=" has-mega-menu ">

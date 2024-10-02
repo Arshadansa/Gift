@@ -5,11 +5,14 @@ import * as Yup from "yup";
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Cookies from "js-cookie"; // Import js-cookie for cookie management
+import { useDispatch } from 'react-redux'; // Use dispatch for actions
+
 // Internal imports
 import { CloseEye, OpenEye } from '@/svg';
 import ErrorMsg from '../common/error-msg';
 import { useLoginUserMutation } from '@/redux/features/auth/authApi';
 import { notifyError, notifySuccess } from '@/utils/toast';
+import { userLoggedIn } from '@/redux/features/auth/authSlice'; // Import the action
 
 // Validation schema
 const schema = Yup.object().shape({
@@ -19,8 +22,9 @@ const schema = Yup.object().shape({
 
 const LoginForm = () => {
   const [showPass, setShowPass] = useState(false);
-  const [loginUser] = useLoginUserMutation(); // Removed unnecessary destructuring
+  const [loginUser] = useLoginUserMutation();
   const router = useRouter();
+  const dispatch = useDispatch(); // Initialize dispatch
   const { redirect } = router.query;
 
   // React Hook Form setup
@@ -33,33 +37,41 @@ const LoginForm = () => {
     resolver: yupResolver(schema),
   });
 
-  // onSubmit handler
   const onSubmit = async (data) => {
     try {
       const result = await loginUser({
         email: data.email,
         password: data.password,
       }).unwrap(); // Using unwrap to get the result or throw an error
-
+  
       // If login is successful, set the user info in cookies
       if (result) {
         notifySuccess("Login successfully");
+  
         const userInfo = {
           accessToken: result.access_token,
           ...result.user,
         };
-        Cookies.set("userInfo", JSON.stringify(userInfo), { expires: 7 });
+  
+        Cookies.set("userInfo", JSON.stringify(userInfo), {
+          expires: 7,
+          secure: process.env.NODE_ENV === 'production', // For production
+          sameSite: 'Strict', // Secure from CSRF
+        });
+  
         dispatch(userLoggedIn({
           user: result.user,
           accessToken: result.access_token,
         }));
-        router.push(redirect || "/"); // Redirect to home or specified page
+  
+        router.push(redirect || "/"); 
       }
     } catch (error) {
-      notifyError(error?.data?.message || "Login failed"); // Handle error
+      notifyError(error?.data?.message || "Login failed");
     }
-    reset(); // Reset form fields
+    reset();
   };
+  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

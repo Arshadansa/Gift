@@ -28,11 +28,14 @@ const NavProfileTab = ({ orderData }) => {
     router.push('/');
   };
 
+
   // Calculate total orders, pending orders, and placeholders for processing/delivered
-  const totalOrders = orderData?.length || 0;
-  const pendingOrders = orderData?.data?.filter(order => order.data.status === "pending").length || 0;
-  const processingOrders = orderData?.data?.filter(order => order.data.status === "processing").length || 0;
-  const deliveredOrders = orderData?.data?.filter(order => order.data.status === "delivered").length || 0;
+  const totalOrders = orderData?.orders?.total || 0;
+  const pendingOrders = orderData?.orders?.data?.filter(order => order.status === "pending").length || 0;
+  const processingOrders = orderData?.orders?.data?.filter(order => order.status === "processing").length || 0;
+  const deliveredOrders = orderData?.orders?.data?.filter(order => order.status === "delivered").length || 0;
+  
+
 
   return (
     <div className="profile__main">

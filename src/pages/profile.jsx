@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -12,35 +12,40 @@ import ProfileArea from "@/components/my-account/profile-area";
 import { useGetUserOrdersQuery } from "@/redux/features/order/orderApi";
 import Loader from "@/components/loader/loader";
 
+
+
 const ProfilePage = () => {
-  const { accessToken } = useSelector((state) => state.auth); // Retrieve access token from Redux
-  const router = useRouter(); // For navigation
+  const [mounted, setMounted] = useState(false); // Track when the component has mounted
+  const { accessToken } = useSelector((state) => state.auth); 
+  const router = useRouter();
   const { data: orders, error, isLoading } = useGetUserOrdersQuery(accessToken, {
-    skip: !accessToken, // Skip query if accessToken is not available
+    skip: !accessToken,
   });
 
-  console.log(accessToken,"orders",orders);
-  
-  // Handle any redirection if needed based on authentication or accessToken
+  // Use useEffect to set mounted to true when the component is mounted on the client
   useEffect(() => {
-    if (!accessToken) {
-      router.push("/login"); // Redirect to login if no access token
-    }
-  }, [accessToken, router]);
+    setMounted(true);
+  }, []);
 
-  // Handle loading state
+  useEffect(() => {
+    if (!accessToken && mounted) {
+      router.push("/login");
+    }
+  }, [accessToken, router, mounted]);
+
+  // Prevent rendering until the component is mounted to avoid SSR issues
+  if (!mounted) {
+    return null; // This avoids any discrepancies during server-side rendering
+  }
+
   if (isLoading) {
     return (
-      <div
-        className="d-flex align-items-center justify-content-center"
-        style={{ height: "100vh" }}
-      >
+      <div className="d-flex align-items-center justify-content-center" style={{ height: "100vh" }}>
         <Loader loading={isLoading} />
       </div>
     );
   }
 
-  // Handle error state
   if (error) {
     return (
       <div className="text-center">
@@ -54,10 +59,16 @@ const ProfilePage = () => {
     <Wrapper>
       <SEO pageTitle="Profile" />
       <HeaderTwo style_2={true} />
-      <ProfileArea orderData={orders} /> {/* Pass orders to ProfileArea */}
+      <ProfileArea orderData={orders} />
       <Footer style_2={true} />
     </Wrapper>
   );
 };
 
 export default ProfilePage;
+
+
+
+
+
+

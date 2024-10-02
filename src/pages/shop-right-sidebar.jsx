@@ -152,7 +152,7 @@ const ShopRightSidebarPage = ({ query }) => {
 
 export default ShopRightSidebarPage;
 
-export const getStaticPaths= async (context) => {
+export const getServerSideProps= async (context) => {
   const { query } = context;
 
   return {

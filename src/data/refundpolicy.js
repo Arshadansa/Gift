@@ -36,7 +36,7 @@ const refundpolicy = {
         If you haven’t received a refund yet, first check your bank account again.
         Then contact your credit card company, it may take some time before your refund is officially posted.
         Next, contact your bank. There is often some processing time before a refund is posted.
-        If you’ve done all of this and you still have not received your refund yet, please contact us at theankit.ankit@gmail.com.
+        If you’ve done all of this and you still have not received your refund yet, please contact us atankit@mysweetwishes.com.
       `,
     },
     section4: {
@@ -48,7 +48,7 @@ const refundpolicy = {
     section5: {
       title: "4 Exchanges (if applicable)",
       content: `
-        We only replace items if they are defective or damaged. If you need to exchange it for the same item, send us an email at theankit.ankit@gmail.com and send your item to: 622 Manglam Electronic Market Jaipur Rajasthan India 302001.
+        We only replace items if they are defective or damaged. If you need to exchange it for the same item, send us an email atankit@mysweetwishes.com and send your item to: 622 Manglam Electronic Market Jaipur Rajasthan India 302001.
       `,
     },
     section6: {

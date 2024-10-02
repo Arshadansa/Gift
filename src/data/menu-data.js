@@ -80,7 +80,8 @@ export const mobile_menu = [
       { title: 'Login', link: '/login' },
       { title: 'Register', link: '/register' },
       { title: 'Forgot Password', link: '/forgot' },
-      { title: '404 Error', link: '/404' },
+      { title: 'Change Password', link: '/profile' },
+     
     ],
   },
   {

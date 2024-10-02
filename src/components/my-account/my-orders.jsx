@@ -4,7 +4,7 @@ import React from "react";
 
 const MyOrders = ({ orderData }) => {
   const order_items = orderData?.orders; // Accessing the correct data field
-console.log(order_items,"allorder");
+
 
   return (
     <div className="profile__ticket table-responsive">

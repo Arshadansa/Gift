@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "@/ui/Pagination";
 import ProductItem from "../products/fashion/product-item";
 import CategoryFilter from "./shop-filter/category-filter";
@@ -11,12 +11,15 @@ import ShopListItem from "./shop-list-item";
 import ShopTopLeft from "./shop-top-left";
 import ShopTopRight from "./shop-top-right";
 import ResetButton from "./shop-filter/reset-button";
+import { useRouter } from "next/router";
 
 const ShopArea = ({ all_products, products, otherProps }) => {
-  const {priceFilterValues,selectHandleFilter,currPage,setCurrPage} = otherProps;
+  const { priceFilterValues, selectHandleFilter, currPage, setCurrPage } =
+    otherProps;
   const [filteredRows, setFilteredRows] = useState(products);
   const [pageStart, setPageStart] = useState(0);
   const [countOfPage, setCountOfPage] = useState(12);
+  const router = useRouter();
 
   const paginatedData = (items, startPage, pageCount) => {
     setFilteredRows(items);
@@ -28,6 +31,23 @@ const ShopArea = ({ all_products, products, otherProps }) => {
   const maxPrice = all_products.reduce((max, product) => {
     return product.price > max ? product.price : max;
   }, 0);
+  useEffect(() => {
+    let filtered = all_products;
+
+    if (router.query.status) {
+      const statuses = router.query.status.split(",");
+
+      if (statuses.includes("on-sale")) {
+        filtered = filtered.filter((product) => product.isOnSale);
+      }
+      if (statuses.includes("in-stock")) {
+        filtered = filtered.filter((product) => product.isInStock);
+      }
+    }
+
+    setFilteredRows(filtered);
+  }, [router.query.status, all_products]);
+
   return (
     <>
       <section className="tp-shop-area pb-120">
@@ -36,15 +56,15 @@ const ShopArea = ({ all_products, products, otherProps }) => {
             <div className="col-xl-3 col-lg-4">
               <div className="tp-shop-sidebar mr-10">
                 {/* filter */}
-              
+
                 {/* status */}
                 <StatusFilter setCurrPage={setCurrPage} />
                 {/* categories */}
-                <CategoryFilter setCurrPage={setCurrPage} />
+                {/* <CategoryFilter setCurrPage={setCurrPage} /> */}
                 {/* color */}
-            
+
                 {/* reset filter */}
-                <ResetButton/>
+                <ResetButton />
               </div>
             </div>
             <div className="col-xl-9 col-lg-8">
@@ -105,8 +125,8 @@ const ShopArea = ({ all_products, products, otherProps }) => {
                             <div className="col-xl-12">
                               {filteredRows
                                 .slice(pageStart, pageStart + countOfPage)
-                                .map((item,key) => (
-                                  <ShopListItem  product={item} key={key} />
+                                .map((item, key) => (
+                                  <ShopListItem product={item} key={key} />
                                 ))}
                             </div>
                           </div>

@@ -20,7 +20,7 @@ const BlogDetailsPageTwo = ({query}) => {
 
 export default BlogDetailsPageTwo;
 
-export const getStaticPaths= async (context) => {
+export const getServerSideProps= async (context) => {
   const { query } = context;
 
   return {

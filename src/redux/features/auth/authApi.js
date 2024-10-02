@@ -2,7 +2,7 @@ import { apiSlice } from "@/redux/api/apiSlice";
 import { userLoggedIn } from "./authSlice";
 import Cookies from "js-cookie";
 
-const BASE_URL = "https://apiv2.mysweetwishes.com";
+const BASE_URL = "https://apiv2.mysweetwishes.com/api/";
 
 export const authApi = apiSlice.injectEndpoints({
   overrideExisting: true,
@@ -17,7 +17,7 @@ export const authApi = apiSlice.injectEndpoints({
     // signUpProvider
     signUpProvider: builder.mutation({
       query: (token) => ({
-        url: `${BASE_URL}/register/${token}`,
+        url: `${BASE_URL}register/${token}`,
         method: "POST",
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -45,42 +45,22 @@ export const authApi = apiSlice.injectEndpoints({
       },
     }),
     // login
-    loginUser: builder.mutation({
-      query: (data) => ({
-        url: `${BASE_URL}/login`,
-        method: "POST",
-        body: data,
-      }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
+   // loginUser mutation
+loginUser: builder.mutation({
+  query: (data) => ({
+    url: `${BASE_URL}login`,
+    method: "POST",
+    body: data,
+  }),
+  // Remove onQueryStarted logic here to avoid double saving cookies
+}),
 
-          Cookies.set(
-            "userInfo",
-            JSON.stringify({
-              accessToken: result.data.data.token,
-              user: result.data.data.user,
-            }),
-            { expires: 0.5 }
-          );
-
-          dispatch(
-            userLoggedIn({
-              accessToken: result.data.data.token,
-              user: result.data.data.user,
-            })
-          );
-        } catch (err) {
-          // Handle error if needed
-        }
-      },
-    }),
     // get me
     getUser: builder.query({
       query: () => {
-        const token = Cookies.get("userInfo") ? JSON.parse(Cookies.get("userInfo")).accessToken : '';
+        const token = Cookies.get("userInfo")?JSON.parse(Cookies.get("userInfo")).accessToken : '';
         return {
-          url: `${BASE_URL}/is-logged-in`,
+          url: `${BASE_URL}is-logged-in`,
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -108,7 +88,7 @@ export const authApi = apiSlice.injectEndpoints({
     // confirmEmail
     confirmEmail: builder.query({
       query: (token) => ({
-        url: `${BASE_URL}/user/confirmEmail/${token}`,
+        url: `${BASE_URL}user/confirmEmail/${token}`,
         method: "GET",
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
@@ -138,7 +118,7 @@ export const authApi = apiSlice.injectEndpoints({
     // reset password
     resetPassword: builder.mutation({
       query: (data) => ({
-        url: `${BASE_URL}/user/forget-password`,
+        url: `${BASE_URL}user/forget-password`,
         method: "PATCH",
         body: data,
       }),
@@ -154,7 +134,7 @@ export const authApi = apiSlice.injectEndpoints({
     // change password
     changePassword: builder.mutation({
       query: ({ current_password, new_password, new_password_confirmation, accessToken }) => ({
-        url: `${BASE_URL}/change-password`,
+        url: `${BASE_URL}change-password`,
         method: "POST",
         body: {
           current_password,
@@ -171,7 +151,7 @@ export const authApi = apiSlice.injectEndpoints({
     // updateProfile
     updateProfile: builder.mutation({
       query: ({ id, ...data }) => ({
-        url: `${BASE_URL}/user/update-user/${id}`,
+        url: `${BASE_URL}user/update-user/${id}`,
         method: "PUT",
         body: data,
       }),
@@ -201,7 +181,7 @@ export const authApi = apiSlice.injectEndpoints({
     }),
     // blog 
     fetchBlogs: builder.query({
-      query: ({ page = 1, perPage = 10 }) => `${BASE_URL}/blog/blogs-${page}-${perPage}`,
+      query: ({ page = 1, perPage = 10 }) => `${BASE_URL}blog/blogs-${page}-${perPage}`,
     }),
   }),
 });

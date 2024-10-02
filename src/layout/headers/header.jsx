@@ -85,20 +85,7 @@ const Header = () => {
                   </div>
                   <div className="col-xl-3 col-lg-3">
                  
-                    {/* <div className="tp-header-category tp-category-menu tp-header-category-toggle">
-                      <button
-                        onClick={() => setIsCategoryActive(!isCategoryActive)}
-                        className="tp-category-menu-btn tp-category-menu-toggle"
-                      >
-                        <span>
-                          <CategoryMenu />
-                        </span>
-                        All Departments
-                      </button>
-                      <nav className="tp-category-menu-content">
-                        <HeaderCategory categoryType="electronics" isCategoryActive={isCategoryActive} />
-                      </nav>
-                    </div> */}
+                  
                    
                   </div>
                   <div className="col-xl-3 col-lg-3">
@@ -111,7 +98,7 @@ const Header = () => {
                       <div className="tp-header-contact-content">
                         <h5>Hotline:</h5>
                         <p>
-                          <a href="tel:966-595-035-008">+(966) 595 035 008</a>
+                          <a href="tel:999-606-10-15">(+91) 9996061015</a>
                         </p>
                       </div>
                     </div>

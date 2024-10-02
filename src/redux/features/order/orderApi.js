@@ -11,7 +11,7 @@ export const authApi = apiSlice.injectEndpoints({
         const { accessToken } = data; // Access token passed in data
         console.log("Access Token:", accessToken); // Log the access token
         return {
-          url: "https://apiv2.mysweetwishes.com/api/user/orders",
+          url: "https://api.mysweetwishes.com/api/user/orders",
           method: "POST",
           body: data,
           headers: {
@@ -36,7 +36,7 @@ export const authApi = apiSlice.injectEndpoints({
         const { accessToken, ...rest } = data; // Destructure access token and rest of the data
         console.log("Access Token order:", accessToken); // Log the access token
         return {
-          url: "https://apiv2.mysweetwishes.com/api/orders",
+          url: "https://api.mysweetwishes.com/api/orders",
           method: "POST",
           body: rest, // Send the rest of the data without the accessToken
           headers: {
@@ -66,7 +66,7 @@ export const authApi = apiSlice.injectEndpoints({
       query: (accessToken) => {
         console.log("Access Token:", accessToken); // Log the access token
         return {
-          url: "https://apiv2.mysweetwishes.com/api/user/orders",
+          url: "https://api.mysweetwishes.com/api/user/orders",
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -82,7 +82,7 @@ export const authApi = apiSlice.injectEndpoints({
       
         console.log("Access Token:", accessToken,"sdaasd",id); // Log the access token
         return {
-          url: `https://apiv2.mysweetwishes.com/api/orders/${id}`,
+          url: `https://api.mysweetwishes.com/api/orders/${id}`,
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

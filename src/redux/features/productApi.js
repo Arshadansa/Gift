@@ -4,29 +4,29 @@ export const productApi = apiSlice.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     getAllProducts: builder.query({
-      query: () => `https://apiv2.mysweetwishes.com/api/products`,
+      query: () => `https://api.mysweetwishes.com/api/products`,
       providesTags:['Products']
     }),
     getProductType: builder.query({
-      query: (type) => `https://apiv2.mysweetwishes.com/api/products/category/${type}`, 
+      query: (type) => `https://api.mysweetwishes.com/api/products/category/${type}`, 
       providesTags: ['ProductType'],
     }),
     
     getOfferProducts: builder.query({
-      query: (type) => `https://apiv2.mysweetwishes.com/api/products/offer?type=${type}`,
+      query: (type) => `https://api.mysweetwishes.com/api/products/offer?type=${type}`,
       providesTags:['OfferProducts']
     }),
     getPopularProductByType: builder.query({
-      query: (type) => `https://apiv2.mysweetwishes.com/api/products/popular/${type}`,
+      query: (type) => `https://api.mysweetwishes.com/api/products/popular/${type}`,
       providesTags:['PopularProducts']
     }),
     getTopRatedProducts: builder.query({
-      query: () => `https://apiv2.mysweetwishes.com/api/products/top-rated`,
+      query: () => `https://api.mysweetwishes.com/api/products/top-rated`,
       providesTags:['TopRatedProducts']
     }),
     // get single product
     getProduct: builder.query({
-      query: (id) => `https://apiv2.mysweetwishes.com/api/products/${id}`,
+      query: (id) => `https://api.mysweetwishes.com/api/products/${id}`,
       providesTags: (result, error, arg) => [{ type: "Product", id: arg }],
       invalidatesTags: (result, error, arg) => [
         { type: "RelatedProducts", id:arg },
@@ -34,7 +34,7 @@ export const productApi = apiSlice.injectEndpoints({
     }),
     // get related products
     getRelatedProducts: builder.query({
-      query: (id) => `https://apiv2.mysweetwishes.com/api/products/related-product/${id}`,
+      query: (id) => `https://api.mysweetwishes.com/api/products/related-product/${id}`,
       providesTags: (result, error, arg) => [
         { type: "RelatedProducts", id: arg },
       ],

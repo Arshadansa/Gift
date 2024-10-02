@@ -11,7 +11,6 @@ const CartArea = () => {
   const { cart_products } = useSelector((state) => state.cart);
   const dispatch = useDispatch()
 
-console.log(cart_products,"sdfsdfsdfsdf");
 
 
   return (
