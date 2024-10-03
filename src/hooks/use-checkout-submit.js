@@ -219,6 +219,7 @@ const useCheckoutSubmit = () => {
     setValue("contactNo", shipping_info.contactNo);
     setValue("email", shipping_info.email);
     setValue("orderNote", shipping_info.orderNote);
+    setValue('coupon',shipping_info.coupon)
   }, [user, setValue, shipping_info, router]);
   
 
@@ -227,7 +228,7 @@ const useCheckoutSubmit = () => {
 
     dispatch(set_shipping(data));
     setIsCheckoutSubmit(true);
-    console.log(accessToken,"sunmit acess");
+    console.log(data,"sunmit acess");
     
   
     // Construct the order information

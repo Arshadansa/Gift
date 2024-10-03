@@ -1,13 +1,13 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Scrollbar, Navigation,Autoplay } from "swiper";
-// internal
+import { Scrollbar, Navigation, Autoplay } from "swiper";
+// Internal
 import { useGetRelatedProductsQuery } from "@/redux/features/productApi";
 import ProductItem from "../products/beauty/product-item";
 import ErrorMsg from "../common/error-msg";
 import { HomeNewArrivalPrdLoader } from "../loader";
 
-// slider setting
+// Slider settings
 const slider_setting = {
   slidesPerView: 4,
   spaceBetween: 24,
@@ -37,29 +37,29 @@ const slider_setting = {
   },
 };
 
-const RelatedProducts = ({id}) => {
+const RelatedProducts = ({ id }) => {
   const { data: products, isError, isLoading } = useGetRelatedProductsQuery(id);
-  // decide what to render
-  let content = null;
+
+
+  console.log("prodddddddddddd",typeof(id));
+  
+  // Decide what to render
+  let content;
 
   if (isLoading) {
-    content = <HomeNewArrivalPrdLoader loading={isLoading}/>;
-  }
-  if (!isLoading && isError) {
+    content = <HomeNewArrivalPrdLoader loading={isLoading} />;
+  } else if (isError) {
     content = <ErrorMsg msg="There was an error" />;
-  }
-  if (!isLoading && !isError && products?.data?.length === 0) {
+  } else if (products?.data?.length === 0) {
     content = <ErrorMsg msg="No Products found!" />;
-  }
-  if (!isLoading && !isError && products?.data?.length > 0) {
-    const product_items = products.data;
+  } else if (products?.data?.length > 0) {
     content = (
       <Swiper
         {...slider_setting}
         modules={[Autoplay, Navigation]}
         className="tp-product-related-slider-active swiper-container mb-10"
       >
-        {product_items.map((item) => (
+        {products.data.map((item) => (
           <SwiperSlide key={item._id}>
             <ProductItem product={item} primary_style={true} />
           </SwiperSlide>
@@ -67,11 +67,8 @@ const RelatedProducts = ({id}) => {
       </Swiper>
     );
   }
-  return (
-    <div className="tp-product-related-slider">
-      {content}
-    </div>
-  );
+
+  return <div className="tp-product-related-slider">{content}</div>;
 };
 
 export default RelatedProducts;

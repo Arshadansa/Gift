@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import CheckoutBillingArea from "./checkout-billing-area";
@@ -21,14 +21,32 @@ const CheckoutArea = () => {
   } = checkoutData;
 
   const { cart_products } = useSelector((state) => state.cart);
+  const [isHovered, setIsHovered] = useState(false); // State for hover
 
+  const linkStyle = {
+    display: "block",
+    padding: "10px",
+    margin:"auto",
+    width:"35%",
+    fontSize:"15px",
+    border: isHovered ? "solid 1px black" : "solid 1px black",
+    backgroundColor: isHovered ? "#990100" : "transparent", // Change color on hover
+    color: isHovered ? "#fff" : "#000", // Change text color on hover
+    textAlign: "center",
+    textDecoration: "none",
+    transition: "background-color 0.3s ease", // Smooth transition
+  };
   return (
     <section className="tp-checkout-area pb-120" style={{ backgroundColor: "#EFF1F5" }}>
       <div className="container">
         {cart_products.length === 0 && (
           <div className="text-center pt-50">
             <h3 className="py-2">No items found in cart to checkout</h3>
-            <Link href="/shop" className="tp-checkout-btn">
+            <Link 
+             style={linkStyle} // Apply inline style
+             onMouseEnter={() => setIsHovered(true)} // Set hover state
+             onMouseLeave={() => setIsHovered(false)} // Reset hover state
+            href="/shop" className="tp-btn tp-btn-border ">
               Return to shop
             </Link>
           </div>
@@ -54,11 +72,7 @@ const CheckoutArea = () => {
                   <CheckoutOrderArea checkoutData={checkoutData} />
                 </div>
               </div>
-              <div className="text-right">
-                <button type="submit" className="btn btn-primary">
-                  Confirm Order
-                </button>
-              </div>
+              
             </form>
           </div>
         )}

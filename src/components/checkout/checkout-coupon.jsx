@@ -4,6 +4,17 @@ import { useSelector } from "react-redux";
 const CheckoutCoupon = ({ handleCouponCode, couponRef,couponApplyMsg }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { coupon_info } = useSelector((state) => state.coupon);
+  const [isHovered, setIsHovered] = useState(false);
+  const buttonStyle = {
+    backgroundColor: !isHovered ? "#990100" : "#000000", // Change bg color on hover
+    color: "#FFFFFF", // Text color remains white
+    width: "30%", // Full width
+    border: "none", // Remove border
+    padding: "10px", // Padding for better spacing
+    cursor: "pointer", // Change cursor to pointer on hover
+    transition: "background-color 0.3s ease", // Smooth transition effect
+   
+  };
   return (
     <div className="tp-checkout-verify-item">
       <p className="tp-checkout-verify-reveal">
@@ -26,7 +37,10 @@ const CheckoutCoupon = ({ handleCouponCode, couponRef,couponApplyMsg }) => {
             </div>
             <button
               type="submit"
-              className="tp-return-customer-btn tp-checkout-btn"
+              className=""
+              style={buttonStyle}
+              onMouseEnter={() => setIsHovered(true)} 
+              onMouseLeave={() => setIsHovered(false)} 
             >
               Apply
             </button>

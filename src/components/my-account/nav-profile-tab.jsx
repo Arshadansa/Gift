@@ -50,7 +50,7 @@ const NavProfileTab = ({ orderData }) => {
           </div>
           <div className="col-md-6">
             <div className="profile__main-logout text-sm-end">
-              <a onClick={handleLogout} className="cursor-pointer tp-logout-btn">
+              <a style={{backgroundColor:"#990100",border:"solid 1px #990100"}} onClick={handleLogout} className="cursor-pointer tp-logout-btn">
                 Logout
               </a>
             </div>
@@ -61,9 +61,9 @@ const NavProfileTab = ({ orderData }) => {
         <div className="row gx-3">
           <div className="col-md-3 col-sm-6">
             <div className="profile__main-info-item">
-              <div className="profile__main-info-icon">
+              <div  className="profile__main-info-icon">
                 <span>
-                  <span className="profile-icon-count profile-download">{totalOrders}</span>
+                  <span style={{backgroundColor:"#990100"}} className="profile-icon-count profile-download">{totalOrders}</span>
                   <Box />
                 </span>
               </div>
@@ -74,7 +74,7 @@ const NavProfileTab = ({ orderData }) => {
             <div className="profile__main-info-item">
               <div className="profile__main-info-icon">
                 <span>
-                  <span className="profile-icon-count profile-order">{pendingOrders}</span>
+                  <span style={{backgroundColor:"#990100"}} className="profile-icon-count profile-order">{pendingOrders}</span>
                   <Processing />
                 </span>
               </div>
@@ -85,7 +85,7 @@ const NavProfileTab = ({ orderData }) => {
             <div className="profile__main-info-item">
               <div className="profile__main-info-icon">
                 <span>
-                  <span className="profile-icon-count profile-wishlist">{processingOrders}</span>
+                  <span style={{backgroundColor:"#990100"}} className="profile-icon-count profile-wishlist">{processingOrders}</span>
                   <Truck />
                 </span>
               </div>
@@ -96,7 +96,7 @@ const NavProfileTab = ({ orderData }) => {
             <div className="profile__main-info-item">
               <div className="profile__main-info-icon">
                 <span>
-                  <span className="profile-icon-count profile-wishlist">{deliveredOrders}</span>
+                  <span style={{backgroundColor:"#990100"}} className="profile-icon-count profile-wishlist">{deliveredOrders}</span>
                   <DeliveryTwo />
                 </span>
               </div>

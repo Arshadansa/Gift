@@ -17,10 +17,21 @@ const CheckoutOrderArea = ({ checkoutData }) => {
     showCard,
     setShowCard,
     shippingCost,
-    discountAmount
+    discountAmount,
   } = checkoutData;
   const { cart_products } = useSelector((state) => state.cart);
   const { total } = useCartInfo();
+  const [isHovered, setIsHovered] = useState(false);
+  const buttonStyle = {
+    backgroundColor: !isHovered ? "#990100" : "#000000", // Change bg color on hover
+    color: "#FFFFFF", // Text color remains white
+    width: "100%", // Full width
+    border: "none", // Remove border
+    padding: "10px", // Padding for better spacing
+    cursor: "pointer", // Change cursor to pointer on hover
+    transition: "background-color 0.3s ease", // Smooth transition effect
+    opacity: !stripe || isCheckoutSubmit ? "0.5" : "1", // Lower opacity if disabled
+  };
   return (
     <div className="tp-checkout-place white-bg">
       <h3 className="tp-checkout-place-title">Your Order</h3>
@@ -39,7 +50,9 @@ const CheckoutOrderArea = ({ checkoutData }) => {
               <p>
                 {item.title} <span> x {item.orderQuantity}</span>
               </p>
-              <span>${Number(item.price).toFixed(2)}</span>
+              <span style={{ color: "#990100" }}>
+                ₹{Number(item.price).toFixed(2)}
+              </span>
             </li>
           ))}
 
@@ -60,7 +73,8 @@ const CheckoutOrderArea = ({ checkoutData }) => {
                   onClick={() => handleShippingCost(60)}
                   htmlFor="flat_shipping"
                 >
-                  Delivery: Today Cost :<span>$60.00</span>
+                  Delivery: Today Cost :
+                  <span style={{ color: "#990100" }}>₹60.00</span>
                 </label>
                 <ErrorMsg msg={errors?.shippingOption?.message} />
               </span>
@@ -77,35 +91,40 @@ const CheckoutOrderArea = ({ checkoutData }) => {
                   onClick={() => handleShippingCost(20)}
                   htmlFor="flat_rate"
                 >
-                  Delivery: 7 Days Cost: <span>$20.00</span>
+                  Delivery: 7 Days Cost:{" "}
+                  <span style={{ color: "#990100" }}>₹20.00</span>
                 </label>
                 <ErrorMsg msg={errors?.shippingOption?.message} />
               </span>
             </div>
           </li>
 
-           {/*  subtotal */}
-           <li className="tp-order-info-list-subtotal">
+          {/*  subtotal */}
+          <li className="tp-order-info-list-subtotal">
             <span>Subtotal</span>
-            <span>${total.toFixed(2)}</span>
+            <span style={{ color: "#990100" }}>₹{total.toFixed(2)}</span>
           </li>
 
-           {/*  shipping cost */}
-           <li className="tp-order-info-list-subtotal">
+          {/*  shipping cost */}
+          <li className="tp-order-info-list-subtotal">
             <span>Shipping Cost</span>
-            <span>${shippingCost.toFixed(2)}</span>
+            <span style={{ color: "#990100" }}>₹{shippingCost.toFixed(2)}</span>
           </li>
 
-           {/* discount */}
-           <li className="tp-order-info-list-subtotal">
+          {/* discount */}
+          <li className="tp-order-info-list-subtotal">
             <span>Discount</span>
-            <span>${discountAmount.toFixed(2)}</span>
+            <span style={{ color: "#990100" }}>
+              ₹{discountAmount.toFixed(2)}
+            </span>
           </li>
 
           {/* total */}
           <li className="tp-order-info-list-total">
             <span>Total</span>
-            <span>${parseFloat(cartTotal).toFixed(2)}</span>
+            <span style={{ color: "#990100" }}>
+              ₹{parseFloat(cartTotal).toFixed(2)}
+            </span>
           </li>
         </ul>
       </div>
@@ -120,7 +139,11 @@ const CheckoutOrderArea = ({ checkoutData }) => {
             name="payment"
             value="Card"
           />
-          <label onClick={() => setShowCard(true)} htmlFor="back_transfer" data-bs-toggle="direct-bank-transfer">
+          <label
+            onClick={() => setShowCard(true)}
+            htmlFor="back_transfer"
+            data-bs-toggle="direct-bank-transfer"
+          >
             Credit Card
           </label>
           {showCard && (
@@ -167,7 +190,10 @@ const CheckoutOrderArea = ({ checkoutData }) => {
         <button
           type="submit"
           disabled={!stripe || isCheckoutSubmit}
-          className="tp-checkout-btn w-100"
+          className=" w-100"
+          style={buttonStyle}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           Place Order
         </button>

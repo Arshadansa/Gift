@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import payment_option_img from '@assets/img/product/icons/payment-option.png';
+import ContactSocialMedia from "../SocialMedial/ContactSocialMedia";
 
 const DetailsBottomInfo = ({sku,category,tag}) => {
   return (
@@ -15,28 +16,17 @@ const DetailsBottomInfo = ({sku,category,tag}) => {
           <span>Category: </span>
           <p>{category}</p>
         </div>
-        <div className="tp-product-details-query-item d-flex align-items-center">
+        {/* <div className="tp-product-details-query-item d-flex align-items-center">
           <span>Tag: </span>
           <p>{tag}</p>
-        </div>
+        </div> */}
       </div>
 
       {/*  product-details-social*/}
 
       <div className="tp-product-details-social">
         <span>Share: </span>
-        <a href="#">
-          <i className="fa-brands fa-facebook-f"></i>
-        </a>
-        <a href="#">
-          <i className="fa-brands fa-twitter"></i>
-        </a>
-        <a href="#">
-          <i className="fa-brands fa-linkedin-in"></i>
-        </a>
-        <a href="#">
-          <i className="fa-brands fa-vimeo-v"></i>
-        </a>
+       <ContactSocialMedia/>
       </div>
 
       {/* product-details-msg */}

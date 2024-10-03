@@ -34,6 +34,11 @@ const Pagination = ({
                 currPage === 1 ? "disabled" : ""
               }`}
               disabled={currPage === 1}
+              style={{
+                backgroundColor: "#990100",
+                color: "white",
+                border: "solid 1px #990100",
+              }}
             >
               <PaginationPrev />
             </button>
@@ -41,7 +46,16 @@ const Pagination = ({
 
           {Array.from({ length: totalPage }, (_, i) => i + 1).map((n) => (
             <li key={n} onClick={() => setPage(n)}>
-              <span className={`${currPage === n ? "current" : ""}`}>{n}</span>
+              <span
+                style={{
+                  backgroundColor: "#990100",
+                  color: "white",
+                  border: "solid 1px #990100",
+                }}
+                className={`${currPage === n ? "current" : ""}`}
+              >
+                {n}
+              </span>
             </li>
           ))}
 
@@ -51,6 +65,11 @@ const Pagination = ({
               className={`next page-numbers ${
                 currPage === totalPage ? "disabled" : ""
               }`}
+              style={{
+                backgroundColor: "#990100",
+                color: "white",
+                border: "solid 1px #990100",
+              }}
               disabled={currPage === totalPage}
             >
               <PaginationNext />

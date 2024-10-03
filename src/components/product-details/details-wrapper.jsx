@@ -18,6 +18,7 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
   const [textMore, setTextMore] = useState(false);
   const dispatch = useDispatch();
   console.log(productItem,"EEEEEEEEEEEE");
+
   
 
   // Assuming you might fetch reviews separately if applicable
@@ -46,7 +47,17 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
   const handleCompareProduct = (prd) => {
     dispatch(add_to_compare(prd));
   };
+  const [isHovered, setIsHovered] = useState(false);
 
+  const buttonStyle = {
+    backgroundColor: isHovered ? "#000000" : "#990100", 
+    color: "#FFFFFF", 
+    width: "100%", 
+    border: "none", 
+    padding: "10px", 
+    cursor: "pointer",
+    transition: "background-color 0.3s ease", 
+  };
   return (
     <div className="tp-product-details-wrapper">
       <div className="tp-product-details-category">
@@ -57,25 +68,25 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
       {/* inventory details */}
       <div className="tp-product-details-inventory d-flex align-items-center mb-10">
         <div className="tp-product-details-stock mb-10">
-          <span>{stock_quantity > 0 ? 'In Stock' : 'Out of Stock'}</span>
+          <span style={{color:"#990100"}}>{stock_quantity > 0 ? 'In Stock' : 'Out of Stock'}</span>
         </div>
-        <div className="tp-product-details-rating-wrapper d-flex align-items-center mb-10">
+        {/* <div className="tp-product-details-rating-wrapper d-flex align-items-center mb-10">
           <div className="tp-product-details-rating">
             <Rating allowFraction size={16} initialValue={ratingVal} readonly={true} />
           </div>
           <div className="tp-product-details-reviews">
             <span>({reviews.length > 0 ? reviews.length : 0} Review)</span>
           </div>
-        </div>
+        </div> */}
       </div>
       <p>
         {textMore ? description : `${description?.substring(0, 100)}...`}
-        <span onClick={() => setTextMore(!textMore)}>{textMore ? 'See less' : 'See more'}</span>
+        <span style={{color:"#990100"}} onClick={() => setTextMore(!textMore)}>{textMore ? 'See less' : 'See more'}</span>
       </p>
 
       {/* price */}
       <div className="tp-product-details-price-wrapper mb-20">
-        <span className="tp-product-details-price new-price">Price: ${parseFloat(price).toFixed(2)}</span>
+        <span className="tp-product-details-price new-price">Price: ₹{parseFloat(price).toFixed(2)}</span>
       </div>
 
     
@@ -92,15 +103,22 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
           </div>
         </div>
         <Link href="/cart" onClick={() => dispatch(handleModalClose())}>
-          <button className="tp-product-details-buy-now-btn w-100">Buy Now</button>
-        </Link>
+      <button
+        className="tp-product-details-buy-now-btn"
+        style={buttonStyle}
+        onMouseEnter={() => setIsHovered(true)} // Set hover state to true
+        onMouseLeave={() => setIsHovered(false)} // Set hover state to false
+      >
+        Buy Now
+      </button>
+    </Link>
       </div>
 
       {/* product-details-action-sm start */}
      
       {/* product-details-action-sm end */}
 
-      {detailsBottom && <DetailsBottomInfo category={categories.length > 0 ? categories[0] : 'Unknown Category'} sku={sku} tag={''} />} 
+      {detailsBottom && <DetailsBottomInfo category={categories.length > 0 ? categories[0] : 'Unknown Category'} sku={sku}  />} 
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 const MyOrders = ({ orderData }) => {
   const order_items = orderData?.orders; // Accessing the correct data field
-
+  const [hoveredOrderId, setHoveredOrderId] = useState(null); // Track hovered order
 
   return (
     <div className="profile__ticket table-responsive">
@@ -32,20 +32,53 @@ const MyOrders = ({ orderData }) => {
             </tr>
           </thead>
           <tbody>
-            {order_items?.data.map((item) => (
+            {order_items.data.map((item) => (
               <tr key={item.id}>
-                <th scope="row">#{item.order_id}</th>
+                <th style={{ color: "#990100" }} scope="row">
+                  #{item.order_id}
+                </th>
                 <td data-info="title">
-                  {dayjs(item.created_at).format("MMMM D, YYYY")} {/* Accessing created_at */}
+                  {dayjs(item.created_at).format("MMMM D, YYYY")}
+                  {/* Accessing created_at */}
                 </td>
                 <td
-                  data-info={`status ${item.status === "pending" ? "pending" : ""} ${item.status === "processing" ? "hold" : ""} ${item.status === "delivered" ? "done" : ""}`} // Adjusting status checks
-                  className={`status ${item.status === "pending" ? "pending" : ""} ${item.status === "processing" ? "hold" : ""} ${item.status === "delivered" ? "done" : ""}`}
+                  data-info={`status ${
+                    item.status === "pending"
+                      ? "pending"
+                      : item.status === "processing"
+                      ? "hold"
+                      : item.status === "delivered"
+                      ? "done"
+                      : ""
+                  }`} // Adjusting status checks
+                  className={`status ${
+                    item.status === "pending"
+                      ? "pending"
+                      : item.status === "processing"
+                      ? "hold"
+                      : item.status === "delivered"
+                      ? "done"
+                      : ""
+                  }`}
                 >
-                  {item.status.charAt(0).toUpperCase() + item.status.slice(1)} {/* Capitalizing the first letter */}
+                  {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                  {/* Capitalizing the first letter */}
                 </td>
                 <td>
-                  <Link href={`/order/${item.order_id}`} className="tp-logout-btn"> {/* Using order_id */}
+                  <Link
+                    href={`/order/${item.order_id}`}
+                    className="tp-logout-btn"
+                    style={{
+                      backgroundColor: hoveredOrderId === item.order_id ? "#990100" : "transparent",color:"white",
+                      border:"solid 1px black",
+                      color: "black", // or your preferred text color
+                      padding: "8px 16px", // Add padding for better appearance
+                      transition: "background-color 0.2s ease", // Smooth transition
+                      display: "inline-block", // Make it behave like a button
+                    }}
+                    onMouseEnter={() => setHoveredOrderId(item.order_id)}
+                    onMouseLeave={() => setHoveredOrderId(null)}
+                  >
                     Invoice
                   </Link>
                 </td>

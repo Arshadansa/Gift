@@ -57,9 +57,9 @@ const BlogDetailsArea = ({ blog }) => {
                   {/* <span className="tp-postbox-details-desc-thumb-caption">Gucci&lsquo;s Women&lsquo;s Cruise Collection 2023 Lookbook Has Arrived</span> */}
                 </div>
                 
-                <div className="tp-postbox-details-quote">
-                  <blockquote>
-                    <div className="tp-postbox-details-quote-shape">
+                <div style={{backgroundColor:"#990100"}} className="tp-postbox-details-quote">
+                  <blockquote style={{backgroundColor:"#990100"}}>
+                    <div  className="tp-postbox-details-quote-shape">
                       <Image className="tp-postbox-details-quote-shape-1" src={shape_line} alt="shape" />
                       <Image className="tp-postbox-details-quote-shape-2" src={shape_line_2} alt="shape" />
                     </div>
