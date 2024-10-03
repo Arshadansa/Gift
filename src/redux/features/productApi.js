@@ -34,11 +34,16 @@ export const productApi = apiSlice.injectEndpoints({
     }),
     //get related products
     getRelatedProducts: builder.query({
-      query: (id) => `https://apiv2.mysweetwishes.com/api/products/category/${String(id)}`, // Ensure id is a string in the URL
+      query: (id) => {
+        console.log("Category ID New:", id);
+        console.log("Full API URL:", `https://apiv2.mysweetwishes.com/api/products/category/${id}`); // Correctly log the URL
+        return `https://apiv2.mysweetwishes.com/api/products/category/${id}`;
+      },
       providesTags: (result, error, arg) => [
-        { type: 'products', id: Number(arg) }, // Ensure arg is a string for the tag
+        { type: 'products', id: Number(arg) }, // Ensure arg is a number for the tag
       ],
     }),
+    
     
   }),
 });

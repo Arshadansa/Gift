@@ -32,7 +32,7 @@ const ProductDetailsArea = ({ productItem }) => {
   };
 
   // Access the first category's ID as a string
-  const cat_id = categories[0]?.id || null; // Assuming categories is an array of objects
+  const cat_id = categories.length > 0 ? categories[0] : null;
 
   // Debugging output to check cat_id
   console.log("Category ID:", cat_id);

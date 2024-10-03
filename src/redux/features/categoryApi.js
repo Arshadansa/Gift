@@ -13,9 +13,9 @@ export const categoryApi = apiSlice.injectEndpoints({
     getShowCategory: builder.query({
       query: () => `https://apiv2.mysweetwishes.com/api/categories`
     }),
-    getProductTypeCategory: builder.query({
-      query: (type) => `https://apiv2.mysweetwishes.com/api/categories/${type}`
-    }),
+    // getProductTypeCategory: builder.query({
+    //   query: (type) => `https://apiv2.mysweetwishes.com/api/categories/${type}`
+    // }),
   }),
 });
 

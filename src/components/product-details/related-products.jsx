@@ -41,7 +41,7 @@ const RelatedProducts = ({ id }) => {
   const { data: products, isError, isLoading } = useGetRelatedProductsQuery(id);
 
 
-  console.log("prodddddddddddd",typeof(id));
+  console.log("prodddddddddddd",products);
   
   // Decide what to render
   let content;
@@ -50,18 +50,18 @@ const RelatedProducts = ({ id }) => {
     content = <HomeNewArrivalPrdLoader loading={isLoading} />;
   } else if (isError) {
     content = <ErrorMsg msg="There was an error" />;
-  } else if (products?.data?.length === 0) {
+  } else if (products?.length === 0) {
     content = <ErrorMsg msg="No Products found!" />;
-  } else if (products?.data?.length > 0) {
+  } else if (products?.length > 0) {
     content = (
       <Swiper
         {...slider_setting}
         modules={[Autoplay, Navigation]}
         className="tp-product-related-slider-active swiper-container mb-10"
       >
-        {products.data.map((item) => (
+        {products.map((item) => (
           <SwiperSlide key={item._id}>
-            <ProductItem product={item} primary_style={true} />
+            <ProductItem products={item} primary_style={true} />
           </SwiperSlide>
         ))}
       </Swiper>
