@@ -2,8 +2,11 @@ import React from "react";
 
 function SingleNav({ active = false, id, title, icon }) {
   return (
-    <button 
-      style={{backgroundColor:active?"#990100":"",color:active?"white":""}}
+    <button
+      style={{
+        backgroundColor: active ? "#990100" : "",
+      }}
+    
       className={`nav-link ${active ? "active" : ""}`}
       id={`nav-${id}-tab`}
       data-bs-toggle="tab"
@@ -14,9 +17,9 @@ function SingleNav({ active = false, id, title, icon }) {
       aria-selected={active ? "true" : "false"}
     >
       <span>
-        <i style={{color:"black"}} className={icon}></i>
+        <i style={{ color: "black" }} className={icon}></i>
       </span>
-     <span style={{color:"black"}}>{title}</span> 
+      <span style={{ color: "black" }}>{title}</span>
     </button>
   );
 }
@@ -28,7 +31,7 @@ const ProfileNavTab = () => {
         className="nav nav-tabs tp-tab-menu flex-column"
         id="profile-tab"
         role="tablist"
-         style={{backgroundColor:"#990100",color:"white"}}
+        style={{ backgroundColor: "#990100", color: "white" }}
       >
         <SingleNav
           active={true}

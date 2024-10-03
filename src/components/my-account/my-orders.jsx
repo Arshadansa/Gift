@@ -5,10 +5,10 @@ import React, { useState } from "react";
 const MyOrders = ({ orderData }) => {
   const order_items = orderData?.orders; // Accessing the correct data field
   const [hoveredOrderId, setHoveredOrderId] = useState(null); // Track hovered order
-
+  console.log(order_items.data.length); // Corrected here
   return (
     <div className="profile__ticket table-responsive">
-      {!order_items || order_items.length === 0 ? (
+      {order_items.data.length === 0 || order_items.length === 0 ? (
         <div
           style={{ height: "210px" }}
           className="d-flex align-items-center justify-content-center"
@@ -69,8 +69,12 @@ const MyOrders = ({ orderData }) => {
                     href={`/order/${item.order_id}`}
                     className="tp-logout-btn"
                     style={{
-                      backgroundColor: hoveredOrderId === item.order_id ? "#990100" : "transparent",color:"white",
-                      border:"solid 1px black",
+                      backgroundColor:
+                        hoveredOrderId === item.order_id
+                          ? "#990100"
+                          : "transparent",
+                      color: "white",
+                      border: "solid 1px black",
                       color: "black", // or your preferred text color
                       padding: "8px 16px", // Add padding for better appearance
                       transition: "background-color 0.2s ease", // Smooth transition

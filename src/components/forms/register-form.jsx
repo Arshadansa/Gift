@@ -24,10 +24,15 @@ const schema = Yup.object().shape({
 });
 
 const RegisterForm = () => {
-  const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
     resolver: yupResolver(schema),
   });
-  
+
   const router = useRouter();
   const dispatch = useDispatch();
   const { redirect } = router.query; // Get redirect query if available
@@ -39,10 +44,10 @@ const RegisterForm = () => {
     try {
       // Call registerUser with the form data
       const result = await registerUser(data).unwrap();
-      
+
       // Notify user of success
       notifySuccess(result?.message || "Registration successful!");
-      
+
       // Prepare user info for cookies
       const userInfo = {
         accessToken: result.access_token,
@@ -52,15 +57,17 @@ const RegisterForm = () => {
       // Save userInfo in cookies
       Cookies.set("userInfo", JSON.stringify(userInfo), {
         expires: 7,
-        secure: process.env.NODE_ENV === 'production', // Secure for production
-        sameSite: 'Strict', // Secure from CSRF
+        secure: process.env.NODE_ENV === "production", // Secure for production
+        sameSite: "Strict", // Secure from CSRF
       });
 
       // Dispatch login action to the Redux store
-      dispatch(userLoggedIn({
-        user: result.user,
-        accessToken: result.access_token,
-      }));
+      dispatch(
+        userLoggedIn({
+          user: result.user,
+          accessToken: result.access_token,
+        })
+      );
 
       // Reset the form
       reset();
@@ -155,7 +162,31 @@ const RegisterForm = () => {
 
       {/* Submit Button */}
       <div className="tp-login-bottom">
-        <button type="submit" className="tp-login-btn w-100" disabled={isLoading || isSubmitting}>
+        <button
+          type="submit"
+          className="tp-login-btn w-100"
+          style={{
+            backgroundColor:
+              isLoading || isSubmitting ? "rgba(153, 0, 0, 0.5)" : "#990100",
+            color: "white",
+            border: "none",
+            padding: "8px 16px",
+            borderRadius: "4px",
+            transition: "background-color 0.3s ease",
+            cursor: isLoading || isSubmitting ? "not-allowed" : "pointer",
+          }}
+          onMouseEnter={(e) => {
+            if (!(isLoading || isSubmitting)) {
+              e.target.style.backgroundColor = "black";
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!(isLoading || isSubmitting)) {
+              e.target.style.backgroundColor = "#990100";
+            }
+          }}
+          disabled={isLoading || isSubmitting}
+        >
           {isLoading || isSubmitting ? "Signing Up..." : "Sign Up"}
         </button>
       </div>
