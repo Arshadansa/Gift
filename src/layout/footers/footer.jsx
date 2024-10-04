@@ -40,7 +40,7 @@ const Footer = ({
                       </Link>
                     </div>
 
-                    <div className="tp-footer-social">
+                    <div className="">
                       <SocialMedia/>
                     </div>
                   </div>

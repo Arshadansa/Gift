@@ -17,7 +17,7 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
   const [ratingVal, setRatingVal] = useState(0);
   const [textMore, setTextMore] = useState(false);
   const dispatch = useDispatch();
-  console.log(productItem,"EEEEEEEEEEEE");
+ 
 
   
 

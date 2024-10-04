@@ -105,26 +105,6 @@ const Header = () => {
               </div>
             </div>
           </div>
-
-
-          {/* header bottom start */}
-          {/* <div className="tp-header-bottom tp-header-bottom-border d-none d-lg-block">
-            <div className="container">
-              <div className="tp-mega-menu-wrapper p-relative">
-                <div className="row align-items-center">
-                  <div className="col-xl-6 col-lg-6">
-                    <div className="main-menu menu-style-1">
-                      <nav className="tp-main-menu-content">
-                        <Menus />
-                      </nav>
-                    </div>
-                  </div>
-                  
-                  
-                </div>
-              </div>
-            </div>
-          </div> */}
         </div>
       </header>
 

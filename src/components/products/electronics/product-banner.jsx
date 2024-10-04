@@ -59,7 +59,7 @@ const ProductBanner = () => {
                           <h3 className="tp-slider-title">{item.heading}</h3>
                           <p>{item.subheading}</p>
                           <div className="tp-slider-btn">
-                            <Link href={item.button_link} legacyBehavior>
+                            <Link href={"shop"} legacyBehavior>
                               <a className="btn btn-danger">
                                 {item.button_text} <ArrowRightLong />
                               </a>

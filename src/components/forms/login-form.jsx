@@ -35,7 +35,6 @@ const LoginForm = () => {
     padding: "10px", // Padding for better spacing
     cursor: "pointer", // Change cursor to pointer on hover
     transition: "background-color 0.3s ease", // Smooth transition effect
-   
   };
 
   // React Hook Form setup
@@ -55,27 +54,29 @@ const LoginForm = () => {
         password: data.password,
       }).unwrap(); // Using unwrap to get the result or throw an error
   
-      // If login is successful, set the user info in cookies
-      if (result) {
+      // Check if the login was successful
+      if (result.status) { // Check if user is authenticated
         notifySuccess("Login successfully");
   
         const userInfo = {
-          accessToken: result.access_token,
-          ...result.user,
+          accessToken: result.access_token, // Ensure this exists in your response
+          user: result.user,
         };
   
+        // Store user info in cookies
         Cookies.set("userInfo", JSON.stringify(userInfo), {
           expires: 7,
-          secure: process.env.NODE_ENV === 'production', // For production
-          sameSite: 'Strict', // Secure from CSRF
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'Strict',
         });
   
-        dispatch(userLoggedIn({
-          user: result.user,
-          accessToken: result.access_token,
-        }));
+        // Dispatch the login action
+        dispatch(userLoggedIn(userInfo));
   
-        router.push(redirect || "/"); 
+        // Redirect the user
+        router.push(redirect || "/");
+      } else {
+        notifyError("Login failed");
       }
     } catch (error) {
       notifyError(error?.data?.message || "Login failed");
@@ -83,7 +84,6 @@ const LoginForm = () => {
     reset();
   };
   
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="tp-login-input-wrapper">
@@ -134,11 +134,14 @@ const LoginForm = () => {
         </div>
       </div>
       <div className="tp-login-bottom">
-        <button type='submit'
-         style={buttonStyle}
-         onMouseEnter={() => setIsHovered(true)} 
-         onMouseLeave={() => setIsHovered(false)} 
-         className="tp-login-btn w-100">Login</button>
+        <button
+          type='submit'
+          style={buttonStyle}
+          onMouseEnter={() => setIsHovered(true)} 
+          onMouseLeave={() => setIsHovered(false)} 
+          className="tp-login-btn w-100">
+          Login
+        </button>
       </div>
     </form>
   );

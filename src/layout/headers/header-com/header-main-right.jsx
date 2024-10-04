@@ -1,33 +1,19 @@
 import { useGetUserQuery } from "@/redux/features/auth/authApi";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
 import useCartInfo from "@/hooks/use-cart-info";
 import { CartTwo, Menu, User } from "@/svg";
 import { openCartMini } from "@/redux/features/cartSlice";
+import Loader from "@/components/loader/loader";
+import { userLoggedIn, userLoggedOut } from "@/redux/features/auth/authSlice";
 
 const HeaderMainRight = ({ setIsCanvasOpen }) => {
-  const { data: userInfo, error, isLoading } = useGetUserQuery(); // Automatically fetch user info including token
-  const { wishlist } = useSelector((state) => state.wishlist);
+  const user = useSelector((state) => state.auth.user); // Accessing the user state
   const { quantity } = useCartInfo();
   const dispatch = useDispatch();
 
-  // Optional: Handle loading and error states
-  if (isLoading) {
-    return <div>Loading...</div>; // Optional loading state
-  }
-
-  // if (error) {
-  //   console.error("Error fetching user data:", error);
-  //   return <div>Error fetching user data. Please try again later.</div>; // Optional error handling
-  // }
-
-  // Debugging log
-  console.log(userInfo, "myinfo"); // Check what the userInfo object contains
-
-  const user = userInfo?.user; // Extract user object from userInfo
-  
   return (
     <div className="tp-header-main-right d-flex align-items-center justify-content-end">
       <div className="tp-header-login d-none d-lg-block">
@@ -47,7 +33,8 @@ const HeaderMainRight = ({ setIsCanvasOpen }) => {
               ) : user?.name ? (
                 <Link href="/profile">
                   <h2 className="text-uppercase login_text">
-                    {user.name[0]} {/* Display the first letter of user's name */}
+                    {user.name[0]}{" "}
+                    {/* Display the first letter of user's name */}
                   </h2>
                 </Link>
               ) : (

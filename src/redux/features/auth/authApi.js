@@ -14,7 +14,6 @@ export const authApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    // signUpProvider
     signUpProvider: builder.mutation({
       query: (token) => ({
         url: `${BASE_URL}register/${token}`,
@@ -30,7 +29,7 @@ export const authApi = apiSlice.injectEndpoints({
               accessToken: result.data.data.token,
               user: result.data.data.user,
             }),
-            { expires: 0.5 }
+            { expires: 7 } // Adjusting to 7 days for consistency
           );
 
           dispatch(
@@ -44,52 +43,12 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
-    // login
-   // loginUser mutation
-loginUser: builder.mutation({
-  query: (data) => ({
-    url: `${BASE_URL}login`,
-    method: "POST",
-    body: data,
-  }),
-  // Remove onQueryStarted logic here to avoid double saving cookies
-}),
-
-    // get me
-    getUser: builder.query({
-      query: () => {
-        const token = Cookies.get("userInfo")?JSON.parse(Cookies.get("userInfo")).accessToken : '';
-        return {
-          url: `${BASE_URL}is-logged-in`,
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-      },
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-    
-          // Dispatch userLoggedIn to sync Redux state
-          dispatch(
-            userLoggedIn({
-              accessToken: result.data.data.token,  // Assuming API response returns updated token
-              user: result.data.data.user,
-            })
-          );
-        } catch (err) {
-          console.error('Error fetching user:', err);
-        }
-      },
-    }),
-    
-    
-    // confirmEmail
-    confirmEmail: builder.query({
-      query: (token) => ({
-        url: `${BASE_URL}user/confirmEmail/${token}`,
-        method: "GET",
+    //login
+    loginUser: builder.mutation({
+      query: (data) => ({
+        url: `${BASE_URL}login`,
+        method: "POST",
+        body: data,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
@@ -101,7 +60,7 @@ loginUser: builder.mutation({
               accessToken: result.data.data.token,
               user: result.data.data.user,
             }),
-            { expires: 0.5 }
+            { expires: 7 } // Consistent expiration
           );
 
           dispatch(
@@ -115,25 +74,101 @@ loginUser: builder.mutation({
         }
       },
     }),
-    // reset password
+    getUser: builder.query({
+      query: () => {
+        const token = Cookies.get("userInfo")
+          ? JSON.parse(Cookies.get("userInfo")).accessToken
+          : "";
+        return {
+          url: `${BASE_URL}is-logged-in`,
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+
+          dispatch(
+            userLoggedIn({
+              accessToken: result.data.data.token,
+              user: result.data.data.user,
+            })
+          );
+        } catch (err) {
+          console.error("Error fetching user:", err);
+        }
+      },
+    }),
+    //conf email
+    confirmEmail: builder.mutation({
+      query: ({ data }) => {
+        const token = Cookies.get("userInfo")
+          ? JSON.parse(Cookies.get("userInfo")).accessToken
+          : "";
+    console.log(data,"reset");
+    
+        return {
+          url: `${BASE_URL}reset-password`,
+          method: "POST", // Change to POST or PUT based on your API requirements
+          body: data, // Assuming `data` contains the necessary information for the mutation
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        };
+      },
+    }),
+    
+
+    //reset pass
     resetPassword: builder.mutation({
-      query: (data) => ({
-        url: `${BASE_URL}user/forget-password`,
-        method: "PATCH",
-        body: data,
-      }),
+      query: (data) => {
+        const token = Cookies.get("userInfo")
+          ? JSON.parse(Cookies.get("userInfo")).accessToken
+          : "";
+
+        return {
+          url: `${BASE_URL}initiate-password-reset`,
+          method: "POST",
+          body: data,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        };
+      },
     }),
-    // confirmForgotPassword
+//verify
     confirmForgotPassword: builder.mutation({
-      query: (data) => ({
-        url: `${BASE_URL}/user/confirm-forget-password`,
-        method: "PATCH",
-        body: data,
-      }),
-    }),
-    // change password
+      query: (data) => {
+          console.log(data, "verify query data");
+          const token = Cookies.get("userInfo")
+              ? JSON.parse(Cookies.get("userInfo")).accessToken
+              : "";
+  
+          return {
+              url: `${BASE_URL}verify-otp`,
+              method: "POST",
+              body: data,
+              headers: {
+                  Authorization: `Bearer ${token}`, // Include the token in the headers if needed
+              },
+          };
+      },
+  }),
+  
+
+    //change password
     changePassword: builder.mutation({
-      query: ({ current_password, new_password, new_password_confirmation, accessToken }) => ({
+      query: ({
+        current_password,
+        new_password,
+        new_password_confirmation,
+        accessToken,
+      }) => ({
         url: `${BASE_URL}change-password`,
         method: "POST",
         body: {
@@ -147,8 +182,7 @@ loginUser: builder.mutation({
         },
       }),
     }),
-    
-    // updateProfile
+    //update profile
     updateProfile: builder.mutation({
       query: ({ id, ...data }) => ({
         url: `${BASE_URL}user/update-user/${id}`,
@@ -165,7 +199,7 @@ loginUser: builder.mutation({
               accessToken: result.data.data.token,
               user: result.data.data.user,
             }),
-            { expires: 0.5 }
+            { expires: 7 } // Adjusting to 7 days for consistency
           );
 
           dispatch(
@@ -179,9 +213,10 @@ loginUser: builder.mutation({
         }
       },
     }),
-    // blog 
+    //blogs
     fetchBlogs: builder.query({
-      query: ({ page = 1, perPage = 10 }) => `${BASE_URL}blog/blogs-${page}-${perPage}`,
+      query: ({ page = 1, perPage = 10 }) =>
+        `${BASE_URL}blog/blogs-${page}-${perPage}`,
     }),
   }),
 });
@@ -190,11 +225,11 @@ export const {
   useLoginUserMutation,
   useRegisterUserMutation,
   useFetchBlogsQuery,
-  useConfirmEmailQuery,
+  useConfirmEmailMutation,
   useResetPasswordMutation,
   useConfirmForgotPasswordMutation,
   useChangePasswordMutation,
   useUpdateProfileMutation,
   useSignUpProviderMutation,
-  useGetUserQuery, 
+  useGetUserQuery,
 } = authApi;

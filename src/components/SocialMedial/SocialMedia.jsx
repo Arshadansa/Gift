@@ -10,18 +10,21 @@ function SocialMedia() {
           key={s.id}
           target="_blank"
           style={{
-            backgroundColor: "#000000", 
+            backgroundColor: "#000000",
             color: "#FFFFFF",
-
-            padding: "5px",
+            margin: "5px",
+            paddingTop: "10px",
+            paddingBottom: "10px",
+            paddingLeft: "15px",
+            paddingRight: "15px",
             borderRadius: "50%",
             transition: "background-color 0.3s, color 0.3s",
           }}
           onMouseEnter={(e) => {
-            e.target.style.backgroundColor = "#990100"; 
+            e.target.style.backgroundColor = "#990100";
           }}
           onMouseLeave={(e) => {
-            e.target.style.backgroundColor = "#000000"; 
+            e.target.style.backgroundColor = "#000000";
           }}
         >
           <i className={s.icon}></i>

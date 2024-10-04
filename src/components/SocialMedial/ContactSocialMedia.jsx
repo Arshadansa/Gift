@@ -14,7 +14,12 @@ function ContactSocialMedia() {
             color: "#FFFFFF",
             backgroundColor: "#990100", // Set initial background color to #990100
             border: "2px solid #990100", // Set initial border color to #990100
-            padding: "5px",
+            margin: "5px",
+      
+            paddingTop: "5px",
+            paddingBottom: "5px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
             borderRadius: "50%",
             transition: "background-color 0.3s, color 0.3s, border-color 0.3s", // Include border-color in transition
             marginRight: index < social_data.length - 1 ? "10px" : "0", // Add right margin except for the last icon

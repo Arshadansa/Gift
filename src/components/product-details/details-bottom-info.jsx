@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import payment_option_img from '@assets/img/product/icons/payment-option.png';
+import payment_option_img from "@assets/img/product/icons/payment-option.png";
 import ContactSocialMedia from "../SocialMedial/ContactSocialMedia";
 
-const DetailsBottomInfo = ({sku,category,tag}) => {
+const DetailsBottomInfo = ({ sku, category, tag }) => {
   return (
     <>
       {/* product-details-query */}
@@ -24,9 +24,9 @@ const DetailsBottomInfo = ({sku,category,tag}) => {
 
       {/*  product-details-social*/}
 
-      <div className="tp-product-details-social">
+      <div style={{ marginBottom: "10px" }} className="">
         <span>Share: </span>
-       <ContactSocialMedia/>
+        <ContactSocialMedia />
       </div>
 
       {/* product-details-msg */}

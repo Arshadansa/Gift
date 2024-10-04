@@ -9,31 +9,13 @@ import Cookies from "js-cookie";
 function ProfileSetting({ active, handleActive }) {
   const dispatch = useDispatch();
   const router = useRouter();
-
-  // Fetch user info using RTK query
-  const { data: userInfo, isLoading, error } = useGetUserQuery();
-
-  useEffect(() => {
-    // Sync user state with Redux when component mounts
-    if (userInfo) {
-      const { user, token } = userInfo;
-      if (user && token) {
-        dispatch(userLoggedIn({ user, accessToken: token }));
-      }
-    }
-  }, [userInfo, dispatch]);
+  const user = useSelector((state) => state.auth.user); // Accessing the user state
 
   const handleLogout = () => {
     dispatch(userLoggedOut());
     Cookies.remove("userInfo"); 
-    router.push('/');
+    router.push("/"); 
   };
-  
-
-  // if (isLoading) return <div>Loading...</div>; // Optional loading state
-  // if (error) return <div>Error fetching user data</div>; // Error state
-
-  const user = userInfo?.user; // Extract user object
 
   return (
     <div className="tp-header-top-menu-item tp-header-setting">
@@ -41,7 +23,7 @@ function ProfileSetting({ active, handleActive }) {
         onClick={() => handleActive("setting")}
         className="tp-header-setting-toggle"
         id="tp-header-setting-toggle"
-        style={{color:"white"}}
+        style={{ color: "white" }}
       >
         Setting
       </span>
@@ -58,9 +40,9 @@ function ProfileSetting({ active, handleActive }) {
               Login
             </Link>
           ) : (
-            <a onClick={handleLogout} className="cursor-pointer">
+            <span onClick={handleLogout} className="cursor-pointer">
               Logout
-            </a>
+            </span>
           )}
         </li>
       </ul>
@@ -71,13 +53,15 @@ function ProfileSetting({ active, handleActive }) {
 // HeaderTopRight Component
 const HeaderTopRight = () => {
   const [active, setIsActive] = useState("");
+  const user = useSelector((state) => state.auth.user); // Accessing the user state
+
   const handleActive = (type) => {
     setIsActive((prev) => (type === prev ? "" : type));
   };
 
   return (
     <div className="tp-header-top-menu d-flex align-items-center justify-content-end">
-      <ProfileSetting active={active} handleActive={handleActive} />
+      <ProfileSetting active={active} handleActive={handleActive} user={user} />
     </div>
   );
 };

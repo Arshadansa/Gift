@@ -5,10 +5,10 @@ import React, { useState } from "react";
 const MyOrders = ({ orderData }) => {
   const order_items = orderData?.orders; // Accessing the correct data field
   const [hoveredOrderId, setHoveredOrderId] = useState(null); // Track hovered order
-  console.log(order_items.data.length); // Corrected here
+ 
   return (
     <div className="profile__ticket table-responsive">
-      {order_items.data.length === 0 || order_items.length === 0 ? (
+      {order_items?.data?.length === 0 || order_items?.data?.length === 0 ? (
         <div
           style={{ height: "210px" }}
           className="d-flex align-items-center justify-content-center"
@@ -32,7 +32,7 @@ const MyOrders = ({ orderData }) => {
             </tr>
           </thead>
           <tbody>
-            {order_items.data.map((item) => (
+            {order_items?.data?.map((item) => (
               <tr key={item.id}>
                 <th style={{ color: "#990100" }} scope="row">
                   #{item.order_id}

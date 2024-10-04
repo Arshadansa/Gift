@@ -60,7 +60,7 @@ const HomeHeroSlider = () => {
                     {/* Updated to match "subheading" */}
                     <div className="tp-slider-btn">
                       <div className="tp-slider-btn">
-                        <Link href={item.button_link} legacyBehavior>
+                        <Link href={"/shop"} legacyBehavior>
                           <a className="btn btn-danger">
                             {item.button_text} <ArrowRightLong />
                           </a>

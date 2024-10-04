@@ -50,10 +50,14 @@ const ShopPage = ({ query }) => {
   let content = null;
 
   if (isLoading) {
-    content = <ShopLoader loading={isLoading}/>;
+    content = <ShopLoader loading={isLoading} />;
   }
   if (!isLoading && isError) {
-    content = <div className="pb-80 text-center"><ErrorMsg msg="There was an error" /></div>;
+    content = (
+      <div className="pb-80 text-center">
+        <ErrorMsg msg="There was an error" />
+      </div>
+    );
   }
   if (!isLoading && !isError && products?.data?.length === 0) {
     content = <ErrorMsg msg="No Products found!" />;
@@ -83,11 +87,7 @@ const ShopPage = ({ query }) => {
         product_items = products.data;
       }
     }
-    // price filter
-    product_items = product_items.filter(
-      (p) => p.price >= priceValue[0] && p.price <= priceValue[1]
-    );
-
+  
     // status filter
     if (query.status) {
       if (query.status === "on-sale") {
@@ -98,40 +98,11 @@ const ShopPage = ({ query }) => {
     }
 
     // category filter
-    if (query.category) {
+    if (query?.category) {
       product_items = product_items.filter(
         (p) =>
           p.parent?.toLowerCase().replace("&", "").split(" ").join("-") ===
           query.category
-      );
-    }
-
-    // category filter
-   
-
-    // color filter
-    if (query.color) {
-      product_items = product_items.filter((product) => {
-        for (let i = 0; i < product.imageURLs.length; i++) {
-          const color = product.imageURLs[i]?.color;
-          if (
-            color &&
-            color?.name?.toLowerCase().replace("&", "").split(" ").join("-") ===
-              query.color
-          ) {
-            return true; // match found, include product in result
-          }
-        }
-        return false; // no match found, exclude product from result
-      });
-    }
-
-    // brand filter
-    if (query.brand) {
-      product_items = product_items.filter(
-        (p) =>
-          p.brand.name.toLowerCase().replace("&", "").split(" ").join("-") ===
-          query.brand
       );
     }
 
@@ -162,7 +133,7 @@ const ShopPage = ({ query }) => {
 
 export default ShopPage;
 
-export const getServerSideProps= async (context) => {
+export const getServerSideProps = async (context) => {
   const { query } = context;
 
   return {

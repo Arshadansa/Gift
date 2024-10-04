@@ -6,7 +6,7 @@ import SEO from "@/components/seo";
 import HeaderTwo from "@/layout/headers/header-2";
 import Footer from "@/layout/footers/footer";
 import Wrapper from "@/layout/wrapper";
-import error from '@assets/img/error/error.png';
+import error from "@assets/img/error/error.png";
 
 const ErrorPage = () => {
   return (
@@ -29,7 +29,17 @@ const ErrorPage = () => {
                   looking for was not found.
                 </p>
 
-                <Link href="/" style={{backgroundColor:"#990100"}} className="tp-error-btn">
+                <Link
+                  href="/"
+                  className="tp-login-btn w-10"
+                  style={{ backgroundColor: "#000000" }} // Default background color
+                  onMouseOver={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#990100")
+                  }
+                  onMouseOut={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#000000")
+                  }
+                >
                   Back to Home
                 </Link>
               </div>

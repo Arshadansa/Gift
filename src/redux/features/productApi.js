@@ -35,8 +35,6 @@ export const productApi = apiSlice.injectEndpoints({
     //get related products
     getRelatedProducts: builder.query({
       query: (id) => {
-        console.log("Category ID New:", id);
-        console.log("Full API URL:", `https://apiv2.mysweetwishes.com/api/products/category/${id}`); // Correctly log the URL
         return `https://apiv2.mysweetwishes.com/api/products/category/${id}`;
       },
       providesTags: (result, error, arg) => [

@@ -1,63 +1,66 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-// internal
-import ErrorMsg from "../common/error-msg";
+import * as Yup from "yup";
 import { useResetPasswordMutation } from "@/redux/features/auth/authApi";
 import { notifyError, notifySuccess } from "@/utils/toast";
+import ErrorMsg from "../common/error-msg";
+import { useRouter } from "next/router";
 
-// schema
-const schema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
-});
+const EmailForm = () => {
+  const router = useRouter();
 
-const ForgotForm = () => {
-  const [resetPassword, {}] = useResetPasswordMutation();
-    // react hook form
-    const {register,handleSubmit,formState: { errors },reset} = useForm({
-      resolver: yupResolver(schema), 
-    });
-    // onSubmit
-    const onSubmit = (data) => {
-      resetPassword({
-        verifyEmail: data.email,
-      }).then((result) => {
-        if(result?.error){
-          notifyError(result?.error?.data?.message)
-        }
-        else {
-          notifySuccess(result.data?.message);
-        }
-      });
-      reset();
-    };
+  // Validation schema
+  const schema = Yup.object().shape({
+    email: Yup.string().required("Email is required").email("Invalid email"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const [resetPassword] = useResetPasswordMutation();
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await resetPassword({ email: data.email }).unwrap();
+      if (response.message === "OTP generated successfully") {
+        notifySuccess(response.message);
+        router.push("verify"); // Navigate to OTP verification page
+      }
+    } catch (error) {
+      notifyError(error.data?.message || "Failed to send OTP.");
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="tp-login-input-wrapper">
-        <div className="tp-login-input-box">
-          <div className="tp-login-input">
-            <input
-              {...register("email", { required: `Email is required!` })}
-              name="email"
-              id="email"
-              type="email"
-              placeholder="shofy@mail.com"
-            />
-          </div>
-          <div className="tp-login-input-title">
-            <label htmlFor="email">Your Email</label>
-          </div>
-          <ErrorMsg msg={errors.email?.message} />
+      <div className="tp-login-input-box">
+        <div className="tp-login-input">
+          <input
+            {...register("email")}
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+          />
         </div>
+        <ErrorMsg msg={errors.email?.message} />
       </div>
-      <div className="tp-login-bottom mb-15">
-        <button type="submit" className="tp-login-btn w-100">
-          Send Mail
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="tp-login-btn w-100"
+        style={{ backgroundColor: "#000000" }} // Default background color
+        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#990100")}
+        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#000000")} // Reset to default color on mouse out
+      >
+        Send Mail
+      </button>
     </form>
   );
 };
 
-export default ForgotForm;
+export default EmailForm;
