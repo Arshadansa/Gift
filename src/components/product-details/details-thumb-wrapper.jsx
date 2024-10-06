@@ -17,36 +17,53 @@ const DetailsThumbWrapper = ({
     <>
       <div className="tp-product-details-thumb-wrapper tp-tab d-sm-flex">
         {/* Thumbnails */}
-        <nav style={{ maxHeight: "800px", overflowY: "auto",marginRight:"8px" }}>
+        <nav
+          style={{
+            maxHeight: "800px",
+            overflowY: "auto",
+            padding: "10px",
+          }}
+        >
           <div className="nav nav-tabs flex-sm-column">
             {images?.map((item, i) => (
               <button
                 key={i}
                 className={`nav-link ${item === activeImg ? "active" : ""}`} // Highlight the active thumbnail
                 onClick={() => handleImageActive(item)} // Set the clicked image as the active image
+                style={{
+                  padding: 0,
+                  marginBottom: "10px", // Adjust spacing between thumbnails
+                  border: "none", // Remove button border
+                  cursor: "pointer",
+                }}
               >
-                <Image
-                  src={item || "/default-image.png"} // Use the item for thumbnails
-                  alt={`Product thumbnail ${i + 1}`}
-                  width={imgWidth}
-                  height={imgHeight}
-                  layout="responsive"
-                />
+                <div style={{ width: "100%", height: "auto" }}>
+                  <Image
+                    src={item}
+                    alt={`Product thumbnail ${i + 1}`}
+                    width={imgWidth}
+                    height={imgHeight}
+                    layout="responsive"
+                    objectFit="cover" // Ensure all images fill their container
+                    style={{ borderRadius: "4px" }} // Optional: add rounded corners to thumbnails
+                  />
+                </div>
               </button>
             ))}
           </div>
         </nav>
 
         {/* Main Image */}
-        <div className="tab-content m-img">
+        <div className="tab-content m-img" style={{ width: "100%" }}>
           <div className="tab-pane fade show active">
             <div className="tp-product-details-nav-main-thumb p-relative">
-            <Image
-                src={activeImg || "/default-image.png"}
+              <Image
+                src={activeImg}
                 alt="Product image"
                 width={imgWidth}
                 height={imgHeight}
                 layout="responsive"
+                objectFit="cover" // Ensure main image scales properly
                 style={{ borderRadius: "8px" }} // Optional: add rounded corners
               />
               <div className="tp-product-badge">

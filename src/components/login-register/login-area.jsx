@@ -6,7 +6,6 @@ import LoginShapes from "./login-shapes";
 // import GoogleSignUp from "./google-sign-up";
 
 const LoginArea = () => {
-
   return (
     <>
       <section className="tp-login-area pb-140 p-relative z-index-1 fix">
@@ -15,12 +14,21 @@ const LoginArea = () => {
           <div className="row justify-content-center">
             <div className="col-xl-6 col-lg-8">
               <div className="tp-login-wrapper">
-                <div className="tp-login-top text-center mb-30">
+                <div  className=" text-center mb-30">
                   <h3 className="tp-login-title">Login to Shofy.</h3>
-                  <p>
+                  <p style={{fontSize:"18px"}}>
                     Don’t have an account?{" "}
                     <span>
-                      <Link href="/register">Create a free account</Link>
+                      <Link
+                        style={{
+                          color: "#990100",
+                          fontSize: "18px",
+                          textDecoration: "underline",
+                        }}
+                        href="/register"
+                      >
+                        Create a free account
+                      </Link>
                     </span>
                   </p>
                 </div>

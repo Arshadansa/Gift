@@ -77,8 +77,8 @@ const CouponItem = ({ coupon, handleCopied, copiedCode, copied }) => {
             </span>
             <div className="tp-coupon-info-tooltip transition-3">
               <p>
-                *This coupon code will apply on{" "}
-                <span>Grocery type products</span> and when you shop more than{" "}
+                *This coupon code applies to{" "}
+                <span>Gifts products</span> and will be valid when your purchase exceeds{" "}
                 <span>${coupon.minimumAmount || "0.00"}</span>
               </p>
             </div>

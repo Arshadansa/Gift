@@ -86,7 +86,7 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
 
       {/* price */}
       <div className="tp-product-details-price-wrapper mb-20">
-        <span className="tp-product-details-price new-price">Price: ₹{parseFloat(price).toFixed(2)}</span>
+        <span className="tp-product-details-price new-price">Price: ${parseFloat(price).toFixed(2)}</span>
       </div>
 
     

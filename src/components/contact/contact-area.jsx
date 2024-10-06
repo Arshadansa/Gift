@@ -74,7 +74,7 @@ const ContactArea = () => {
                           Find on social media
                         </h4>
 
-                        <div className="tp-contact-social-icon">
+                        <div className="">
                           <ContactSocialMedia/>
                         </div>
                       </div>

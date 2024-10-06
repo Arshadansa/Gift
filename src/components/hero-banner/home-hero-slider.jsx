@@ -3,31 +3,42 @@ import { Navigation, Pagination, EffectFade } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useGetHeroSliderDataQuery } from "@/redux/api/apiSlice"; // Import the query hook
-import { ArrowRightLong, SliderNextBtn, SliderPrevBtn, TextShape } from "@/svg";
-import Wrapper from "@/layout/wrapper";
-import Header from "@/layout/headers/header";
+import { useGetHeroSliderDataQuery } from "@/redux/api/apiSlice"; // Use the correct import for hero slider
+import { ArrowRightLong, SliderNextBtn, SliderPrevBtn } from "@/svg";
 import ErrorMsg from "../common/error-msg";
+import Loader from "../loader/loader";
+import Wrapper from "@/layout/wrapper";
 
 const HomeHeroSlider = () => {
   const [active, setActive] = useState(false);
 
-  // Fetch data from the API
+  // Fetch data for hero slider
   const { data: sliderData, error, isLoading } = useGetHeroSliderDataQuery();
 
+  console.log(sliderData, "sdfd");
+
   const handleActiveIndex = (index) => {
-    if (index === 2) {
-      setActive(true);
-    } else {
-      setActive(false);
-    }
+    setActive(index === 2);
   };
+
   let content = null;
-  // if (isLoading){ content = <ErrorMsg msg="Loging" />};
-  if (error){ content = <ErrorMsg msg="There was an error" />};
+  if (isLoading) {
+    content = (
+      <Wrapper>
+        <Loader msg="Loading..." />;
+      </Wrapper>
+    );
+  } else if (error) {
+    content = (
+      <Wrapper>
+        <ErrorMsg msg="There was an error" />;
+      </Wrapper>
+    );
+  }
 
   return (
-    <section className="tp-slider-area p-relative z-index-1">
+    <section>
+      {content}
       <Swiper
         slidesPerView={1}
         spaceBetween={30}
@@ -48,24 +59,31 @@ const HomeHeroSlider = () => {
           <SwiperSlide
             key={item.id}
             className="tp-slider-item tp-slider-height d-flex align-items-center"
-            style={{ backgroundColor: item.bg_color || "#FFFFFF" }} // Updated for background color
+            style={{ backgroundColor: item.bg_color || "transparent" }}
           >
-            <div className="container">
+            <div
+              className="container"
+              style={{ position: "relative", zIndex: 1 }}
+            >
               <div className="row align-items-center">
                 <div className="col-xl-5 col-lg-6 col-md-6">
                   <div className="tp-slider-content p-relative z-index-1">
-                    <h3 className="tp-slider-title">{item.heading}</h3>{" "}
-                    {/* Updated to match "heading" */}
-                    <p>{item.subheading}</p>{" "}
-                    {/* Updated to match "subheading" */}
+                    <h3 className="tp-slider-title">{item.heading}</h3>
+                    <p>{item.subheading}</p>
                     <div className="tp-slider-btn">
-                      <div className="tp-slider-btn">
-                        <Link href={"/shop"} legacyBehavior>
-                          <a className="btn btn-danger">
-                            {item.button_text} <ArrowRightLong />
-                          </a>
-                        </Link>
-                      </div>
+                      <Link
+                        href={
+                          // Assuming that category IDs are purely numeric
+                          /^[0-9]+$/.test(item.button_link) // Check if button_link is a numeric string
+                            ? `shop?category=${item.button_link}`
+                            : `product-details/${item.button_link}`
+                        }
+                        legacyBehavior
+                      >
+                        <a className="btn btn-danger">
+                          {item.button_text} <ArrowRightLong />
+                        </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -74,8 +92,8 @@ const HomeHeroSlider = () => {
                     <Image
                       src={item.image}
                       alt="slider-img"
-                      width={800} // You can adjust these values
-                      height={525} // You can adjust these values
+                      width={800}
+                      height={525}
                       objectFit="cover"
                     />
                   </div>

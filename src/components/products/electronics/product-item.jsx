@@ -76,7 +76,7 @@ const ProductItem = ({ product, offer_style = false }) => {
       } tp-product-item transition-3`}
     >
       <div
-        style={{ height: "300px" }}
+        style={{ height: "320px" }}
         className="tp-product-thumb p-relative fix"
       >
         <Link href={`/product-details/${product_id}`}>
@@ -174,7 +174,7 @@ const ProductItem = ({ product, offer_style = false }) => {
             className="tp-product-price new-price "
             style={{ color: "#990100" }}
           >
-            ₹ {parseFloat(price).toFixed(2)}
+            $ {parseFloat(price).toFixed(2)}
           </span>
         </div>
 

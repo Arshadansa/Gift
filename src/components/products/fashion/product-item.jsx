@@ -4,19 +4,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { Rating } from "react-simple-star-rating";
 import Link from "next/link";
 // internal
-import { Cart, CompareThree, QuickView, Wishlist } from "@/svg";
+import { Cart, QuickView } from "@/svg";
 import { handleProductModal } from "@/redux/features/productModalSlice";
 import { add_cart_product } from "@/redux/features/cartSlice";
 import { add_to_wishlist } from "@/redux/features/wishlist-slice";
 import { add_to_compare } from "@/redux/features/compareSlice";
 
 const ProductItem = ({ product, style_2 = false }) => {
-  const { product_id, name, images, categories, price, stock_quantity, description } = product || {};
+  const { product_id, name, images, categories, price, stock_quantity } =
+    product || {};
   const [ratingVal, setRatingVal] = useState(0);
   const { cart_products } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
-  const isAddedToCart = cart_products.some((prd) => prd.product_id === product_id);
-  const isAddedToWishlist = wishlist.some((prd) => prd.product_id === product_id);
+  const isAddedToCart = cart_products.some(
+    (prd) => prd.product_id === product_id
+  );
+  const isAddedToWishlist = wishlist.some(
+    (prd) => prd.product_id === product_id
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,29 +40,42 @@ const ProductItem = ({ product, style_2 = false }) => {
     dispatch(add_cart_product(prd));
   };
 
-  // handle wishlist product
-  const handleWishlistProduct = (prd) => {
-    dispatch(add_to_wishlist(prd));
-  };
-
-  // handle compare product
-  const handleCompareProduct = (prd) => {
-    dispatch(add_to_compare(prd));
-  };
+ 
 
   return (
     <div className={`tp-product-item-2 ${style_2 ? "" : "mb-40"}`}>
       <div className="tp-product-thumb-2 p-relative z-index-1 fix">
         <Link href={`/product-details/${product_id}`}>
-          <Image
-            src={images[0]} 
-            alt={name}
-            width={284}
-            height={302}
-          />
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              paddingTop: "140%",
+              overflow: "hidden",
+              background: "transparent",
+            }}
+          >
+            <Image
+              src={images[0]}
+              alt={name}
+              layout="fill" // Use fill layout
+              objectFit="contain" // Maintain aspect ratio
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                background: "transparent",
+                mixBlendMode: "multiply", // Apply your desired blend mode here
+              }}
+            />
+          </div>
         </Link>
         <div className="tp-product-badge">
-          {stock_quantity === 0 && <span className="product-hot">Out of stock</span>}
+          {stock_quantity === 0 && (
+            <span className="product-hot">Out of stock</span>
+          )}
         </div>
         {/* product action */}
         <div className="tp-product-action-2 tp-product-action-blackStyle">
@@ -65,7 +83,9 @@ const ProductItem = ({ product, style_2 = false }) => {
             {isAddedToCart ? (
               <Link
                 href="/cart"
-                className={`tp-product-action-btn-2 ${isAddedToCart ? "active" : ""} tp-product-add-cart-btn`}
+                className={`tp-product-action-btn-2 ${
+                  isAddedToCart ? "active" : ""
+                } tp-product-add-cart-btn`}
               >
                 <Cart />
                 <span className="tp-product-tooltip tp-product-tooltip-right">
@@ -76,7 +96,9 @@ const ProductItem = ({ product, style_2 = false }) => {
               <button
                 type="button"
                 onClick={() => handleAddProduct(product)}
-                className={`tp-product-action-btn-2 ${isAddedToCart ? "active" : ""} tp-product-add-cart-btn`}
+                className={`tp-product-action-btn-2 ${
+                  isAddedToCart ? "active" : ""
+                } tp-product-add-cart-btn`}
                 disabled={stock_quantity === 0}
               >
                 <Cart />
@@ -99,18 +121,23 @@ const ProductItem = ({ product, style_2 = false }) => {
       </div>
       <div className="tp-product-content-2 pt-15">
         <div className="tp-product-tag-2">
-          {categories.map((category, i) => (
+          {/* {categories.map((category, i) => (
             <a key={i} href="#">
               {category}
               {i < categories.length - 1 && ","}
             </a>
-          ))}
+          ))} */}
         </div>
         <h3 className="tp-product-title-2">
           <Link href={`/product-details/${product_id}`}>{name}</Link>
         </h3>
         <div className="tp-product-rating-icon tp-product-rating-icon-2">
-          <Rating allowFraction size={16} initialValue={ratingVal} readonly={true} />
+          {/* <Rating
+            allowFraction
+            size={16}
+            initialValue={ratingVal}
+            readonly={true}
+          /> */}
         </div>
         <div className="tp-product-price-wrapper-2">
           <span className="tp-product-price-2 new-price">

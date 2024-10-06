@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetUserQuery } from "@/redux/features/auth/authApi";
-import { userLoggedIn, userLoggedOut } from "@/redux/features/auth/authSlice";
+import { userLoggedOut } from "@/redux/features/auth/authSlice";
 import Cookies from "js-cookie";
 
 function ProfileSetting({ active, handleActive }) {
@@ -13,34 +12,69 @@ function ProfileSetting({ active, handleActive }) {
 
   const handleLogout = () => {
     dispatch(userLoggedOut());
-    Cookies.remove("userInfo"); 
-    router.push("/"); 
+    Cookies.remove("userInfo");
+    router.push("/");
   };
+
+  const [hovered, setHovered] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null); // State to track hovered item
 
   return (
     <div className="tp-header-top-menu-item tp-header-setting">
       <span
-        onClick={() => handleActive("setting")}
         className="tp-header-setting-toggle"
         id="tp-header-setting-toggle"
-        style={{ color: "white" }}
+        onClick={() => handleActive("setting")} // Call handleActive on click
       >
         Setting
       </span>
-      <ul className={active === "setting" ? "tp-setting-list-open" : ""}>
-        <li onClick={() => handleActive("setting")}>
-          <Link href="/profile">My Profile</Link>
+      <ul
+        style={{ fontWeight: "bold" }}
+        className={active === "setting" ? "tp-setting-list-open" : ""}
+      >
+        <li>
+          <Link
+            onMouseEnter={() => setHoveredItem("profile")}
+            onMouseLeave={() => setHoveredItem(null)}
+            onClick={() => handleActive("setting")}
+            style={{ color: hoveredItem === "profile" ? "#990100" : "inherit" }}
+            href="/profile"
+          >
+            My Profile
+          </Link>
         </li>
-        <li onClick={() => handleActive("setting")}>
-          <Link href="/cart">Cart</Link>
+        <li>
+          <Link
+            onMouseEnter={() => setHoveredItem("cart")}
+            onMouseLeave={() => setHoveredItem(null)}
+            onClick={() => handleActive("setting")}
+            style={{ color: hoveredItem === "cart" ? "#990100" : "inherit" }}
+            href="/cart"
+          >
+            Cart
+          </Link>
         </li>
-        <li onClick={() => handleActive("setting")}>
+        <li>
           {!user ? (
-            <Link href="/login" className="cursor-pointer">
+            <Link
+              onMouseEnter={() => setHoveredItem("login")}
+              onMouseLeave={() => setHoveredItem(null)}
+              onClick={() => handleActive("setting")}
+              style={{ color: hoveredItem === "login" ? "#990100" : "inherit" }} // Change color on hover
+              href="/login"
+              className="cursor-pointer"
+            >
               Login
             </Link>
           ) : (
-            <span onClick={handleLogout} className="cursor-pointer">
+            <span
+              onMouseEnter={() => setHoveredItem("login")}
+              onMouseLeave={() => setHoveredItem(null)}
+            
+              style={{ color: hoveredItem === "login" ? "#990100" : "inherit" }} // Change color on hover
+              onClick={handleLogout}
+              className="cursor-pointer"
+            >
               Logout
             </span>
           )}
@@ -52,11 +86,11 @@ function ProfileSetting({ active, handleActive }) {
 
 // HeaderTopRight Component
 const HeaderTopRight = () => {
-  const [active, setIsActive] = useState("");
+  const [active, setActive] = useState(""); // State for active menu
   const user = useSelector((state) => state.auth.user); // Accessing the user state
 
   const handleActive = (type) => {
-    setIsActive((prev) => (type === prev ? "" : type));
+    setActive((prev) => (type === prev ? "" : type)); // Toggle active menu
   };
 
   return (

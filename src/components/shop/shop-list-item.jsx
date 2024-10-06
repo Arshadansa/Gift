@@ -11,7 +11,7 @@ import { add_to_wishlist } from "@/redux/features/wishlist-slice";
 import { add_to_compare } from "@/redux/features/compareSlice";
 
 const ShopListItem = ({ product }) => {
-  const { product_id, name, price, stock_quantity, size, weight, description, images } = product || {};
+  const { product_id, name, price, stock_quantity, size, weight, description, images=[] } = product || {};
   const dispatch = useDispatch();
   const [ratingVal, setRatingVal] = useState(0);
 
@@ -28,6 +28,8 @@ const ShopListItem = ({ product }) => {
   const handleAddProduct = (prd) => {
     dispatch(add_cart_product(prd));
   };
+  
+  
 
   return (
     <div className="tp-product-list-item d-md-flex">

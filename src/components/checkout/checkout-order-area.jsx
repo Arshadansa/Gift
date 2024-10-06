@@ -51,7 +51,7 @@ const CheckoutOrderArea = ({ checkoutData }) => {
                 {item.title} <span> x {item.orderQuantity}</span>
               </p>
               <span style={{ color: "#990100" }}>
-                ₹{Number(item.price).toFixed(2)}
+                ${Number(item.price).toFixed(2)}
               </span>
             </li>
           ))}
@@ -74,7 +74,7 @@ const CheckoutOrderArea = ({ checkoutData }) => {
                   htmlFor="flat_shipping"
                 >
                   Delivery: Today Cost :
-                  <span style={{ color: "#990100" }}>₹60.00</span>
+                  <span style={{ color: "#990100" }}>$60.00</span>
                 </label>
                 <ErrorMsg msg={errors?.shippingOption?.message} />
               </span>
@@ -92,7 +92,7 @@ const CheckoutOrderArea = ({ checkoutData }) => {
                   htmlFor="flat_rate"
                 >
                   Delivery: 7 Days Cost:{" "}
-                  <span style={{ color: "#990100" }}>₹20.00</span>
+                  <span style={{ color: "#990100" }}>$20.00</span>
                 </label>
                 <ErrorMsg msg={errors?.shippingOption?.message} />
               </span>
@@ -102,20 +102,20 @@ const CheckoutOrderArea = ({ checkoutData }) => {
           {/*  subtotal */}
           <li className="tp-order-info-list-subtotal">
             <span>Subtotal</span>
-            <span style={{ color: "#990100" }}>₹{total.toFixed(2)}</span>
+            <span style={{ color: "#990100" }}>${total.toFixed(2)}</span>
           </li>
 
           {/*  shipping cost */}
           <li className="tp-order-info-list-subtotal">
             <span>Shipping Cost</span>
-            <span style={{ color: "#990100" }}>₹{shippingCost.toFixed(2)}</span>
+            <span style={{ color: "#990100" }}>${shippingCost.toFixed(2)}</span>
           </li>
 
           {/* discount */}
           <li className="tp-order-info-list-subtotal">
             <span>Discount</span>
             <span style={{ color: "#990100" }}>
-              ₹{discountAmount.toFixed(2)}
+              ${discountAmount.toFixed(2)}
             </span>
           </li>
 
@@ -123,7 +123,7 @@ const CheckoutOrderArea = ({ checkoutData }) => {
           <li className="tp-order-info-list-total">
             <span>Total</span>
             <span style={{ color: "#990100" }}>
-              ₹{parseFloat(cartTotal).toFixed(2)}
+              ${parseFloat(cartTotal).toFixed(2)}
             </span>
           </li>
         </ul>

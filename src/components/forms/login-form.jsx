@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useRouter } from 'next/router';
-import Link from 'next/link';
+import { useRouter } from "next/router";
+import Link from "next/link";
 import Cookies from "js-cookie"; // Import js-cookie for cookie management
-import { useDispatch } from 'react-redux'; // Use dispatch for actions
+import { useDispatch } from "react-redux"; // Use dispatch for actions
 
 // Internal imports
-import { CloseEye, OpenEye } from '@/svg';
-import ErrorMsg from '../common/error-msg';
-import { useLoginUserMutation } from '@/redux/features/auth/authApi';
-import { notifyError, notifySuccess } from '@/utils/toast';
-import { userLoggedIn } from '@/redux/features/auth/authSlice'; // Import the action
+import { CloseEye, OpenEye } from "@/svg";
+import ErrorMsg from "../common/error-msg";
+import { useLoginUserMutation } from "@/redux/features/auth/authApi";
+import { notifyError, notifySuccess } from "@/utils/toast";
+import { userLoggedIn } from "@/redux/features/auth/authSlice"; // Import the action
 
 // Validation schema
 const schema = Yup.object().shape({
@@ -53,26 +53,27 @@ const LoginForm = () => {
         email: data.email,
         password: data.password,
       }).unwrap(); // Using unwrap to get the result or throw an error
-  
+
       // Check if the login was successful
-      if (result.status) { // Check if user is authenticated
+      if (result.status) {
+        // Check if user is authenticated
         notifySuccess("Login successfully");
-  
+
         const userInfo = {
           accessToken: result.access_token, // Ensure this exists in your response
           user: result.user,
         };
-  
+
         // Store user info in cookies
         Cookies.set("userInfo", JSON.stringify(userInfo), {
           expires: 7,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'Strict',
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "Strict",
         });
-  
+
         // Dispatch the login action
         dispatch(userLoggedIn(userInfo));
-  
+
         // Redirect the user
         router.push(redirect || "/");
       } else {
@@ -83,7 +84,7 @@ const LoginForm = () => {
     }
     reset();
   };
-  
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="tp-login-input-wrapper">
@@ -129,17 +130,27 @@ const LoginForm = () => {
           <input id="remember" type="checkbox" />
           <label htmlFor="remember">Remember me</label>
         </div>
-        <div className="tp-login-forgot">
-          <Link href="/forgot">Forgot Password?</Link>
+        <div className="">
+          <Link
+            style={{
+              color: "#990100",
+              fontSize: "16px",
+              textDecoration: "underline",
+            }}
+            href="/forgot"
+          >
+            Forgot Password?
+          </Link>
         </div>
       </div>
       <div className="tp-login-bottom">
         <button
-          type='submit'
+          type="submit"
           style={buttonStyle}
-          onMouseEnter={() => setIsHovered(true)} 
-          onMouseLeave={() => setIsHovered(false)} 
-          className="tp-login-btn w-100">
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="tp-login-btn w-100"
+        >
           Login
         </button>
       </div>

@@ -133,7 +133,7 @@ const HeaderTwo = ({ style_2 = false }) => {
                             className="tp-header-action-btn cartmini-open-btn"
                           >
                             <CartTwo />
-                            <span className="tp-header-action-badge">
+                            <span style={{backgroundColor:"#990100"}} className="tp-header-action-badge">
                               {quantity}
                             </span>
                           </button>

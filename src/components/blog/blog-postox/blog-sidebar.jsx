@@ -26,7 +26,7 @@ const BlogSidebar = ({ latestBlog }) => {
     <div className="tp-sidebar-wrapper tp-sidebar-ml--24">
       <div className="tp-sidebar-widget mb-35">
         <div className="tp-sidebar-search">
-          <form action="#">
+          {/* <form action="#">
             <div className="tp-sidebar-search-input">
               <input
                 type="text"
@@ -38,7 +38,7 @@ const BlogSidebar = ({ latestBlog }) => {
                 <Search />
               </button>
             </div>
-          </form>
+          </form> */}
         </div>
       </div>
       <div className="tp-sidebar-widget mb-35">

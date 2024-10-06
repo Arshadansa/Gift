@@ -68,6 +68,7 @@ const HeaderMainRight = ({ setIsCanvasOpen }) => {
           <button
             onClick={() => dispatch(openCartMini())}
             type="button"
+            style={{border:"solid 1px white"}}
             className="tp-header-action-btn cartmini-open-btn"
           >
             <CartTwo />

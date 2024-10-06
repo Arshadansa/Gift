@@ -2,44 +2,59 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
-// internal
-import { CloseEye, OpenEye } from "@/svg";
-import ErrorMsg from "../common/error-msg";
+import { init, sendForm } from "emailjs-com";
 import { notifyError, notifySuccess } from "@/utils/toast";
+import ErrorMsg from "../common/error-msg";
+
+// initialize EmailJS with your user ID
+init("b233R9hwalgmVSVG4");
 
 // schema
 const schema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
   email: Yup.string().required().email().label("Email"),
   subject: Yup.string().required().label("Subject"),
-  message: Yup.string().required().label("Subject"),
+  message: Yup.string().required().label("Message"),
   remember: Yup.bool()
     .oneOf([true], "You must agree to the terms and conditions to proceed.")
     .label("Terms and Conditions"),
 });
 
 const ContactForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-    // react hook form
-    const {register,handleSubmit,formState: { errors },reset} = useForm({
-      resolver: yupResolver(schema),
-    });
-    // on submit
-    const onSubmit = (data) => {
-      if(data){
-        notifySuccess('Message sent successfully!');
-      }
-
-      reset();
-    };
+  const onSubmit = (data) => {
+    const form = document.getElementById("contact-form");
+    sendForm("service_b7jixem", "template_z2gc50o", form)
+      .then(() => {
+        notifySuccess("Message sent successfully!");
+        reset();
+      })
+      .catch(() => {
+        notifyError("Failed to send the message. Please try again.");
+      });
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} id="contact-form">
       <div className="tp-contact-input-wrapper">
+        {/* Your existing input fields */}
         <div className="tp-contact-input-box">
           <div className="tp-contact-input">
-            <input {...register("name", { required: `Name is required!` })} name="name" id="name" type="text" placeholder="Shahnewaz Sakil" />
+            <input
+              {...register("name")}
+              name="name"
+              id="name"
+              type="text"
+              placeholder="Enter your Name"
+            />
           </div>
           <div className="tp-contact-input-title">
             <label htmlFor="name">Your Name</label>
@@ -48,7 +63,13 @@ const ContactForm = () => {
         </div>
         <div className="tp-contact-input-box">
           <div className="tp-contact-input">
-            <input {...register("email", { required: `Email is required!` })} name="email" id="email" type="email" placeholder="shofy@mail.com" />
+            <input
+              {...register("email")}
+              name="email"
+              id="email"
+              type="email"
+              placeholder="Example@mail.com"
+            />
           </div>
           <div className="tp-contact-input-title">
             <label htmlFor="email">Your Email</label>
@@ -57,7 +78,13 @@ const ContactForm = () => {
         </div>
         <div className="tp-contact-input-box">
           <div className="tp-contact-input">
-            <input {...register("subject", { required: `Subject is required!` })} name="subject" id="subject" type="text" placeholder="Write your subject" />
+            <input
+              {...register("subject")}
+              name="subject"
+              id="subject"
+              type="text"
+              placeholder="Write your subject"
+            />
           </div>
           <div className="tp-contact-input-title">
             <label htmlFor="subject">Subject</label>
@@ -66,7 +93,12 @@ const ContactForm = () => {
         </div>
         <div className="tp-contact-input-box">
           <div className="tp-contact-input">
-            <textarea {...register("message", { required: `Message is required!` })} id="message" name="message" placeholder="Write your message here..."/>
+            <textarea
+              {...register("message")}
+              id="message"
+              name="message"
+              placeholder="Write your message here..."
+            />
           </div>
           <div className="tp-contact-input-title">
             <label htmlFor="message">Your Message</label>
@@ -76,33 +108,40 @@ const ContactForm = () => {
       </div>
       <div className="tp-contact-suggetions mb-20">
         <div className="tp-contact-remeber">
-          <input  {...register("remember", {required: `Terms and Conditions is required!`})} name="remember" id="remember" type="checkbox" />
-          <label htmlFor="remember">Save my name, email, and website in this browser for the next time I comment.</label>
+          <input
+            {...register("remember")}
+            name="remember"
+            id="remember"
+            type="checkbox"
+          />
+          <label htmlFor="remember">
+            Save my name, email, and website in this browser for the next time I
+            comment.
+          </label>
           <ErrorMsg msg={errors.remember?.message} />
         </div>
       </div>
       <div className="">
-  <button
-    type="submit"
-    style={{
-      backgroundColor: "#000000", // Initial background color
-      color: "#FFFFFF", // Text color
-      border: "none", // Remove border
-      padding: "10px 20px", // Add padding
-      borderRadius: "5px", // Rounded corners
-      transition: "background-color 0.3s", // Smooth transition
-    }}
-    onMouseEnter={(e) => {
-      e.target.style.backgroundColor = "#990100"; // Change background on hover
-    }}
-    onMouseLeave={(e) => {
-      e.target.style.backgroundColor = "#000000"; // Revert background on mouse leave
-    }}
-  >
-    Send Message
-  </button>
-</div>
-
+        <button
+          type="submit"
+          style={{
+            backgroundColor: "#000000",
+            color: "#FFFFFF",
+            border: "none",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            transition: "background-color 0.3s",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = "#990100";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = "#000000";
+          }}
+        >
+          Send Message
+        </button>
+      </div>
     </form>
   );
 };

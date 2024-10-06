@@ -21,7 +21,7 @@ const CartCheckout = () => {
     <div className="tp-cart-checkout-wrapper">
       <div className="tp-cart-checkout-top d-flex align-items-center justify-content-between">
         <span className="tp-cart-checkout-top-title">Subtotal</span>
-        <span className="tp-cart-checkout-top-price">₹ {total}</span>
+        <span className="tp-cart-checkout-top-price">$ {total}</span>
       </div>
       <div className="tp-cart-checkout-shipping">
         <h4 className="tp-cart-checkout-shipping-title">Shipping</h4>
@@ -29,13 +29,13 @@ const CartCheckout = () => {
           <div className="tp-cart-checkout-shipping-option">
             <input id="flat_rate" style={{color:"#990100"}} type="radio" name="shipping" />
             <label htmlFor="flat_rate" onClick={()=> handleShippingCost(20)}>
-              Flat rate: <span style={{color:"#990100"}}>₹20.00</span>
+              Flat rate: <span style={{color:"#990100"}}>$20.00</span>
             </label>
           </div>
           <div className="tp-cart-checkout-shipping-option">
             <input id="local_pickup" style={{color:"#990100"}} type="radio" name="shipping" />
             <label htmlFor="local_pickup" onClick={()=> handleShippingCost(25)}>
-              Local pickup: <span style={{color:"#990100"}}> ₹25.00</span>
+              Local pickup: <span style={{color:"#990100"}}> $25.00</span>
             </label>
           </div>
           <div className="tp-cart-checkout-shipping-option">
@@ -46,7 +46,7 @@ const CartCheckout = () => {
       </div>
       <div className="tp-cart-checkout-total d-flex align-items-center justify-content-between">
         <span>Total</span>
-        <span>₹{(total + shipCost).toFixed(2)}</span>
+        <span>${(total + shipCost).toFixed(2)}</span>
       </div>
       <div className="tp-cart-checkout-proceed">
         <Link 

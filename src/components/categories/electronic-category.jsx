@@ -12,13 +12,9 @@ const ElectronicCategory = () => {
 
   // Handle category route
 
-  const handleCategoryRoute = (name) => {
+  const handleCategoryRoute = (id) => {
     router.push(
-      `/shop?category=${name
-        .toLowerCase()
-        .replace("&", "")
-        .split(" ")
-        .join("-")}`
+      `/shop?category=${id}`
     );
   };
 
@@ -41,7 +37,7 @@ const ElectronicCategory = () => {
           <div className="tp-product-category-thumb fix">
             <a
               className="cursor-pointer"
-              onClick={() => handleCategoryRoute(item.name)}
+              onClick={() => handleCategoryRoute(item.id)}
             >
               <Image
                 style={{ objectFit: "contain" }} // Apply object-contain style here
