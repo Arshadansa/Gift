@@ -9,7 +9,6 @@ export const authApi = apiSlice.injectEndpoints({
     createPaymentIntent: builder.mutation({
       query: (data) => {
         const { accessToken } = data; // Access token passed in data
-        console.log("Access Token:", accessToken); // Log the access token
         return {
           url: "https://apiv2.mysweetwishes.com/api/user/orders",
           method: "POST",
@@ -34,7 +33,7 @@ export const authApi = apiSlice.injectEndpoints({
     saveOrder: builder.mutation({
       query: (data) => {
         const { accessToken, ...rest } = data; // Destructure access token and rest of the data
-        console.log("Access Token order:", accessToken); // Log the access token
+      
         return {
           url: "https://apiv2.mysweetwishes.com/api/orders",
           method: "POST",
@@ -64,7 +63,7 @@ export const authApi = apiSlice.injectEndpoints({
     // getUserOrders
     getUserOrders: builder.query({
       query: (accessToken) => {
-        console.log("Access Token:", accessToken); // Log the access token
+       
         return {
           url: "https://apiv2.mysweetwishes.com/api/user/orders",
           headers: {
@@ -80,7 +79,7 @@ export const authApi = apiSlice.injectEndpoints({
     getUserOrderById: builder.query({
       query: ({ id, accessToken }) => {
       
-        console.log("Access Token:", accessToken,"sdaasd",id); // Log the access token
+    
         return {
           url: `https://apiv2.mysweetwishes.com/api/orders/${id}`,
           headers: {

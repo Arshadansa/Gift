@@ -13,7 +13,7 @@ const PrdCategoryList = () => {
   } = useGetProductTypeCategoryQuery("featured");
   const router = useRouter()
 
-  console.log(categories,"ggggggggggg");
+  
   
   // handle category route
   const handleCategoryRoute = (title) => {

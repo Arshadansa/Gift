@@ -22,7 +22,6 @@ const useCheckoutSubmit = () => {
     skip: !accessToken, // Skip query if accessToken is not available
   });
 
-  console.log(accessToken,"orders");
   
   // Handle any redirection if needed based on authentication or accessToken
   useEffect(() => {
@@ -228,7 +227,7 @@ const useCheckoutSubmit = () => {
 
     dispatch(set_shipping(data));
     setIsCheckoutSubmit(true);
-    console.log(data,"sunmit acess");
+
     
   
     // Construct the order information

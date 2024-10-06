@@ -22,7 +22,7 @@ const ProductGadgetArea = () => {
     isLoading,
   } = useGetProductTypeQuery(activeTab);
 
-  console.log("Products from API:", products); // Log the entire products object
+ 
 
   let content = null;
 

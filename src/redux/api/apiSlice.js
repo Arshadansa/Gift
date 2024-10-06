@@ -10,7 +10,7 @@ export const apiSlice = createApi({
     prepareHeaders: async (headers) => {
       try {
         const userInfo = Cookies.get('cookies');
-        console.log(userInfo, "----------------------");
+        
 
         if (userInfo) {
           const user = JSON.parse(userInfo);
@@ -19,7 +19,7 @@ export const apiSlice = createApi({
           }
         }
       } catch (error) {
-        console.error('Error parsing user info:', error);
+       
       }
       return headers;
     },

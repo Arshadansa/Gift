@@ -23,7 +23,6 @@ const SingleOrder = ({ params }) => {
   const router = useRouter(); // For navigation
 
 
-  console.log(accessToken, "orders", orders);
 
   // Handle any redirection if needed based on authentication or accessToken
   useEffect(() => {
@@ -41,7 +40,7 @@ const SingleOrder = ({ params }) => {
 
   let content = null;
 
-  console.log(data); // Log the entire response for debugging
+  
 
   if (isLoading) {
     content = <PrdDetailsLoader loading={isLoading} />;

@@ -15,7 +15,7 @@ const HomeHeroSlider = () => {
   // Fetch data for hero slider
   const { data: sliderData, error, isLoading } = useGetHeroSliderDataQuery();
 
-  console.log(sliderData, "sdfd");
+  
 
   const handleActiveIndex = (index) => {
     setActive(index === 2);

@@ -41,7 +41,7 @@ const RelatedProducts = ({ id }) => {
   const { data: products, isError, isLoading } = useGetRelatedProductsQuery(id);
 
 
-  console.log("prodddddddddddd",products);
+  
   
   // Decide what to render
   let content;

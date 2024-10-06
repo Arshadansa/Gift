@@ -13,7 +13,7 @@ import social_data from '@/data/social-data';
 import comment_data from '@/data/blog-comment-data';
 
 const BlogDetailsArea = ({ blog }) => {
-  console.log(blog.image_url,"single blog");
+ 
   
   return (
     <section className="tp-postbox-details-area pb-120 pt-95">

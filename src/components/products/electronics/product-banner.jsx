@@ -12,7 +12,7 @@ const ProductBanner = () => {
 
   // Fetch data from the API
   const { data: sliderData, error, isLoading } = useGetHeroSliderDataQuery();
-console.log(sliderData,"fourth");
+
 
   const handleActiveIndex = (index) => {
     setActive(index === 3);

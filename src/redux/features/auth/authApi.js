@@ -107,9 +107,7 @@ export const authApi = apiSlice.injectEndpoints({
       query: ({ data }) => {
         const token = Cookies.get("userInfo")
           ? JSON.parse(Cookies.get("userInfo")).accessToken
-          : "";
-    console.log(data,"reset");
-    
+          : "";   
         return {
           url: `${BASE_URL}reset-password`,
           method: "POST", // Change to POST or PUT based on your API requirements
@@ -144,7 +142,6 @@ export const authApi = apiSlice.injectEndpoints({
 //verify
     confirmForgotPassword: builder.mutation({
       query: (data) => {
-          console.log(data, "verify query data");
           const token = Cookies.get("userInfo")
               ? JSON.parse(Cookies.get("userInfo")).accessToken
               : "";
