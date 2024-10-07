@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper";
 // Internal component for video popup
-import PopupVideo from '@/components/common/popup-video';
+import PopupVideo from "@/components/common/popup-video";
 
 // Slider settings
 const sliderSettings = {
@@ -28,19 +28,21 @@ const BlogItem = ({ item = {} }) => {
       return null; // Don't show image if it's a blockquote, video, audio, or slider
     }
     return (
-      <div className="tp-postbox-thumb w-img" style={{ height: '350px', overflow: 'hidden' }}>
-      <Link href={`/blog-details/${item.id}`}>
-        <Image
-          src={item.image_url}
-          width={10}
-          height={10}
-          alt="blog img"
-          layout="responsive"
-          style={{ objectFit: 'cover' }}
-        />
-      </Link>
-    </div>
-    
+      <div
+        className="tp-postbox-thumb w-img"
+        style={{ height: "350px", overflow: "hidden" }}
+      >
+        <Link href={`/blog-details/${item.id}`}>
+          <Image
+            src={item.image_url}
+            width={10}
+            height={10}
+            alt="blog img"
+            layout="responsive"
+            style={{ objectFit: "cover" }}
+          />
+        </Link>
+      </div>
     );
   };
 
@@ -48,7 +50,13 @@ const BlogItem = ({ item = {} }) => {
   const renderVideoThumbnail = () => (
     <div className="tp-postbox-thumb tp-postbox-video w-img p-relative">
       <Link href={`/blog-details/${item.id}`}>
-        <Image src={item.image_url} width={10} height={10} alt="blog img" layout="responsive" />
+        <Image
+          src={item.image_url}
+          width={10}
+          height={10}
+          alt="blog img"
+          layout="responsive"
+        />
       </Link>
       <a
         onClick={() => setIsVideoOpen(true)}
@@ -68,10 +76,20 @@ const BlogItem = ({ item = {} }) => {
 
   // Function to render slider content
   const renderSliderContent = () => (
-    <Swiper {...sliderSettings} modules={[Navigation, Autoplay]} className="tp-postbox-thumb tp-postbox-slider swiper-container w-img p-relative">
+    <Swiper
+      {...sliderSettings}
+      modules={[Navigation, Autoplay]}
+      className="tp-postbox-thumb tp-postbox-slider swiper-container w-img p-relative"
+    >
       {item.slider_images.map((img, i) => (
         <SwiperSlide key={i} className="tp-postbox-slider-item">
-          <Image src={img.image_url} width={10} height={10} alt="slider img" layout="responsive" />
+          <Image
+            src={img.image_url}
+            width={10}
+            height={10}
+            alt="slider img"
+            layout="responsive"
+          />
         </SwiperSlide>
       ))}
       <div className="tp-postbox-nav">
@@ -104,20 +122,27 @@ const BlogItem = ({ item = {} }) => {
                   <i className="far fa-user"></i> {item.author}
                 </a>
               </span>
-              <span>
-                <a href="#">
-                  <i className="fal fa-comments"></i> {item.comments} Comments
-                </a>
-              </span>
             </div>
             <h3 className="tp-postbox-title">
-              <Link href={`/blog-details/${item.id}`}>
+              <Link
+                href={`/blog-details/${item.id}`}
+                style={{ color: "#000000", transition: "color 0.3s ease" }} // Initial color black with smooth transition
+                onMouseEnter={(e) => {
+                  e.target.style.color = "#990100"; // Change color to #990100 on hover
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = "#000000"; // Revert back to initial color
+                }}
+              >
                 {item.title}
               </Link>
             </h3>
-            <div className="tp-postbox-text">
-              <p>{item.content}</p>
-            </div>
+
+            <div
+              className="tp-postbox-text"
+              dangerouslySetInnerHTML={{ __html: item.content }}
+            ></div>
+
             <div className="tp-postbox-read-more">
               <Link href={`/blog-details/${item.id}`} className="tp-btn">
                 Read More

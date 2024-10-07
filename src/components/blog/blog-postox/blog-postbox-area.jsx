@@ -12,6 +12,8 @@ const BlogPostboxArea = () => {
   const { data: blogData = {}, isLoading, isError } = useFetchBlogsQuery(currPage); // Fetching blog data
 
   // Handle loading and error states
+  console.log(blogData);
+  
   let content = null;
   if (isLoading) {
     content = <Loader msg="Loading..." />;
@@ -28,15 +30,18 @@ const BlogPostboxArea = () => {
   };
 
   // Determine the latest blog
-  const getLatestBlog = (blogs) => {
-    if (!blogs.length) return null; // Return null if no blogs
-    return blogs.reduce((latest, blog) => {
-      const blogDate = new Date(blog.date);
-      return blogDate > latest.date ? blog : latest;
-    }, blogs[0]); // Initial value as the first blog
+  const getLatestBlogs = (blogs) => {
+    if (!blogs.length) return []; // Return an empty array if no blogs
+    // Sort blogs by date in descending order and return the first 3
+    return blogs
+      .map(blog => ({
+        ...blog,
+        date: new Date(blog.date) // Ensure the date is a Date object
+      }))
+      .sort((a, b) => b.date - a.date) // Sort by date descending
+      .slice(0, 3); // Get the latest 3 blogs
   };
-
-  const latestBlog = getLatestBlog(blogs); // Get the latest blog
+  const latestBlog = getLatestBlogs(blogs); // Get the latest blog
 
   
   return (

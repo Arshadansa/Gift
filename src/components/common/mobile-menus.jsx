@@ -19,16 +19,20 @@ const MobileMenus = () => {
               // Menu with submenus
               <li
                 key={menu.id}
-                className={`menu-item has-sub-menu ${
-                  isActiveMenu === menu.title ? "active" : ""
-                }`}
+                className={`menu-item has-sub-menu ${isActiveMenu === menu.title ? "active" : ""}`}
               >
                 {/* Ensure the menu.link exists, otherwise set a fallback */}
                 <Link href={menu.link || "#"}>
-                  <span onClick={() => handleOpenSubMenu(menu.title)}>
+                  <span
+                    style={{
+                      color: isActiveMenu === menu.title ? "#990100" : "black", // Change color based on active state
+                    }}
+                    onClick={() => handleOpenSubMenu(menu.title)}
+                  >
                     {menu.title}
                   </span>
                 </Link>
+
                 {/* Render Submenu */}
                 {isActiveMenu === menu.title && menu.sub_menus && (
                   <ul className="sub-menu">
@@ -36,7 +40,7 @@ const MobileMenus = () => {
                       <li key={index}>
                         {/* Ensure sub.link exists */}
                         <Link href={sub.link || "#"}>
-                          <span>{sub.title}</span>
+                          <span  >{sub.title}</span>
                         </Link>
                       </li>
                     ))}
@@ -47,7 +51,13 @@ const MobileMenus = () => {
               // Single link item
               <li key={menu.id} className="menu-item">
                 <Link href={menu.link || "#"}>
-                  <span>{menu.title}</span>
+                  <span
+                    style={{
+                      color: isActiveMenu === menu.title ? "#990100" : "black", // Change color based on active state
+                    }}
+                  >
+                    {menu.title}
+                  </span>
                 </Link>
               </li>
             )

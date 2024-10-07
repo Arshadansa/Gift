@@ -1,5 +1,5 @@
 import { useGetUserQuery } from "@/redux/features/auth/authApi";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,37 +8,46 @@ import { CartTwo, Menu, User } from "@/svg";
 import { openCartMini } from "@/redux/features/cartSlice";
 import Loader from "@/components/loader/loader";
 import { userLoggedIn, userLoggedOut } from "@/redux/features/auth/authSlice";
+import { PiUserCircleLight } from "react-icons/pi";
 
 const HeaderMainRight = ({ setIsCanvasOpen }) => {
   const user = useSelector((state) => state.auth.user); // Accessing the user state
   const { quantity } = useCartInfo();
   const dispatch = useDispatch();
+  const [hoveredItem, setHoveredItem] = useState(false); // State to track hovered item
 
   return (
     <div className="tp-header-main-right d-flex align-items-center justify-content-end">
       <div className="tp-header-login d-none d-lg-block">
         <div className="d-flex align-items-center">
-          <div className="tp-header-login-icon">
+          <div className="" style={{ marginRight: "8px" }}>
             <span>
               {user?.imageURL ? (
                 <Link href="/profile">
-                  <Image
-                    src={user.imageURL}
-                    alt="User Profile Image"
-                    width={35}
-                    height={35}
-                    className="rounded-full" // Optional: Adds round shape to image
+                  <PiUserCircleLight
+                    style={{
+                      fontWeight: "lighter",
+                      color: "#fff",
+                      cursor: "pointer", // Changes cursor to pointer on hover
+                    }}
+                    size={34}
                   />
                 </Link>
               ) : user?.name ? (
                 <Link href="/profile">
-                  <h2 className="text-uppercase login_text">
+                  <h2
+                    style={{ color: "white" }}
+                    className="text-uppercase login_text"
+                  >
                     {user.name[0]}{" "}
                     {/* Display the first letter of user's name */}
                   </h2>
                 </Link>
               ) : (
-                <User />
+                <PiUserCircleLight
+                  style={{ fontWeight: "lighter", color: "#fff",  }}
+                  size={36}
+                />
               )}
             </span>
           </div>
@@ -46,17 +55,21 @@ const HeaderMainRight = ({ setIsCanvasOpen }) => {
             {!user ? (
               <>
                 <Link href="/login">
-                  <span>Hello,</span>
+                  <span style={{ color: "white" }}>Hello,</span>
                 </Link>
                 <div className="tp-header-login-title">
-                  <Link href="/login">Sign In</Link>
+                  <Link style={{ color: "white" }} href="/login">
+                    Sign In
+                  </Link>
                 </div>
               </>
             ) : (
               <>
-                <span>Hello, {user.name}</span>
+                <span style={{ color: "white" }}>Hello, {user.name}</span>
                 <div className="tp-header-login-title">
-                  <Link href="/profile">Your Account</Link>
+                  <Link style={{ color: "white" }} href="/profile">
+                    Your Account
+                  </Link>
                 </div>
               </>
             )}
@@ -68,11 +81,13 @@ const HeaderMainRight = ({ setIsCanvasOpen }) => {
           <button
             onClick={() => dispatch(openCartMini())}
             type="button"
-            style={{border:"solid 1px white"}}
+            onMouseEnter={() => setHoveredItem(true)}
+            onMouseLeave={() => setHoveredItem(false)}
+            style={{ color: hoveredItem ? "#000000" : "#fff" }}
             className="tp-header-action-btn cartmini-open-btn"
           >
             <CartTwo />
-            <span className="tp-header-action-badge">{quantity}</span>
+            <span style={{backgroundColor:"#990100",borderColor:"white"}} className="tp-header-action-badge">{quantity}</span>
           </button>
         </div>
         <div className="tp-header-action-item d-lg-none">

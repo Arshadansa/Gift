@@ -15,12 +15,14 @@ import BlogArea from "@/components/blog/electronic/blog-area";
 import InstagramArea from "@/components/instagram/instagram-area";
 import CtaArea from "@/components/cta/cta-area";
 import Footer from "@/layout/footers/footer";
+import CategorySection from "@/components/banner/Category-Section";
 
 export default function Home() {
   return (
     <Wrapper>
       <SEO pageTitle="Home" />
       <Header />
+      {/* <CategorySection/> */}
       <HomeHeroSlider />
       <ElectronicCategory />
       <ProductArea />

@@ -5,6 +5,7 @@ import BlogItem from "./blog-item";
 
 import { ArrowRightLong } from "@/svg";
 import { ShapeLine } from "@/svg";
+import Loader from "@/components/loader/loader";
 
 const BlogArea = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,8 +15,8 @@ const BlogArea = () => {
     isError,
   } = useFetchBlogsQuery(currentPage);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error fetching blogs</div>;
+  if (isLoading) return <div><Loader/></div>;
+  if (isError) return <div><ErrorMsg/></div>;
 
   const { data: blogs = [], total_blogs } = blogData;
 

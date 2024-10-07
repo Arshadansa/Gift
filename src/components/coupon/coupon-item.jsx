@@ -79,7 +79,7 @@ const CouponItem = ({ coupon, handleCopied, copiedCode, copied }) => {
               <p>
                 *This coupon code applies to{" "}
                 <span>Gifts products</span> and will be valid when your purchase exceeds{" "}
-                <span>${coupon.minimumAmount || "0.00"}</span>
+                <span>₹{1000 || "0.00"}</span>
               </p>
             </div>
           </div>

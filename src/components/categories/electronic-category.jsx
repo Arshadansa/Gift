@@ -13,9 +13,7 @@ const ElectronicCategory = () => {
   // Handle category route
 
   const handleCategoryRoute = (id) => {
-    router.push(
-      `/shop?category=${id}`
-    );
+    router.push(`/shop?category=${id}`);
   };
 
   // Decide what to render
@@ -34,27 +32,41 @@ const ElectronicCategory = () => {
     content = categories.map((item) => (
       <div className="col " key={item.id}>
         <div className="tp-product-category-item text-center mb-40">
-          <div className="tp-product-category-thumb fix">
+          <div
+            style={{
+              backgroundColor: "#990100",
+              paddingTop: "5vw", // Responsive padding using vw
+              paddingBottom: "5vw", // Responsive padding using vw
+              borderRadius: "50%", // Change to 50% to ensure a circular design
+            }}
+            className="border p-5 sm:p-10 fix" // Add responsive padding
+          >
             <a
               className="cursor-pointer"
               onClick={() => handleCategoryRoute(item.id)}
             >
               <Image
-                style={{ objectFit: "contain" }} // Apply object-contain style here
+                style={{ objectFit: "contain" }} // Ensure image fits within container
                 src={item.image}
                 alt={item.name}
                 className="cover"
-                width={100}
-                height={100}
+                width={120} // Make the image smaller for responsiveness
+                height={120} // Adjust height accordingly
+                sizes="(max-width: 768px) 50vw, 100px" // Responsive image sizes
               />
             </a>
           </div>
+
           <div className="tp-product-category-content">
             <h3 style={{ fontSize: "14px" }}>
               <a
                 className="cursor-pointer"
                 onClick={() => handleCategoryRoute(item.name)}
-                style={{ fontSize: "14px", transition: "color 0.3s", textTransform: "uppercase" } } // Transition for smooth hover effect
+                style={{
+                  fontSize: "14px",
+                  transition: "color 0.3s",
+                  textTransform: "uppercase",
+                }} // Transition for smooth hover effect
                 onMouseEnter={(e) => (e.target.style.color = "#990100")}
                 onMouseLeave={(e) => (e.target.style.color = "")} // Reverts to original color on mouse leave
               >

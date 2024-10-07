@@ -75,7 +75,7 @@ export const mobile_menu = [
   {
     id: 4,
     sub_menu: true,
-    title: 'More Pages',
+    title: 'Setting',
     sub_menus: [
       { title: 'Login', link: '/login' },
       { title: 'Register', link: '/register' },

@@ -76,7 +76,12 @@ const ProductItem = ({ product, offer_style = false }) => {
       } tp-product-item transition-3`}
     >
       <div
-        style={{ height: "320px" }}
+        style={{
+          height: "320px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }} // Flexbox centering
         className="tp-product-thumb p-relative fix"
       >
         <Link href={`/product-details/${product_id}`}>
@@ -86,7 +91,11 @@ const ProductItem = ({ product, offer_style = false }) => {
             height={300} // Adjust height based on your layout
             alt={name} // Use product name for alt text
             className="w-full h-auto"
-            style={{ objectFit: "contain" }}
+            style={{
+              objectFit: "contain",
+              maxWidth: "100%",
+              maxHeight: "100%",
+            }} // Keep the image contained within its container
           />
         </Link>
 
@@ -174,7 +183,7 @@ const ProductItem = ({ product, offer_style = false }) => {
             className="tp-product-price new-price "
             style={{ color: "#990100" }}
           >
-            $ {parseFloat(price).toFixed(2)}
+            ₹ {parseFloat(price).toFixed(2)}
           </span>
         </div>
 

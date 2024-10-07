@@ -22,6 +22,7 @@ function ProfileSetting({ active, handleActive }) {
   return (
     <div className="tp-header-top-menu-item tp-header-setting">
       <span
+       style={{color:"#000000"}}
         className="tp-header-setting-toggle"
         id="tp-header-setting-toggle"
         onClick={() => handleActive("setting")} // Call handleActive on click

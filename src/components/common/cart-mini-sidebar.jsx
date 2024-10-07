@@ -93,7 +93,7 @@ const CartMiniSidebar = () => {
                       <div className="cartmini__price-wrapper">
                         {item.discount > 0 ? (
                           <span style={{color:"#990100"}} className="cartmini__price">
-                            $
+                            ₹
                             {(
                               Number(item.price) -
                               (Number(item.price) * Number(item.discount)) / 100
@@ -101,7 +101,7 @@ const CartMiniSidebar = () => {
                           </span>
                         ) : (
                           <span style={{color:"#990100"}} className="cartmini__price">
-                            ${Number(item.price).toFixed(2)}
+                            ₹{Number(item.price).toFixed(2)}
                           </span>
                         )}
                         <span className="cartmini__quantity">
@@ -135,7 +135,7 @@ const CartMiniSidebar = () => {
           <div className="cartmini__checkout">
             <div className="cartmini__checkout-title mb-30">
               <h4>Subtotal:</h4>
-              <span>${total.toFixed(2)}</span>
+              <span>₹{total.toFixed(2)}</span>
             </div>
             <div className="cartmini__checkout-btn">
               <Link

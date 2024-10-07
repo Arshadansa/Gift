@@ -38,7 +38,7 @@ const HeaderTwo = ({ style_2 = false }) => {
           } tp-header-height`}
         >
           <div
-            style={{ backgroundColor: "#990100" }}
+            
             className="tp-header-top-2 p-relative z-index-11 tp-header-top-border d-none d-md-block"
           >
             <div className="container">
@@ -49,7 +49,7 @@ const HeaderTwo = ({ style_2 = false }) => {
                       <a
                         href="#"
                         style={{
-                          color: "white",
+                          color: "black",
                           textDecoration: "none",
                           display: "flex",
                           alignItems: "center",
@@ -69,7 +69,7 @@ const HeaderTwo = ({ style_2 = false }) => {
                       </a>
                     </div>
                     <div className="tp-header-info-item">
-                      <a style={{ color: "white" }} href="tel:402-763-282-46">
+                      <a style={{ color: "black" }} href="tel:402-763-282-46">
                         <span>
                           <PhoneTwo />
                         </span>{" "}
@@ -88,6 +88,7 @@ const HeaderTwo = ({ style_2 = false }) => {
           </div>
 
           <div
+           style={{ backgroundColor: "#990100" }}
             id="header-sticky"
             className={`tp-header-bottom-2 tp-header-sticky ${
               sticky ? "header-sticky" : ""
@@ -96,7 +97,7 @@ const HeaderTwo = ({ style_2 = false }) => {
             <div className="container">
               <div className="tp-mega-menu-wrapper p-relative">
                 <div className="row align-items-center">
-                  <div className="col-xl-2 col-lg-5 col-md-5 col-sm-4 col-6">
+                  <div className="col-xl-5 col-lg-5 col-md-5 col-sm-4 col-6">
                     <div className="logo">
                       <Link href="/">
                         <Image src={logo} alt="logo" priority />
@@ -110,7 +111,7 @@ const HeaderTwo = ({ style_2 = false }) => {
                       </nav>
                     </div>
                   </div>
-                  <div className="col-xl-5 col-lg-7 col-md-7 col-sm-8 col-6">
+                  <div className="col-xl-2 col-lg-7 col-md-7 col-sm-8 col-6">
                     <div className="tp-header-bottom-right d-flex align-items-center justify-content-end pl-30">
                       <div className="tp-header-search-2 d-none d-sm-block">
                         {/* <form onSubmit={handleSubmit}>
@@ -133,7 +134,7 @@ const HeaderTwo = ({ style_2 = false }) => {
                             className="tp-header-action-btn cartmini-open-btn"
                           >
                             <CartTwo />
-                            <span style={{backgroundColor:"#990100"}} className="tp-header-action-badge">
+                            <span style={{backgroundColor:"#990100",borderColor:"white"}} className="tp-header-action-badge">
                               {quantity}
                             </span>
                           </button>

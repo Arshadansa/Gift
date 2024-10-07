@@ -68,7 +68,7 @@ const refundpolicy = {
   
         Depending on where you live, the time it may take for your exchanged product to reach you may vary.
   
-        If you are shipping an item over $75, you should consider using a trackable shipping service or purchasing shipping insurance. We don’t guarantee that we will receive your returned item.
+        If you are shipping an item over ₹1000, you should consider using a trackable shipping service or purchasing shipping insurance. We don’t guarantee that we will receive your returned item.
       `,
     },
   };

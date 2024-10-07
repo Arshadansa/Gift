@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 // internal
 import Menus from "./header-com/menus";
 import useSticky from "@/hooks/use-sticky";
-import logo from "@assets/img/logo/logo.svg";
+import logo from "@assets/img/logo/logo.png";
 import useCartInfo from "@/hooks/use-cart-info";
 import OffCanvas from "@/components/common/off-canvas";
 import { openCartMini } from "@/redux/features/cartSlice";
@@ -33,11 +33,14 @@ const Header = () => {
   return (
     <>
       <header>
-        <div className="tp-header-area p-relative z-index-11">
+        <div
+          style={{ backgroundColor: "#990100" }}
+          className="tp-header-area p-relative z-index-11"
+        >
           {/* header top start  */}
           <div
             className="tp-header-top red-bg p-relative z-index-1 d-none d-md-block"
-            style={{ backgroundColor: "#990100" }}
+            style={{ backgroundColor: "#fff" }}
           >
             <div className="container">
               <div className="row align-items-center">
@@ -46,7 +49,7 @@ const Header = () => {
                     <span>
                       <ShippingCar />
                     </span>
-                    <p style={{ fontSize: "14px", color: "#fff" }}>
+                    <p style={{ fontSize: "14px", color: "#000000" }}>
                       FREE Express Shipping On Orders $ 570+
                     </p>
                   </div>
@@ -56,7 +59,7 @@ const Header = () => {
                 <div className="col-md-4 d-flex  align-items-center justify-content-center">
                   <p
                     className="m-0"
-                    style={{ fontSize: "14px", color: "#fff" }}
+                    style={{ fontSize: "14px", color: "#000000" }}
                   >
                     <span style={{ marginRight: "5px" }}>
                       <Phone />
@@ -76,7 +79,7 @@ const Header = () => {
           </div>
 
           {/* header main start */}
-          <div className="tp-header-main tp-header-sticky">
+          <div className="tp-header-main  tp-header-sticky">
             <div className="container">
               <div className="row align-items-center">
                 <div className="col-xl-4  col-lg-4 col-md-3 col-6">
@@ -105,14 +108,12 @@ const Header = () => {
               </div>
             </div>
           </div>
-
-
-         
         </div>
       </header>
 
       {/* sticky header start */}
       <div
+        style={{backgroundColor:"#990100"}}
         id="header-sticky-2"
         className={`tp-header-sticky-area p-2 ${
           sticky ? "header-sticky-2" : ""
@@ -124,7 +125,11 @@ const Header = () => {
               <div className="col-xl-3 col-lg-3 col-md-3 col-6">
                 <div className="logo">
                   <Link href="/">
-                    <Image src={logo} alt="logo" />
+                    <Image
+                      src={logo}
+                      style={{ width: "100px", height: "100px" }}
+                      alt="logo"
+                    />
                   </Link>
                 </div>
               </div>
@@ -146,7 +151,7 @@ const Header = () => {
                       className="tp-header-action-btn cartmini-open-btn"
                     >
                       <CartTwo />
-                      <span className="tp-header-action-badge">{quantity}</span>
+                      <span style={{backgroundColor:"#990100",borderColor:"white"}} className="tp-header-action-badge">{quantity}</span>
                     </button>
                   </div>
                   <div className="tp-header-action-item d-lg-none">

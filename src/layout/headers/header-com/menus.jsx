@@ -53,7 +53,7 @@ const Menus = () => {
       const [isHovered, setIsHovered] = useState(false); // State to track hover
 
       const linkStyle = {
-        color: isHovered ? "#990100" : "#000000", // Change color on hover
+        color: !isHovered ? "#fff" : "#000000", // Change color on hover
         transition: "color 0.3s", // Smooth transition for the text color
       };
 

@@ -46,7 +46,7 @@ const OffCanvas = ({ isOffCanvasOpen, setIsCanvasOpen,categoryType = "electronic
               <MobileMenus />
             </div>
 
-            <div className="offcanvas__contact align-items-center d-none">
+            {/* <div className="offcanvas__contact align-items-center d-none">
               <div className="offcanvas__contact-icon mr-20">
                 <span>
                   <Image src={contact_img} alt="contact_img" />
@@ -57,10 +57,10 @@ const OffCanvas = ({ isOffCanvasOpen, setIsCanvasOpen,categoryType = "electronic
                   <a href="tel:098-852-987">004524865</a>
                 </h3>
               </div>
-            </div>
-            <div className="offcanvas__btn">
+            </div> */}
+            {/* <div className="offcanvas__btn">
               <Link href="/contact" className="tp-btn-2 tp-btn-border-2">Contact Us</Link>
-            </div>
+            </div> */}
           </div>
           <div className="offcanvas__bottom">
             

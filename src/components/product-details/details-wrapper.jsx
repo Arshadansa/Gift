@@ -59,7 +59,7 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
     transition: "background-color 0.3s ease", 
   };
   return (
-    <div className="tp-product-details-wrapper">
+    <div  className="tp-product-details-wrapper">
       <div className="tp-product-details-category">
         <span>{categories.length > 0 ? `Category ID: ${categories[0]}` : 'Unknown Category'}</span>
       </div>
@@ -86,7 +86,7 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
 
       {/* price */}
       <div className="tp-product-details-price-wrapper mb-20">
-        <span className="tp-product-details-price new-price">Price: ${parseFloat(price).toFixed(2)}</span>
+        <span className="tp-product-details-price new-price">Price: ₹{parseFloat(price).toFixed(2)}</span>
       </div>
 
     

@@ -54,17 +54,25 @@ const DetailsThumbWrapper = ({
         </nav>
 
         {/* Main Image */}
-        <div className="tab-content m-img" style={{ width: "100%" }}>
+        <div
+          className="tab-content m-img"
+          style={{
+            width: "90%", // Use percentage for width to adjust dynamically with screen size
+            maxWidth: "600px", // Max width for larger screens
+            height: "auto", // Make height auto to maintain aspect ratio
+            margin: "0 auto", // Center the div
+          }}
+        >
           <div className="tab-pane fade show active">
             <div className="tp-product-details-nav-main-thumb p-relative">
               <Image
                 src={activeImg}
                 alt="Product image"
-                width={imgWidth}
-                height={imgHeight}
+                width={imgWidth} // Use width and height for Image component
+                height={imgHeight} // Responsive sizes will be handled by the parent div
                 layout="responsive"
-                objectFit="cover" // Ensure main image scales properly
-                style={{ borderRadius: "8px" }} // Optional: add rounded corners
+                objectFit="cover" // Ensures the image scales proportionally
+                style={{ borderRadius: "8px", width: "100%", height: "auto" }} // Set width to 100% and height to auto for responsiveness
               />
               <div className="tp-product-badge">
                 {status === "out-of-stock" && (
@@ -75,6 +83,11 @@ const DetailsThumbWrapper = ({
                 <div
                   onClick={() => setIsVideoOpen(true)} // Open video on click
                   className="tp-product-details-thumb-video"
+                  style={{
+                    position: "absolute", // Positioning the video overlay
+                    bottom: "10px",
+                    right: "10px",
+                  }}
                 >
                   <a className="tp-product-details-thumb-video-btn cursor-pointer popup-video">
                     <i className="fas fa-play"></i>
