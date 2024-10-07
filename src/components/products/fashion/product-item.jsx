@@ -141,7 +141,7 @@ const ProductItem = ({ product, style_2 = false }) => {
         </div>
         <div className="tp-product-price-wrapper-2">
           <span className="tp-product-price-2 new-price">
-            ${Number(price).toFixed(2)}
+          ₹{Number(price).toFixed(2)}
           </span>
         </div>
       </div>

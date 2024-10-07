@@ -7,7 +7,7 @@ import { handleFilterSidebarClose } from "@/redux/features/shop-filter-slice";
 import ShopCategoryLoader from "@/components/loader/shop/shop-category-loader";
 
 const CategoryFilter = ({ setCurrPage }) => {
-  const { data: categories, isLoading, isError } = useGetShowCategoryQuery();
+  const { data: categories = [], isLoading, isError, error } = useGetShowCategoryQuery();
   const router = useRouter();
   const dispatch = useDispatch();
   const [hoveredCategory, setHoveredCategory] = useState(null); // Track hovered category
@@ -26,6 +26,7 @@ const CategoryFilter = ({ setCurrPage }) => {
   if (isLoading) {
     content = <ShopCategoryLoader loading={isLoading} />;
   } else if (isError) {
+    console.error("Error loading categories:", error); // Log the error to the console
     content = <ErrorMsg msg="There was an error loading categories." />;
   } else if (!categories || categories.length === 0) {
     content = <ErrorMsg msg="No Category found!" />;
@@ -63,14 +64,22 @@ const CategoryFilter = ({ setCurrPage }) => {
     });
   }
 
+  // Check for selected category products
+  const selectedCategoryId = router.query.category;
+  const selectedCategory = categories.length > 0 
+    ? categories.find(cat => cat.id.toString() === selectedCategoryId) 
+    : null;
+
+  const hasProducts = selectedCategory && selectedCategory.products_count > 0;
+
   return (
     <div className="tp-shop-widget mb-50">
       <h3 className="tp-shop-widget-title">Categories</h3>
       <div className="tp-shop-widget-content">
-        <div className="">
+        <div>
           <ul
             style={{
-              textTransform:"uppercase",
+              textTransform: "uppercase",
               padding: "0", 
               margin: "0",  // Remove default margin from ul
             }}
@@ -78,6 +87,10 @@ const CategoryFilter = ({ setCurrPage }) => {
             {content}
           </ul>
         </div>
+        {/* Display message if the selected category has no products */}
+        {selectedCategoryId && !hasProducts && (
+          <ErrorMsg msg="This category has no products available." />
+        )}
       </div>
     </div>
   );

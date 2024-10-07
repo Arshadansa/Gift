@@ -6,6 +6,7 @@ import BlogItem from "./blog-item";
 import { ArrowRightLong } from "@/svg";
 import { ShapeLine } from "@/svg";
 import Loader from "@/components/loader/loader";
+import ErrorMsg from "@/components/common/error-msg";
 
 const BlogArea = () => {
   const [currentPage, setCurrentPage] = useState(1);

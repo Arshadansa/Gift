@@ -56,10 +56,10 @@ const HeaderTwo = ({ style_2 = false }) => {
                           transition: "color 0.3s ease",
                         }}
                         onMouseEnter={(e) =>
-                          (e.currentTarget.style.color = "black")
+                          (e.currentTarget.style.color = "#990100")
                         }
                         onMouseLeave={(e) =>
-                          (e.currentTarget.style.color = "white")
+                          (e.currentTarget.style.color = "black")
                         }
                       >
                         <span>

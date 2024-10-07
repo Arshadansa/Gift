@@ -22,7 +22,7 @@ export default function Home() {
     <Wrapper>
       <SEO pageTitle="Home" />
       <Header />
-      {/* <CategorySection/> */}
+      <CategorySection/>
       <HomeHeroSlider />
       <ElectronicCategory />
       <ProductArea />
