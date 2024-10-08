@@ -1,20 +1,37 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const CheckoutCoupon = ({ handleCouponCode, couponRef,couponApplyMsg }) => {
+const CheckoutCoupon = ({ handleCouponCode, couponRef, couponApplyMsg }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { coupon_info } = useSelector((state) => state.coupon);
   const [isHovered, setIsHovered] = useState(false);
+  const [displayMsg, setDisplayMsg] = useState(couponApplyMsg);
+
   const buttonStyle = {
-    backgroundColor: !isHovered ? "#990100" : "#000000", // Change bg color on hover
-    color: "#FFFFFF", // Text color remains white
-    width: "30%", // Full width
-    border: "none", // Remove border
-    padding: "10px", // Padding for better spacing
-    cursor: "pointer", // Change cursor to pointer on hover
-    transition: "background-color 0.3s ease", // Smooth transition effect
-   
+    backgroundColor: isHovered ? "#000000" : "#990100",
+    color: "#FFFFFF",
+    width: "30%",
+    border: "none",
+    padding: "10px",
+    cursor: "pointer",
+    transition: "background-color 0.3s ease",
   };
+
+  useEffect(() => {
+    // Update displayMsg whenever couponApplyMsg changes
+    setDisplayMsg(couponApplyMsg);
+
+    // If there is a message, set a timeout to clear it after 10 seconds
+    if (couponApplyMsg) {
+      const timer = setTimeout(() => {
+        setDisplayMsg(""); // Clear the message after 10 seconds
+        setIsOpen(false);
+      }, 10000);
+
+      // Clear the timeout if the component unmounts or couponApplyMsg changes
+      return () => clearTimeout(timer);
+    }
+  }, [couponApplyMsg]);
+
   return (
     <div className="tp-checkout-verify-item">
       <p className="tp-checkout-verify-reveal">
@@ -37,15 +54,14 @@ const CheckoutCoupon = ({ handleCouponCode, couponRef,couponApplyMsg }) => {
             </div>
             <button
               type="submit"
-              className=""
               style={buttonStyle}
-              onMouseEnter={() => setIsHovered(true)} 
-              onMouseLeave={() => setIsHovered(false)} 
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             >
               Apply
             </button>
           </form>
-          {couponApplyMsg && <p className="p-2" style={{color:'green'}}>{couponApplyMsg}</p>}
+          {displayMsg && <p className="p-2" style={{ color: 'green' }}>{displayMsg}</p>}
         </div>
       )}
     </div>

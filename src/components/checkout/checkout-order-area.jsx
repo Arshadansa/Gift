@@ -1,180 +1,121 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { CardElement } from "@stripe/react-stripe-js";
 import { useSelector } from "react-redux";
-// internal
 import useCartInfo from "@/hooks/use-cart-info";
 import ErrorMsg from "../common/error-msg";
 
-const CheckoutOrderArea = ({ checkoutData }) => {
+const CheckoutOrderArea = ({ checkoutData, setShowCard, showCard }) => {
   const {
-    handleShippingCost,
     cartTotal = 0,
     stripe,
     isCheckoutSubmit,
-    clientSecret,
     register,
     errors,
-    showCard,
-    setShowCard,
-    shippingCost,
     discountAmount,
   } = checkoutData;
+
   const { cart_products } = useSelector((state) => state.cart);
   const { total } = useCartInfo();
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Track loading state
+
   const buttonStyle = {
-    backgroundColor: !isHovered ? "#990100" : "#000000", // Change bg color on hover
-    color: "#FFFFFF", // Text color remains white
-    width: "100%", // Full width
-    border: "none", // Remove border
-    padding: "10px", // Padding for better spacing
-    cursor: "pointer", // Change cursor to pointer on hover
-    transition: "background-color 0.3s ease", // Smooth transition effect
-    opacity: !stripe || isCheckoutSubmit ? "0.5" : "1", // Lower opacity if disabled
+    backgroundColor: !isHovered ? "#990100" : "#000000",
+    color: "#FFFFFF",
+    width: "100%",
+    border: "none",
+    padding: "10px",
+    cursor: "pointer",
+    transition: "background-color 0.3s ease",
+    opacity: isLoading || isCheckoutSubmit ? "0.5" : "1", // Add loading condition
   };
+
+  const handlePlaceOrder = async () => {
+    setIsLoading(true); // Start loading
+    try {
+      await checkoutData.submitHandler(); // Assuming submitHandler is passed down
+    } catch (error) {
+      console.error("Order submission error:", error);
+    } finally {
+      setIsLoading(false); // Stop loading after the operation
+    }
+  };
+
   return (
     <div className="tp-checkout-place white-bg">
       <h3 className="tp-checkout-place-title">Your Order</h3>
 
       <div className="tp-order-info-list">
+        {/* Order Info List */}
         <ul>
-          {/*  header */}
           <li className="tp-order-info-list-header">
             <h4>Product</h4>
             <h4>Total</h4>
           </li>
-
-          {/*  item list */}
           {cart_products.map((item) => (
             <li key={item._id} className="tp-order-info-list-desc">
               <p>
-                {item.title} <span> x {item.orderQuantity}</span>
+                {item.name} <span> x {item.orderQuantity}</span>
               </p>
               <span style={{ color: "#990100" }}>
-                ${Number(item.price).toFixed(2)}
+              ₹{Number(item.price).toFixed(2)}
               </span>
             </li>
           ))}
-
-          {/*  shipping */}
-          <li className="tp-order-info-list-shipping">
-            <span>Shipping</span>
-            <div className="tp-order-info-list-shipping-item d-flex flex-column align-items-end">
-              <span>
-                <input
-                  {...register(`shippingOption`, {
-                    required: `Shipping Option is required!`,
-                  })}
-                  id="flat_shipping"
-                  type="radio"
-                  name="shippingOption"
-                />
-                <label
-                  onClick={() => handleShippingCost(60)}
-                  htmlFor="flat_shipping"
-                >
-                  Delivery: Today Cost :
-                  <span style={{ color: "#990100" }}>$60.00</span>
-                </label>
-                <ErrorMsg msg={errors?.shippingOption?.message} />
-              </span>
-              <span>
-                <input
-                  {...register(`shippingOption`, {
-                    required: `Shipping Option is required!`,
-                  })}
-                  id="flat_rate"
-                  type="radio"
-                  name="shippingOption"
-                />
-                <label
-                  onClick={() => handleShippingCost(20)}
-                  htmlFor="flat_rate"
-                >
-                  Delivery: 7 Days Cost:{" "}
-                  <span style={{ color: "#990100" }}>$20.00</span>
-                </label>
-                <ErrorMsg msg={errors?.shippingOption?.message} />
-              </span>
-            </div>
-          </li>
-
-          {/*  subtotal */}
           <li className="tp-order-info-list-subtotal">
             <span>Subtotal</span>
-            <span style={{ color: "#990100" }}>${total.toFixed(2)}</span>
+            <span style={{ color: "#990100" }}>
+            ₹{parseFloat(total).toFixed(2)}
+            </span>
           </li>
-
-          {/*  shipping cost */}
-          <li className="tp-order-info-list-subtotal">
-            <span>Shipping Cost</span>
-            <span style={{ color: "#990100" }}>${shippingCost.toFixed(2)}</span>
-          </li>
-
-          {/* discount */}
           <li className="tp-order-info-list-subtotal">
             <span>Discount</span>
             <span style={{ color: "#990100" }}>
-              ${discountAmount.toFixed(2)}
+            ₹{discountAmount.toFixed(2)}
             </span>
           </li>
-
-          {/* total */}
           <li className="tp-order-info-list-total">
             <span>Total</span>
             <span style={{ color: "#990100" }}>
-              ${parseFloat(cartTotal).toFixed(2)}
+            ₹{parseFloat(cartTotal).toFixed(2)}
             </span>
           </li>
         </ul>
       </div>
+
       <div className="tp-checkout-payment">
         <div className="tp-checkout-payment-item">
           <input
-            {...register(`payment`, {
-              required: `Payment Option is required!`,
-            })}
+            {...register(`payment`, { required: `Payment Option is required!` })}
             type="radio"
             id="back_transfer"
             name="payment"
             value="Card"
           />
-          <label
-            onClick={() => setShowCard(true)}
-            htmlFor="back_transfer"
-            data-bs-toggle="direct-bank-transfer"
-          >
+          <label onClick={() => setShowCard(true)} htmlFor="back_transfer">
             Credit Card
           </label>
           {showCard && (
             <div className="direct-bank-transfer">
-              <div className="payment_card">
-                <CardElement
-                  options={{
-                    style: {
-                      base: {
-                        fontSize: "16px",
-                        color: "#424770",
-                        "::placeholder": {
-                          color: "#aab7c4",
-                        },
-                      },
-                      invalid: {
-                        color: "#9e2146",
-                      },
+              <CardElement
+                options={{
+                  style: {
+                    base: {
+                      fontSize: "16px",
+                      color: "#424770",
+                      "::placeholder": { color: "#aab7c4" },
                     },
-                  }}
-                />
-              </div>
+                    invalid: { color: "#9e2146" },
+                  },
+                }}
+              />
             </div>
           )}
           <ErrorMsg msg={errors?.payment?.message} />
         </div>
         <div className="tp-checkout-payment-item">
           <input
-            {...register(`payment`, {
-              required: `Payment Option is required!`,
-            })}
+            {...register(`payment`, { required: `Payment Option is required!` })}
             onClick={() => setShowCard(false)}
             type="radio"
             id="cod"
@@ -189,13 +130,14 @@ const CheckoutOrderArea = ({ checkoutData }) => {
       <div className="tp-checkout-btn-wrapper">
         <button
           type="submit"
-          disabled={!stripe || isCheckoutSubmit}
-          className=" w-100"
+          className="w-100"
           style={buttonStyle}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          onClick={handlePlaceOrder}
+          disabled={isLoading || isCheckoutSubmit}
         >
-          Place Order
+          {isLoading ? "Processing..." : "Place Order"}
         </button>
       </div>
     </div>

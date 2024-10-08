@@ -12,7 +12,7 @@ const BlogPostboxArea = () => {
   const { data: blogData = {}, isLoading, isError } = useFetchBlogsQuery(currPage); // Fetching blog data
 
   // Handle loading and error states
-  console.log(blogData);
+
   
   let content = null;
   if (isLoading) {

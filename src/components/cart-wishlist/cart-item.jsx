@@ -61,7 +61,10 @@ const CartItem = ({ product }) => {
       </td>
       {/* price */}
       <td className="tp-cart-price">
-        <span>${(price * orderQuantity).toFixed(2)}</span>
+        <span>₹{parseFloat(price).toFixed(2)}</span>
+      </td>
+      <td className="tp-cart-price">
+        <span>₹{parseFloat(price * orderQuantity).toFixed(2)}</span>
       </td>
       {/* quantity */}
       <td className="tp-cart-quantity">
