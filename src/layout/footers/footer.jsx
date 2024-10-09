@@ -1,12 +1,13 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-// internal
-import logo from "@assets/img/logo/logo.svg";
-import pay from "@assets/img/footer/footer-pay.png";
+// internal imports
+import logo from "@assets/img/logo/logo.png";
+import pay from "@assets/img/icon/payment-option.png";
 import social_data from "@/data/social-data";
 import { Email, Location } from "@/svg";
 import SocialMedia from "@/components/SocialMedial/SocialMedia";
+
 const Footer = ({
   style_2 = false,
   style_3 = false,
@@ -31,21 +32,27 @@ const Footer = ({
         <div className="tp-footer-top pt-95 pb-40">
           <div className="container">
             <div className="row">
+              {/* Footer logo and social media */}
               <div className="col-xl-4 col-lg-3 col-md-4 col-sm-6">
                 <div className="tp-footer-widget footer-col-1 mb-50">
                   <div className="tp-footer-widget-content">
                     <div className="tp-footer-logo">
                       <Link href="/">
-                        <Image src={logo} alt="logo" />
+                        <Image
+                          style={{ objectFit: "cover" }}
+                          src={logo}
+                          height={100}
+                          width={100}
+                          alt="logo"
+                        />
                       </Link>
                     </div>
-
-                    <div className="">
-                      <SocialMedia/>
-                    </div>
+                    <SocialMedia />
                   </div>
                 </div>
               </div>
+
+              {/* My Account section */}
               <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div className="tp-footer-widget footer-col-2 mb-50">
                   <h4
@@ -59,13 +66,16 @@ const Footer = ({
                       <li>
                         <a
                           href="profile"
-                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          style={{
+                            color: "#FFFFFF",
+                            transition: "color 0.3s",
+                          }}
                           onMouseEnter={(e) =>
                             (e.target.style.color = "#000000")
-                          } // Change to black on hover
+                          }
                           onMouseLeave={(e) =>
                             (e.target.style.color = "#FFFFFF")
-                          } // Revert to white on leave
+                          }
                         >
                           Track Orders
                         </a>
@@ -73,7 +83,10 @@ const Footer = ({
                       <li>
                         <a
                           href="profile"
-                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          style={{
+                            color: "#FFFFFF",
+                            transition: "color 0.3s",
+                          }}
                           onMouseEnter={(e) =>
                             (e.target.style.color = "#000000")
                           }
@@ -87,7 +100,10 @@ const Footer = ({
                       <li>
                         <a
                           href="profile"
-                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
+                          style={{
+                            color: "#FFFFFF",
+                            transition: "color 0.3s",
+                          }}
                           onMouseEnter={(e) =>
                             (e.target.style.color = "#000000")
                           }
@@ -98,10 +114,29 @@ const Footer = ({
                           Order History
                         </a>
                       </li>
+                      <li>
+                        <a
+                          href="shippingpolicy"
+                          style={{
+                            color: "#FFFFFF",
+                            transition: "color 0.3s",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.color = "#000000")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.color = "#FFFFFF")
+                          }
+                        >
+                          Shipping Policy
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </div>
+
+              {/* Information section */}
               <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                 <div className="tp-footer-widget footer-col-3 mb-50">
                   <h4
@@ -112,80 +147,37 @@ const Footer = ({
                   </h4>
                   <div className="tp-footer-widget-content">
                     <ul>
-                      <li>
-                        <a
-                          href="privacypolicy"
-                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
-                          onMouseEnter={(e) =>
-                            (e.target.style.color = "#000000")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.target.style.color = "#FFFFFF")
-                          }
-                        >
-                          Privacy Policy
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="termsandconditions"
-                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
-                          onMouseEnter={(e) =>
-                            (e.target.style.color = "#000000")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.target.style.color = "#FFFFFF")
-                          }
-                        >
-                          Terms & Conditions
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="refundpolicy"
-                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
-                          onMouseEnter={(e) =>
-                            (e.target.style.color = "#000000")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.target.style.color = "#FFFFFF")
-                          }
-                        >
-                          Refund Policy
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="contact"
-                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
-                          onMouseEnter={(e) =>
-                            (e.target.style.color = "#000000")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.target.style.color = "#FFFFFF")
-                          }
-                        >
-                          Contact Us
-                        </a>
-                      </li>
-                      {/* <li>
-                        <a
-                          href="contact"
-                          style={{ color: "#FFFFFF", transition: "color 0.3s" }}
-                          onMouseEnter={(e) =>
-                            (e.target.style.color = "#000000")
-                          }
-                          onMouseLeave={(e) =>
-                            (e.target.style.color = "#FFFFFF")
-                          }
-                        >
-                          About Us
-                        </a>
-                      </li> */}
+                      {[
+                        "Privacy Policy",
+                        "Terms and Conditions",
+                        "Refund Policy",
+                        "Contact Us",
+                        "About Us",
+                      ].map((item, idx) => (
+                        <li key={idx}>
+                          <a
+                            href={item.toLowerCase().replace(/\s+/g, "")}
+                            style={{
+                              color: "#FFFFFF",
+                              transition: "color 0.3s",
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.target.style.color = "#000000")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.target.style.color = "#FFFFFF")
+                            }
+                          >
+                            {item}
+                          </a>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>
               </div>
+
+              {/* Contact section */}
               <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                 <div className="tp-footer-widget footer-col-4 mb-50">
                   <h4
@@ -214,7 +206,9 @@ const Footer = ({
                         </a>
                       </h4>
                     </div>
+
                     <div className="tp-footer-contact">
+                      {/* Email */}
                       <div className="tp-footer-contact-item d-flex align-items-start">
                         <div className="tp-footer-contact-icon">
                           <span>
@@ -241,6 +235,8 @@ const Footer = ({
                           </p>
                         </div>
                       </div>
+
+                      {/* Location */}
                       <div className="tp-footer-contact-item d-flex align-items-start">
                         <div className="tp-footer-contact-icon">
                           <span>
@@ -276,6 +272,8 @@ const Footer = ({
             </div>
           </div>
         </div>
+
+        {/* Footer bottom */}
         <div className="tp-footer-bottom">
           <div className="container">
             <div className="tp-footer-bottom-wrapper">
@@ -284,7 +282,7 @@ const Footer = ({
                   <div className="tp-footer-copyright">
                     <p style={{ color: "#FFFFFF" }}>
                       © {new Date().getFullYear()} All Rights Reserved | Fly
-                      Your Tech by
+                      Your Tech by{" "}
                       <Link
                         href="/"
                         style={{ color: "#FFFFFF", transition: "color 0.3s" }}
@@ -297,11 +295,23 @@ const Footer = ({
                     </p>
                   </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="tp-footer-payment text-md-end">
-                    <p>
-                      <Image src={pay} alt="pay" />
-                    </p>
+
+                {/* Payment column moved here */}
+                <div className="col-md-2"></div>
+                <div className="col-md-4">
+                  <div className="tp-footer-payment mt-20 text-md-start">
+                    <div className="tp-product-details-payment d-flex align-items-start flex-wrap justify-content-between">
+                      <p style={{ fontSize: "13px" }}>
+                        Guaranteed safe <br /> & secure checkout
+                      </p>
+                      <Image
+                        style={{ objectFit: "cover" }}
+                        src={pay}
+                        width={100}
+                        height={20}
+                        alt="payment_option_img"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

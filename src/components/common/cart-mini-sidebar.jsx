@@ -13,6 +13,8 @@ const CartMiniSidebar = () => {
   const { total } = useCartInfo();
   const dispatch = useDispatch();
 
+
+
   // Handle remove product
   const handleRemovePrd = (productId, productName) => {
     dispatch(remove_product({ product_id: productId, name: productName })); // Pass both product_id and name
@@ -37,13 +39,14 @@ const CartMiniSidebar = () => {
   const linkStyleSec = {
     display: "block",
     padding: "10px",
-    border:isHoveredSec ? "solid 1px black" : "solid 1px black",
+    border: isHoveredSec ? "solid 1px black" : "solid 1px black",
     backgroundColor: isHoveredSec ? "#990100" : "Black", // Change color on hover
     color: isHoveredSec ? "#fff" : "#fff", // Change text color on hover
     textAlign: "center",
     textDecoration: "none",
     transition: "background-color 0.3s ease", // Smooth transition
   };
+
   return (
     <>
       <div
@@ -77,10 +80,13 @@ const CartMiniSidebar = () => {
                     <div className="cartmini__thumb">
                       <Link href={`/product-details/${item.product_id}`}>
                         <Image
-                          src={item.images[0]}
+                          src={
+                            item.images ? item.images[0] : item.image
+                          } // Use the first image from the images array or the single image field
+                          alt={item.name || "Product image"} // Use the product name for accessibility
                           width={70}
-                          height={60}
-                          alt="product img"
+                          height={100}
+                          quality={100} // Optional: set quality for better image clarity
                         />
                       </Link>
                     </div>
@@ -92,7 +98,10 @@ const CartMiniSidebar = () => {
                       </h5>
                       <div className="cartmini__price-wrapper">
                         {item.discount > 0 ? (
-                          <span style={{color:"#990100"}} className="cartmini__price">
+                          <span
+                            style={{ color: "#990100" }}
+                            className="cartmini__price"
+                          >
                             ₹
                             {(
                               Number(item.price) -
@@ -100,7 +109,10 @@ const CartMiniSidebar = () => {
                             ).toFixed(2)}
                           </span>
                         ) : (
-                          <span style={{color:"#990100"}} className="cartmini__price">
+                          <span
+                            style={{ color: "#990100" }}
+                            className="cartmini__price"
+                          >
                             ₹{Number(item.price).toFixed(2)}
                           </span>
                         )}
@@ -149,9 +161,9 @@ const CartMiniSidebar = () => {
                 view cart
               </Link>
               <Link
-               style={linkStyleSec} // Apply inline style
-               onMouseEnter={() => setIsHoveredSec(true)} // Set hover state
-               onMouseLeave={() => setIsHoveredSec(false)} // Reset hover state
+                style={linkStyleSec} // Apply inline style
+                onMouseEnter={() => setIsHoveredSec(true)} // Set hover state
+                onMouseLeave={() => setIsHoveredSec(false)} // Reset hover state
                 href="/checkout"
                 onClick={handleCloseCartMini}
                 className="tp-btn tp-btn-border w-100"

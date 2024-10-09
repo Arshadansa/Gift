@@ -18,7 +18,7 @@ const ProductDetailsArea = ({ productItem }) => {
     product_id,
   } = productItem || {};
 
-  const [activeImg, setActiveImg] = useState(images[0] || '');
+  const [activeImg, setActiveImg] = useState(images[0] || "");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,7 +34,6 @@ const ProductDetailsArea = ({ productItem }) => {
   // Access the first category's ID as a string
   const cat_id = categories.length > 0 ? categories[0] : null;
 
-
   return (
     <section className="tp-product-details-area">
       <div className="tp-product-details-top pb-115">
@@ -48,7 +47,7 @@ const ProductDetailsArea = ({ productItem }) => {
                 imgWidth={416}
                 imgHeight={480}
                 videoId={videoId}
-                status={stock_quantity > 0 ? 'in-stock' : 'out-of-stock'}
+                status={stock_quantity > 0 ? "in-stock" : "out-of-stock"}
               />
             </div>
 
@@ -69,7 +68,10 @@ const ProductDetailsArea = ({ productItem }) => {
         <div className="container">
           <div className="row">
             <div className="tp-section-title-wrapper-6 text-center mb-40">
-              <span style={{ color: "#990100" }} className="tp-section-title-pre-6">
+              <span
+                style={{ color: "#990100" }}
+                className="tp-section-title-pre-6"
+              >
                 Next day Products
               </span>
               <h3 className="tp-section-title-6">Related Products</h3>

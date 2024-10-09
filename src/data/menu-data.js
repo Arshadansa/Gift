@@ -37,7 +37,13 @@ const menu_data = [
   {
     id: 6,
     single_link: true,
-    title: 'Contact',
+    title: 'About Us',
+    link: '/aboutus',
+  },
+  {
+    id: 7,
+    single_link: true,
+    title: 'Contact Us',
     link: '/contact',
   },
 ]
@@ -86,6 +92,18 @@ export const mobile_menu = [
   },
   {
     id: 4,
+    sub_menu: true,
+    title: 'Legal',
+    sub_menus: [
+      { title: 'Terms and Conditions', link: 'termsandconditions' },
+      { title: 'Privacy Policy', link: '/privacypolicy' },
+      { title: 'Refund Policy', link: '/refundpolicy' },
+      { title: 'Shipping Policy', link: '/shippingpolicy' },
+     
+    ],
+  },
+  {
+    id: 4,
     single_link: true,
     title: 'Coupons',
     link: '/coupon',
@@ -100,7 +118,13 @@ export const mobile_menu = [
   {
     id: 6,
     single_link: true,
-    title: 'Contact',
+    title: 'About Us',
+    link: '/aboutus',
+  },
+  {
+    id: 7,
+    single_link: true,
+    title: 'Contact Us',
     link: '/contact',
   },
 ]

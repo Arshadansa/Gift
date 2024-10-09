@@ -24,7 +24,6 @@ export default function Home() {
       <Header />
       <CategorySection/>
       <HomeHeroSlider />
-      <ElectronicCategory />
       <ProductArea />
       <ProductGadgetArea />
       <ProductBanner />

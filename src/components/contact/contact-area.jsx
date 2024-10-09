@@ -10,7 +10,7 @@ import ContactSocialMedia from "../SocialMedial/ContactSocialMedia";
 const ContactArea = () => {
   return (
     <>
-      <section className="tp-contact-area pb-100">
+      <section className="tp-contact-area mt-30 pb-100">
         <div className="container">
           <div className="tp-contact-inner">
             <div className="row">

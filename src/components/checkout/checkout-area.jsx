@@ -60,7 +60,7 @@ const CheckoutArea = () => {
           <div className="row">
             <div className="col-xl-7 col-lg-7">
               <div className="tp-checkout-verify">
-                <CheckoutLogin />
+                {/* <CheckoutLogin /> */}
                 <CheckoutCoupon
                   handleCouponCode={handleCouponCode}
                   couponRef={couponRef} // Use the ref from checkoutData

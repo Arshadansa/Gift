@@ -1,9 +1,11 @@
-import Link from 'next/link';
-import React from 'react';
-import ForgotForm from '../forms/forgot-form';
-import LoginShapes from './login-shapes';
+import Link from "next/link";
+import React, { useState } from "react";
+import ForgotForm from "../forms/forgot-form";
+import LoginShapes from "./login-shapes";
 
 const ForgotArea = () => {
+  const [linkColor, setLinkColor] = useState("#000000"); // Initial color
+
   return (
     <section className="tp-login-area pb-140 p-relative z-index-1 fix">
       <LoginShapes />
@@ -17,11 +19,21 @@ const ForgotArea = () => {
               </div>
               <div className="tp-login-option">
                 {/* form start */}
-                <ForgotForm/>
+                <ForgotForm />
                 {/* form end */}
                 <div className="tp-login-suggetions d-sm-flex align-items-center justify-content-center">
-                  <div className="tp-login-forgot">
-                    <span>Remeber Passowrd? <Link href="/login"> Login</Link></span>
+                  <div className="">
+                    <span>
+                      Remember Password?{" "}
+                      <Link
+                        href="/login"
+                        style={{ color: linkColor, transition: "color 0.3s",fontSize:"14px" }} // Apply dynamic color
+                        onMouseEnter={() => setLinkColor("#990100")} // Change color on hover
+                        onMouseLeave={() => setLinkColor("#000000")} // Revert color on hover out
+                      >
+                        Login
+                      </Link>
+                    </span>
                   </div>
                 </div>
               </div>

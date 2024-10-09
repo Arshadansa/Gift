@@ -30,6 +30,7 @@ const ProductItem = ({ product, offer_style = false }) => {
   const { cart_products } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
 
+
   const isAddedToCart = cart_products.some((prd) => prd.id === id);
   const isAddedToWishlist = wishlist.some((prd) => prd.id === id);
 
@@ -58,6 +59,7 @@ const ProductItem = ({ product, offer_style = false }) => {
       name,
       image: images[0], // Use the first image
       price,
+      stock_quantity
       // Assuming there's a discount logic to be included here
     };
     dispatch(add_cart_product(productToAdd));
@@ -101,7 +103,7 @@ const ProductItem = ({ product, offer_style = false }) => {
 
         {/* Product badge for out-of-stock status */}
         <div className="tp-product-badge">
-          {status === "out-of-stock" && (
+          {stock_quantity === "out-of-stock" && (
             <span className="product-hot">Out of Stock</span>
           )}
         </div>
@@ -122,15 +124,15 @@ const ProductItem = ({ product, offer_style = false }) => {
               color: white;
             }
           `}</style>
+
           <div className="tp-product-action-item d-flex flex-column">
             {isAddedToCart ? (
-              <Link
-                href="/cart"
-                className={`tp-product-action-btn ${
-                  isAddedToCart ? "active" : ""
-                } tp-product-add-cart-btn`}
-              >
-                <Cart /> <span className="tp-product-tooltip">View Cart</span>
+              <Link href="/cart">
+                <button
+                  className={`tp-product-action-btn  tp-product-add-cart-btn`}
+                >
+                  <Cart /> <span className="tp-product-tooltip">View Cart</span>
+                </button>
               </Link>
             ) : (
               <button
@@ -139,12 +141,13 @@ const ProductItem = ({ product, offer_style = false }) => {
                 className={`tp-product-action-btn ${
                   isAddedToCart ? "active" : ""
                 } tp-product-add-cart-btn`}
-                disabled={status === "out-of-stock"}
+                disabled={stock_quantity === "out-of-stock"}
               >
                 <Cart />
                 <span className="tp-product-tooltip">Add to Cart</span>
               </button>
             )}
+
             <button
               onClick={() => dispatch(handleProductModal(product))}
               type="button"
@@ -160,7 +163,7 @@ const ProductItem = ({ product, offer_style = false }) => {
       {/* Product content */}
       <div className="tp-product-content">
         <div className="">
-          <Link href={`/category/${categories[0]}`}>{categories[0]}</Link>{" "}
+          <Link href={`/shop?category/${categories[0]}`}>Category ID :{categories[0]}</Link>{" "}
         </div>
         <h3 className="tp-product-title">
           <Link href={`/product-details/${id}`}>
@@ -185,6 +188,9 @@ const ProductItem = ({ product, offer_style = false }) => {
           >
             ₹ {parseFloat(price).toFixed(2)}
           </span>
+        </div>
+        <div className="tp-product-stock-status">
+          <span>In Stock: {stock_quantity}</span>
         </div>
 
         {/* Countdown timer for offers */}

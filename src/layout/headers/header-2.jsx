@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 // internal
 import Menus from "./header-com/menus";
-import logo from "@assets/img/logo/logo.svg";
+import logo from "@assets/img/logo/logo.png";
 import useSticky from "@/hooks/use-sticky";
 import useCartInfo from "@/hooks/use-cart-info";
 import { openCartMini } from "@/redux/features/cartSlice";
@@ -65,7 +65,7 @@ const HeaderTwo = ({ style_2 = false }) => {
                         <span>
                           <Facebook />
                         </span>
-                        7500k Followers
+                        1000k Followers
                       </a>
                     </div>
                     <div className="tp-header-info-item">
@@ -88,19 +88,19 @@ const HeaderTwo = ({ style_2 = false }) => {
           </div>
 
           <div
-           style={{ backgroundColor: "#990100" }}
+           style={{ backgroundColor: "#990100",height:"100px" }}
             id="header-sticky"
-            className={`tp-header-bottom-2 tp-header-sticky ${
+            className={`tp-header-bottom-2 d-flex align-items-center justify-content-center tp-header-sticky ${
               sticky ? "header-sticky" : ""
             }`}
           >
             <div className="container">
               <div className="tp-mega-menu-wrapper p-relative">
-                <div className="row align-items-center">
+                <div className="row align-items-center justify-content-center">
                   <div className="col-xl-5 col-lg-5 col-md-5 col-sm-4 col-6">
                     <div className="logo">
                       <Link href="/">
-                        <Image src={logo} alt="logo" priority />
+                        <Image style={{objectFit:"contain"}} src={logo} width={90}  height={90} alt="logo" priority />
                       </Link>
                     </div>
                   </div>

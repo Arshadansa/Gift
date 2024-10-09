@@ -50,7 +50,7 @@ const Header = () => {
                       <ShippingCar />
                     </span>
                     <p style={{ fontSize: "14px", color: "#000000" }}>
-                      FREE Express Shipping On Orders $ 570+
+                      FREE Express Shipping On Orders Rs500+
                     </p>
                   </div>
                 </div>
@@ -127,7 +127,7 @@ const Header = () => {
                   <Link href="/">
                     <Image
                       src={logo}
-                      style={{ width: "100px", height: "100px" }}
+                      style={{ width: "100px", height: "100px" ,objectFit:"cover" }}
                       alt="logo"
                     />
                   </Link>

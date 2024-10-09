@@ -59,7 +59,7 @@ const useCheckoutSubmit = () => {
     setCouponInfo(couponCode); // Save coupon details
     try {
         const response = await matchCoupon({ couponCode }).unwrap();
-        console.log(response);
+      
 
         // Check if the coupon is valid and meets the minimum price requirement
         if (response.valid) {
@@ -67,7 +67,7 @@ const useCheckoutSubmit = () => {
                 setCouponApplyMsg(
                     `Coupon applied successfully! Discount: ₹${response.discount}`
                 );
-                console.log(response.discount);
+                
                 
                
                 setDiscountAmount(parseFloat(response.discount)); // Ensure it's parsed as a float
@@ -88,12 +88,12 @@ const useCheckoutSubmit = () => {
 
   // Calculate total and discount value
   useEffect(() => {
-    console.log(discountAmount);
+ 
     
     const discountTotal = discountAmount || 0;
     const totalValue = Math.max(Number(total) - discountTotal, 0); // Ensure non-negative total
     setCartTotal(totalValue);
-    console.log("total discount",totalValue);
+   
 
   }, [total, discountAmount]);
 

@@ -10,6 +10,7 @@ const DetailsThumbWrapper = ({
   imgHeight = 480,
   videoId = false,
   status,
+
 }) => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
@@ -75,7 +76,7 @@ const DetailsThumbWrapper = ({
                 style={{ borderRadius: "8px", width: "100%", height: "auto" }} // Set width to 100% and height to auto for responsiveness
               />
               <div className="tp-product-badge">
-                {status === "out-of-stock" && (
+                {status === 'out-of-stock' && (
                   <span className="product-hot">Out of Stock</span>
                 )}
               </div>

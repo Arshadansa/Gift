@@ -10,7 +10,7 @@ import HomePrdLoader from "@/components/loader/home/home-prd-loader";
 const ProductArea = () => {
   const [activeTab, setActiveTab] = useState("trending");
   const { data: products, isError, isLoading, refetch } = useGetProductTypeQuery(activeTab); // Pass activeTab to the query
-
+ 
   // Log product data
   useEffect(() => {
 
@@ -56,7 +56,7 @@ const ProductArea = () => {
   }
 
   return (
-    <section className="tp-product-area pb-55">
+    <section className="tp-product-area mt-40 pb-55">
       <div className="container">
         <div className="row align-items-start">
           <div className="col-xl-4 col-lg-5  col-md-5">

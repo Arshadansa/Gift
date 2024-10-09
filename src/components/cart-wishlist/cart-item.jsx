@@ -30,9 +30,10 @@ const CartItem = ({ product }) => {
     dispatch(remove_product({ product_id: productId, name: productName })); // Pass both product_id and name
   };
 
-  const img = product.images || []; // Default to an empty array if images are not present
   const _id = product.product_id; // Use product_id as the unique identifier
   const [hover, setHover] = useState(false);
+
+
 
   return (
     <tr>
@@ -40,8 +41,8 @@ const CartItem = ({ product }) => {
       <td className="tp-cart-img">
         <Link href={`/product-details/${_id}`}>
           <Image
-            src={img[0] || "/path/to/default/image.jpg"} // Use a default image if none is available
-            alt={product.name} // Use the product name for accessibility
+            src={product.images ? product.images[0] : product.image} // Use the first image from the images array or the single image field
+            alt={product.name || "Product image"} // Use the product name for accessibility
             width={70}
             height={100}
             quality={100} // Optional: set quality for better image clarity
@@ -49,15 +50,17 @@ const CartItem = ({ product }) => {
         </Link>
       </td>
       {/* title */}
-      <td
-       
-        className="tp-cart-title"
-      >
-        <Link  style={{
-          color: hover ? "#990100" : "black", 
-        }}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)} href={`/product-details/${_id}`}>{name}</Link>
+      <td className="tp-cart-title">
+        <Link
+          style={{
+            color: hover ? "#990100" : "black",
+          }}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          href={`/product-details/${_id}`}
+        >
+          {name}
+        </Link>
       </td>
       {/* price */}
       <td className="tp-cart-price">

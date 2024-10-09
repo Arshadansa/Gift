@@ -18,9 +18,7 @@ export const authApi = apiSlice.injectEndpoints({
           code: couponCode,
         };
 
-        // Log the payload and coupon code
-        console.log("Payload:", payload);
-        console.log("Applying Coupon with Code:", couponCode);
+   
 
         return {
           url: `https://apiv2.mysweetwishes.com/api/coupons/match`,
