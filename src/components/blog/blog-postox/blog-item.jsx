@@ -138,10 +138,10 @@ const BlogItem = ({ item = {} }) => {
               </Link>
             </h3>
 
-            <div
+            {/* <div
               className="tp-postbox-text"
               dangerouslySetInnerHTML={{ __html: item.content }}
-            ></div>
+            ></div> */}
 
             <div className="tp-postbox-read-more">
               <Link href={`/blog-details/${item.id}`} className="tp-btn">

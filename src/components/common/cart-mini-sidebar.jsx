@@ -13,8 +13,6 @@ const CartMiniSidebar = () => {
   const { total } = useCartInfo();
   const dispatch = useDispatch();
 
-
-
   // Handle remove product
   const handleRemovePrd = (productId, productName) => {
     dispatch(remove_product({ product_id: productId, name: productName })); // Pass both product_id and name
@@ -80,13 +78,11 @@ const CartMiniSidebar = () => {
                     <div className="cartmini__thumb">
                       <Link href={`/product-details/${item.product_id}`}>
                         <Image
-                          src={
-                            item.images ? item.images[0] : item.image
-                          } // Use the first image from the images array or the single image field
-                          alt={item.name || "Product image"} // Use the product name for accessibility
+                          src={item.images ? item.images[0] : item.image}
+                          alt={item.name || "Product image"}
                           width={70}
-                          height={100}
-                          quality={100} // Optional: set quality for better image clarity
+                          height={50}
+                          quality={100}
                         />
                       </Link>
                     </div>
@@ -127,7 +123,7 @@ const CartMiniSidebar = () => {
                         handleRemovePrd(item.product_id, item.name)
                       }
                       className="cartmini__del cursor-pointer"
-                      type="button" // Ensure the button type is specified
+                      type="button"
                     >
                       <i className="fa-regular fa-xmark"></i>
                     </button>
@@ -135,8 +131,16 @@ const CartMiniSidebar = () => {
                 ))}
               </div>
             ) : (
-              <div className="cartmini__empty text-center">
-                <Image src={empty_cart_img} alt="empty-cart-img" />
+              <div
+                style={{ overflow: "auto" }}
+                className="cartmini__empty text-center"
+              >
+                <Image
+                  src={empty_cart_img}
+                  height={50}
+                  widht={50}
+                  alt="empty-cart-img"
+                />
                 <p>Your Cart is empty</p>
                 <Link href="/shop" className="tp-btn">
                   Go to Shop
@@ -149,37 +153,36 @@ const CartMiniSidebar = () => {
               <h4>Subtotal:</h4>
               <span>₹{total.toFixed(2)}</span>
             </div>
-            <div className="cartmini__checkout-btn">
+            <div className="cartmini__checkout-btn space-y-2 sm:space-y-4">
               <Link
                 href="/cart"
                 onClick={handleCloseCartMini}
-                className="tp-btn mb-10 w-100"
-                style={linkStyle} // Apply inline style
-                onMouseEnter={() => setIsHovered(true)} // Set hover state
-                onMouseLeave={() => setIsHovered(false)} // Reset hover state
+                className="tp-btn mb-10 w-full sm:w-1/2"
+                style={linkStyle}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
               >
-                view cart
+                View Cart
               </Link>
               <Link
-                style={linkStyleSec} // Apply inline style
-                onMouseEnter={() => setIsHoveredSec(true)} // Set hover state
-                onMouseLeave={() => setIsHoveredSec(false)} // Reset hover state
                 href="/checkout"
                 onClick={handleCloseCartMini}
-                className="tp-btn tp-btn-border w-100"
+                className="tp-btn tp-btn-border w-full sm:w-1/2"
+                style={linkStyleSec}
+                onMouseEnter={() => setIsHoveredSec(true)}
+                onMouseLeave={() => setIsHoveredSec(false)}
               >
-                checkout
+                Checkout
               </Link>
             </div>
           </div>
         </div>
       </div>
-      {/* overlay start */}
+
       <div
         onClick={handleCloseCartMini}
         className={`body-overlay ${cartMiniOpen ? "opened" : ""}`}
-      ></div>
-      {/* overlay end */}
+      />
     </>
   );
 };

@@ -65,7 +65,7 @@ const HeaderTwo = ({ style_2 = false }) => {
                         <span>
                           <Facebook />
                         </span>
-                        1000k Followers
+                        1000 Followers
                       </a>
                     </div>
                     <div className="tp-header-info-item">

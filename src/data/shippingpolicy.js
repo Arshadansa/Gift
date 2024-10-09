@@ -8,13 +8,13 @@ const shippingPolicy = {
     section2: {
       title: "DELIVERY TIMELINE",
       content: `
-        We strive to ensure prompt delivery of your orders. The estimated delivery timeline is between **5 to 15 days** from the date of your order confirmation, depending on your location and the availability of the products ordered. Please note that unforeseen circumstances may occasionally affect delivery times.
+        We strive to ensure prompt delivery of your orders. The estimated delivery timeline is between 5 to 15 days from the date of your order confirmation, depending on your location and the availability of the products ordered. Please note that unforeseen circumstances may occasionally affect delivery times.
       `,
     },
     section3: {
       title: "PROCESSING TIME",
       content: `
-        All orders are processed within **1-2 business days**. You will receive a notification once your order has been shipped.
+        All orders are processed within 1-2 business days. You will receive a notification once your order has been shipped.
       `,
     },
     section4: {
@@ -26,7 +26,7 @@ const shippingPolicy = {
     section5: {
       title: "SHIPPING COSTS",
       content: `
-        Shipping costs are calculated at checkout based on your location and the weight of your order. We also offer **free shipping** on orders over **INR 500**.
+        Shipping costs are calculated at checkout based on your location and the weight of your order. We also offer free shipping on orders over INR 500.
       `,
     },
     section6: {
@@ -39,8 +39,8 @@ const shippingPolicy = {
       title: "QUESTIONS AND CONTACT INFORMATION",
       content: `
         If you have any questions regarding our shipping policy, please contact us at 
-        **Email**: [ankit@mysweetwishes.com](mailto:ankit@mysweetwishes.com) 
-        or call us at **Mobile**: +91 9996061015.
+        Email: [ankit@mysweetwishes.com](mailto:ankit@mysweetwishes.com) 
+        or call us at Mobile: +91 9996061015.
       `,
     },
     section8: {

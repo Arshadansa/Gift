@@ -8,7 +8,7 @@ import SEO from "@/components/seo";
 import Wrapper from "@/layout/wrapper";
 import HeaderTwo from "@/layout/headers/header-2";
 import Footer from "@/layout/footers/footer";
-import logo from "@assets/img/logo/logo.svg";
+import logo from "@assets/img/logo/logo.png";
 import ErrorMsg from "@/components/common/error-msg";
 import { useGetUserOrderByIdQuery } from "@/redux/features/order/orderApi";
 import PrdDetailsLoader from "@/components/loader/prd-details-loader";
@@ -21,8 +21,6 @@ const SingleOrder = ({ params }) => {
     skip: !accessToken, // Skip query if accessToken is not available
   });
   const router = useRouter(); // For navigation
-
-
 
   // Handle any redirection if needed based on authentication or accessToken
   useEffect(() => {
@@ -39,8 +37,6 @@ const SingleOrder = ({ params }) => {
   }); // Pass access token
 
   let content = null;
-
-  
 
   if (isLoading) {
     content = <PrdDetailsLoader loading={isLoading} />;
@@ -93,37 +89,37 @@ const SingleOrder = ({ params }) => {
                     <div className="col-xl-12">
                       <div className="invoice__header pb-20">
                         <div className="row align-items-end">
-                          <div className="col-md-4 col-sm-6">
-                            <div className="invoice__left">
-                              <Image src={logo} alt="logo" />
-                              <p>
-                                2879 Elk Creek Road <br /> Stone Mountain,
-                                Georgia{" "}
+                          <div style={{backgroundColor:"#990100",borderRadius:"10px"}} className="col-md-12 col-sm-6">
+                            <div className="invoice__left pt-10">
+                              <Image src={logo} height={100} width={100} alt="logo" />
+                              <p className="mt-15" style={{color:"white"}}>
+                                83, Mahaveer Complex, <br /> Kurukshetra 136118
+                                Haryana
                               </p>
                             </div>
-                          </div>
-                          <div className="col-md-8 col-sm-6">
                             <div className="invoice__right mt-15 mt-sm-0 text-sm-end">
-                              <h3 className="text-uppercase font-70 mb-20">
+                              <h3 style={{color:"white"}} className="text-uppercase font-70 ">
                                 Invoice
                               </h3>
                             </div>
                           </div>
+                          
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="invoice__customer mb-30">
-                  <div className="row">
+                  <div className="row ">
                     <div className="col-md-6 col-sm-8">
-                      <div className="invoice__customer-details">
-                        <h4 className="mb-10 text-uppercase">{email}</h4>
-                        <p className="mb-0 text-uppercase">{country}</p>
-                        <p className="mb-0 text-uppercase">{city}</p>
-                        <p className="mb-0">{phone_number}</p>
+                      <div className="invoice__customer-details d-flex flex-column flex-sm-row flex-wrap w-100 gap-sm-2">
+                        <h5 className="mb-10 text-uppercase w-100">{email}</h5>
+                        <p className="mb-0 text-uppercase w-100">{country}</p>
+                        <p className="mb-0 text-uppercase w-100">{city}</p>
+                        <p className="mb-0 w-100">{phone_number}</p>
                       </div>
                     </div>
+
                     <div className="col-md-6 col-sm-4">
                       <div className="invoice__details mt-md-0 mt-20 text-md-end">
                         <p className="mb-0">
@@ -137,7 +133,8 @@ const SingleOrder = ({ params }) => {
                     </div>
                   </div>
                 </div>
-                <div className="invoice__order-table pt-30 pb-30 pl-40 pr-40 bg-white mb-30">
+                {/* Table wrapped with table-responsive */}
+                <div className="invoice__order-table pt-30 pb-30 pl-40 pr-40 bg-white mb-30 table-responsive">
                   <table className="table">
                     <thead className="table-light">
                       <tr>
@@ -154,8 +151,8 @@ const SingleOrder = ({ params }) => {
                           <td>{i + 1}</td>
                           <td>{item.product_id}</td>
                           <td>{item.quantity}</td>
-                          <td>${Number(item.price).toFixed(2)}</td>
-                          <td>${(item.price * item.quantity).toFixed(2)}</td>
+                          <td>₹{Number(item.price).toFixed(2)}</td>
+                          <td>₹{(item.price * item.quantity).toFixed(2)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -175,7 +172,7 @@ const SingleOrder = ({ params }) => {
                       <div className="invoice__total-ammount mb-30">
                         <h5 className="mb-0">Total Amount</h5>
                         <p className="tp-font-medium text-danger">
-                          <strong>${parseFloat(price).toFixed(2)}</strong>
+                          <strong>₹{parseFloat(price).toFixed(2)}</strong>
                         </p>
                       </div>
                     </div>
@@ -226,7 +223,7 @@ const SingleOrder = ({ params }) => {
   );
 };
 
-export const getServerSideProps= async ({ params }) => {
+export const getServerSideProps = async ({ params }) => {
   return {
     props: { params },
   };

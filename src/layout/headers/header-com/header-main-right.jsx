@@ -45,7 +45,7 @@ const HeaderMainRight = ({ setIsCanvasOpen }) => {
                 </Link>
               ) : (
                 <PiUserCircleLight
-                  style={{ fontWeight: "lighter", color: "#fff",  }}
+                  style={{ fontWeight: "lighter", color: "#fff" }}
                   size={36}
                 />
               )}
@@ -67,7 +67,10 @@ const HeaderMainRight = ({ setIsCanvasOpen }) => {
               <>
                 <span style={{ color: "white" }}>Hello, {user.name}</span>
                 <div className="tp-header-login-title">
-                  <Link style={{ color: "white" }} href="/profile">
+                  <Link
+                    style={{ color: "white", fontSize: "12px" }}
+                    href="/profile"
+                  >
                     Your Account
                   </Link>
                 </div>
@@ -87,7 +90,12 @@ const HeaderMainRight = ({ setIsCanvasOpen }) => {
             className="tp-header-action-btn cartmini-open-btn"
           >
             <CartTwo />
-            <span style={{backgroundColor:"#990100",borderColor:"white"}} className="tp-header-action-badge">{quantity}</span>
+            <span
+              style={{ backgroundColor: "#990100", borderColor: "white" }}
+              className="tp-header-action-badge"
+            >
+              {quantity}
+            </span>
           </button>
         </div>
         <div className="tp-header-action-item d-lg-none">
