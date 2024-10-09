@@ -94,7 +94,7 @@ const Header = () => {
                   </div>
                 </div>
 
-                <div className="col-xl-5  d-none d-lg-block col-lg-5">
+                <div className="col-xl-6  d-none d-lg-block col-lg-6">
                   <div className="main-menu menu-style-1">
                     <nav className="tp-main-menu-content">
                       <Menus />
@@ -102,7 +102,7 @@ const Header = () => {
                   </div>
                 </div>
 
-                <div className="col-xl-3  col-lg-3 col-md-8 col-6">
+                <div className="col-xl-2  col-lg-2 col-md-8 col-6">
                   <HeaderMainRight setIsCanvasOpen={setIsCanvasOpen} />
                 </div>
               </div>

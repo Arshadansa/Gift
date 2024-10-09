@@ -37,7 +37,7 @@ const JewelryAbout = () => {
                     Discover Unique, Thoughtful Gifts for Every Occasion
                   </h3>
                 </div>
-                <div className="tp-about-content pl-120">
+                <div className="tp-about-content ">
                   <p>
                     At My Sweet Wishes Gift Shop, we believe in making every
                     moment special with our carefully curated collection of

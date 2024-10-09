@@ -39,7 +39,7 @@ const shippingPolicy = {
       title: "QUESTIONS AND CONTACT INFORMATION",
       content: `
         If you have any questions regarding our shipping policy, please contact us at 
-        **Email**: [atankit@mysweetwishes.com](mailto:atankit@mysweetwishes.com) 
+        **Email**: [ankit@mysweetwishes.com](mailto:ankit@mysweetwishes.com) 
         or call us at **Mobile**: +91 9996061015.
       `,
     },
