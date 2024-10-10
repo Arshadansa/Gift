@@ -30,7 +30,7 @@ const BlogItem = ({ item = {} }) => {
     return (
       <div
         className="tp-postbox-thumb w-img"
-        style={{ height: "350px", overflow: "hidden" }}
+        style={{ height: "200px", overflow: "hidden" }}
       >
         <Link href={`/blog-details/${item.id}`}>
           <Image

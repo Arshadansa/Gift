@@ -72,9 +72,9 @@ const privacypolicy = {
     content: `
         If you would like to access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information, contact our Privacy Compliance Officer at 83, Mahaveer Complex, Kurukshetra
 136118 Haryana or by mail at ankit@mysweetwishes.com.
-        [Re: Privacy Compliance Officer]
-        [83, Mahaveer Complex, Kurukshetra
-136118 Haryana]
+        Re: Privacy Compliance Officer
+        83, Mahaveer Complex, Kurukshetra
+136118 Haryana
       `,
   },
 };
