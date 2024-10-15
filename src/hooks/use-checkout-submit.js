@@ -5,13 +5,13 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import {
-  useCreatePaymentIntentMutation,
+    useCreateRazorpayOrderMutation,
   useSaveOrderMutation,
 } from "@/redux/features/order/orderApi";
 import { set_shipping } from "@/redux/features/order/orderSlice";
 import { useMatchCouponMutation } from "@/redux/features/coupon/couponApi";
 import useCartInfo from "./use-cart-info";
-import { notifySuccess } from "@/utils/toast";
+import { notifyError, notifySuccess } from "@/utils/toast";
 
 const useCheckoutSubmit = () => {
   const router = useRouter();
@@ -22,10 +22,11 @@ const useCheckoutSubmit = () => {
   const { cart_products } = useSelector((state) => state.cart);
   const { shipping_info } = useSelector((state) => state.order);
   const { total } = useCartInfo(); // Assuming total is derived from useCartInfo
+  
 
   // Payment and coupon states
   const [saveOrder] = useSaveOrderMutation();
-  const [createPaymentIntent] = useCreatePaymentIntentMutation();
+  const [createPaymentIntent] =   useCreateRazorpayOrderMutation();
   const [matchCoupon] = useMatchCouponMutation();
 
   const [couponInfo, setCouponInfo] = useState();
@@ -34,8 +35,8 @@ const useCheckoutSubmit = () => {
   const [clientSecret, setClientSecret] = useState("");
   const [couponApplyMsg, setCouponApplyMsg] = useState("");
 
-  const stripe = useStripe();
-  const elements = useElements();
+  // const stripe = useStripe();
+  // const elements = useElements();
   const {
     register,
     handleSubmit,
@@ -100,6 +101,17 @@ const useCheckoutSubmit = () => {
     }
   }, [createPaymentIntent, cartTotal]);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script); // Cleanup
+    };
+  }, []);
+
   // Set values in the form
   useEffect(() => {
     if (shipping_info) {
@@ -120,17 +132,17 @@ const useCheckoutSubmit = () => {
   const submitHandler = async (data) => {
     dispatch(set_shipping(data));
 
+
     // Construct the products array
     const products = cart_products
       .map((product) => ({
-        product_id: parseInt(product.product_id, 10), // Convert to integer
+        product_id: product.product_id, // Use the full product_id without conversion
         quantity: product.orderQuantity,
-        price: parseFloat(product.price), // Ensure price is a number
+        price: product.price, // Ensure price is a number
       }))
       .filter(
-        (product) =>
-          !isNaN(product.product_id) && product.quantity && product.price
-      ); // Ensure no empty fields
+        (product) => product.product_id && product.quantity && product.price // Ensure no empty fields
+      );
 
     if (products.length === 0) {
       notifyError("No valid products in cart.");
@@ -149,23 +161,24 @@ const useCheckoutSubmit = () => {
       price: cartTotal,
       payment_type: data.payment,
       coupon_used: couponInfo || null,
+      first_name: data.firstName, // Add first name separately
+      last_name: data.lastName, // Add last name separately
       accessToken,
     };
 
     try {
-      if (data.payment === "Card") {
-        await handlePaymentWithStripe(orderInfo);
-        notifySuccess(
-          "Your payment was successful! Your order is being processed."
-        );
+      if (data.payment === "online") {
+        await handlePaymentWithRazorpay(orderInfo);
+        // notifySuccess("Your payment was successful! Your order is being processed.");
       } else if (data.payment === "cod") {
         const res = await saveOrder(orderInfo);
+        notifySuccess("Your Order Confirmed! Thank you for your purchase!");
+
         if (res?.error) {
           console.error("Error saving order:", res.error);
         } else {
           localStorage.removeItem("cart_products");
-          notifySuccess("Your Order Confirmed! Thank you for your purchase!");
-          router.push(`/order/${res.data?.order?.order_id}`);
+          router.push(`/order/${res.data?.order_id}`);
         }
       }
     } catch (error) {
@@ -174,43 +187,106 @@ const useCheckoutSubmit = () => {
     }
   };
 
-  // Handle payment with Stripe
-  const handlePaymentWithStripe = async (order) => {
+  // Handle payment with Razorpay
+  const handlePaymentWithRazorpay = async (orderInfo) => {
+    console.log(orderInfo?.accessToken); // Use optional chaining for safety
+    
     try {
-      const { paymentIntent, error: intentErr } =
-        await stripe.confirmCardPayment(clientSecret, {
-          payment_method: {
-            card: elements.getElement(CardElement),
-            billing_details: {
-              name: user?.firstName,
-              email: user?.email,
+        // Check if orderInfo is provided
+        if (!orderInfo) {
+            notifyError("Order information is missing. Please try again.");
+            return;
+        }
+
+        // Create a Razorpay order on the server
+        const orderResponse = await createPaymentIntent(orderInfo);
+        if (!orderResponse || orderResponse.data?.status !== "success") {
+            notifyError("Failed to initiate payment. Please try again.");
+            return;
+        }
+
+        // Set Razorpay options
+        const options = {
+            key: "rzp_test_siQBNJWuNrwIYD", // Razorpay Key ID
+            amount: orderResponse.data.amount, // Amount from server in paise
+            currency: "INR",
+            name: "MySweetWishes",
+            description: "Order Payment",
+            order_id: orderResponse.data.razorpay_order_id, // Order ID
+            handler: async (response) => {
+                console.log("Payment successful:", response);
+                await verifyPayment(response, orderInfo);
             },
-          },
+            prefill: {
+                name: `${orderInfo.first_name} ${orderInfo.last_name}`,
+                email: orderInfo.email,
+                contact: orderInfo.phone_number,
+            },
+            notes: {
+                address: orderInfo.address,
+            },
+            theme: {
+                color: "#F37254", // Customize the color
+            },
+        };
+
+        const razorpay = new window.Razorpay(options);
+        razorpay.open();
+    } catch (error) {
+        console.error("Error initiating Razorpay order:", error);
+        notifyError("Failed to initiate payment. Please try again.");
+    }
+};
+
+// Separate function to handle payment verification
+const verifyPayment = async (response, orderInfo) => {
+    try {
+        const verifyResponse = await fetch('https://apiv2.mysweetwishes.com/api/verifypayment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${orderInfo.accessToken}`,
+            },
+            body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+            }),
         });
 
-      if (intentErr) {
-        notifyError(intentErr.message);
-        return;
-      }
+        const verifyData = await verifyResponse.json();
 
-      const orderData = {
-        ...order,
-        paymentIntent_id: paymentIntent.id,
-      };
+        if (verifyData.success) {
+            notifySuccess("Your payment has been verified successfully!");
 
-      const res = await saveOrder(orderData);
-      if (res?.error) {
-        console.error("Error saving order:", res.error);
-      } else {
-        localStorage.removeItem("cart_products");
-        notifySuccess("Your Order Confirmed!");
-        router.push(`/order/${res.data?.order?.order_id}`);
-      }
+            // Proceed with order saving
+            const saveOrderResponse = await saveOrder({
+                order_id: response.razorpay_order_id,
+                payment_id: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+                products: orderInfo.products || [], // Use orderInfo for products
+            });
+
+            if (!saveOrderResponse.error) {
+                localStorage.removeItem("cart_products");
+
+                // Redirect to the order confirmation page after successful order saving
+                router.push(`/order/${saveOrderResponse.data?.order_id}`);
+            } else {
+                notifyError("Error saving order. Please try again.");
+            }
+        } else {
+            notifyError("Payment verification failed. Please try again.");
+        }
     } catch (error) {
-      console.error("Error during payment:", error);
-      notifyError("Payment failed, please try again");
+        console.error("Payment verification error:", error);
+        notifyError("Payment verification request failed. Please try again.");
     }
-  };
+};
+
+  
+  
+  
 
   return {
     register,
@@ -222,7 +298,7 @@ const useCheckoutSubmit = () => {
     cartTotal,
     discountAmount,
     couponRef,
-    handlePaymentWithStripe,
+    handlePaymentWithRazorpay,
   };
 };
 

@@ -90,33 +90,18 @@ const CheckoutOrderArea = ({ checkoutData, setShowCard, showCard }) => {
             type="radio"
             id="back_transfer"
             name="payment"
-            value="Card"
+            value="online"
           />
-          <label onClick={() => setShowCard(true)} htmlFor="back_transfer">
-            Credit Card
+          <label  htmlFor="back_transfer">
+            Online Payment
           </label>
-          {showCard && (
-            <div className="direct-bank-transfer">
-              <CardElement
-                options={{
-                  style: {
-                    base: {
-                      fontSize: "16px",
-                      color: "#424770",
-                      "::placeholder": { color: "#aab7c4" },
-                    },
-                    invalid: { color: "#9e2146" },
-                  },
-                }}
-              />
-            </div>
-          )}
+         
           <ErrorMsg msg={errors?.payment?.message} />
         </div>
         <div className="tp-checkout-payment-item">
           <input
             {...register(`payment`, { required: `Payment Option is required!` })}
-            onClick={() => setShowCard(false)}
+    
             type="radio"
             id="cod"
             name="payment"

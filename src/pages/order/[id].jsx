@@ -46,6 +46,17 @@ const SingleOrder = ({ params }) => {
     content = <ErrorMsg msg="There was an error" />;
   }
 
+  const handleCancelOrder = (id) => {
+    // Logic to cancel the order
+    console.log(`Cancel order with ID: ${id}`);
+    // You can add an API call here to handle order cancellation
+  };
+
+  const handleTrackOrder = (id) => {
+    // Logic to track the order
+    // router.push(`/track-order/${id}`); // Replace with your tracking route
+  };
+
   if (!isLoading && !isError && data) {
     const order = data.order; // Directly access the order object
 
@@ -89,21 +100,34 @@ const SingleOrder = ({ params }) => {
                     <div className="col-xl-12">
                       <div className="invoice__header pb-20">
                         <div className="row align-items-end">
-                          <div style={{backgroundColor:"#990100",borderRadius:"10px"}} className="col-md-12 col-sm-6">
+                          <div
+                            style={{
+                              backgroundColor: "#990100",
+                              borderRadius: "10px",
+                            }}
+                            className="col-md-12 col-sm-6"
+                          >
                             <div className="invoice__left pt-10">
-                              <Image src={logo} height={100} width={100} alt="logo" />
-                              <p className="mt-15" style={{color:"white"}}>
+                              <Image
+                                src={logo}
+                                height={100}
+                                width={100}
+                                alt="logo"
+                              />
+                              <p className="mt-15" style={{ color: "white" }}>
                                 83, Mahaveer Complex, <br /> Kurukshetra 136118
                                 Haryana
                               </p>
                             </div>
                             <div className="invoice__right mt-15 mt-sm-0 text-sm-end">
-                              <h3 style={{color:"white"}} className="text-uppercase font-70 ">
+                              <h3
+                                style={{ color: "white" }}
+                                className="text-uppercase font-70 "
+                              >
                                 Invoice
                               </h3>
                             </div>
                           </div>
-                          
                         </div>
                       </div>
                     </div>
@@ -175,6 +199,22 @@ const SingleOrder = ({ params }) => {
                           <strong>₹{parseFloat(price).toFixed(2)}</strong>
                         </p>
                       </div>
+                    </div>
+                    <div className="text-end  col-lg-6 col-md-4">
+                      <button
+                        type="button"
+                        className="tp-btn tp-btn-danger me-3"
+                        onClick={()=>handleCancelOrder(order.order_id)}
+                      >
+                        Cancel Order
+                      </button>
+                      <button
+                        type="button"
+                        className="tp-btn tp-btn-primary"
+                        onClick={()=>handleTrackOrder(order.order_id)}
+                      >
+                        Track Order
+                      </button>
                     </div>
                   </div>
                 </div>
