@@ -86,7 +86,37 @@ export const authApi = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) => [{ type: "UserOrder", id: arg }],
       keepUnusedDataFor: 600,
     }),
+
+    // cancelOrder
+    cancelOrder: builder.mutation({
+      query: ({ order_id, accessToken }) => {
+        return {
+          url: "https://apiv2.mysweetwishes.com/api/cancel-order", // Your cancel order endpoint
+          method: "POST",
+          body: { order_id }, // The order ID to cancel
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+      },
+      invalidatesTags: ["UserOrders"], // Invalidate user orders after canceling an order
+    }),
+    ///track order
+    trackOrder: builder.query({
+      query: ({ orderId, accessToken }) => {
+        return {
+          url: `https://apiv2.mysweetwishes.com/api/orders/${orderId}/track`,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
+      providesTags: (result, error, arg) => [{ type: "OrderTrack", id: arg.orderId }],
+      keepUnusedDataFor: 600, // Cache the data for 600 seconds
+    }),
   }),
+  
 });
 
 export const {
@@ -94,4 +124,7 @@ export const {
   useSaveOrderMutation,
   useGetUserOrderByIdQuery,
   useGetUserOrdersQuery,
+  useCancelOrderMutation,
+  useTrackOrderQuery, 
+
 } = authApi;

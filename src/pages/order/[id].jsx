@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import dayjs from "dayjs";
 import ReactToPrint from "react-to-print";
@@ -14,6 +14,12 @@ import { useGetUserOrderByIdQuery } from "@/redux/features/order/orderApi";
 import PrdDetailsLoader from "@/components/loader/prd-details-loader";
 import { useSelector } from "react-redux";
 import { useGetUserOrdersQuery } from "@/redux/api/apiSlice";
+import {
+  useCancelOrderMutation,
+  useTrackOrderQuery,
+} from "@/redux/features/order/orderApi";
+import { notifyError, notifySuccess } from "@/utils/toast";
+import OrderTrackingComponent from "@/components/OrderTrackingCompoent";
 
 const SingleOrder = ({ params }) => {
   const { accessToken } = useSelector((state) => state.auth); // Retrieve access token from Redux
@@ -46,15 +52,32 @@ const SingleOrder = ({ params }) => {
     content = <ErrorMsg msg="There was an error" />;
   }
 
-  const handleCancelOrder = (id) => {
-    // Logic to cancel the order
-    console.log(`Cancel order with ID: ${id}`);
-    // You can add an API call here to handle order cancellation
+  const [cancelOrder, { isLoading: isCanceling }] = useCancelOrderMutation();
+
+  const handleCancelOrder = async () => {
+    try {
+      // Trigger the cancelOrder mutation
+      const response = await cancelOrder({
+        order_id: orderId,
+        accessToken,
+      }).unwrap();
+
+      // Check the status and message from the response
+      if (response.status === "success") {
+        notifySuccess(response.message); // Example: "Order canceled and stock restored."
+      } else {
+        notifyError("Failed to cancel order. Please try again.");
+      }
+    } catch (error) {
+      console.error("Failed to cancel order:", error);
+      notifyError("Failed to cancel order.");
+    }
   };
 
-  const handleTrackOrder = (id) => {
-    // Logic to track the order
-    // router.push(`/track-order/${id}`); // Replace with your tracking route
+  const [trackOrderId, setTrackOrderId] = useState(false);
+
+  const handleTrackOrder = () => {
+    setTrackOrderId(!trackOrderId);
   };
 
   if (!isLoading && !isError && data) {
@@ -158,7 +181,7 @@ const SingleOrder = ({ params }) => {
                   </div>
                 </div>
                 {/* Table wrapped with table-responsive */}
-                <div className="invoice__order-table pt-30 pb-30 pl-40 pr-40 bg-white mb-30 table-responsive">
+                <div className="invoice__order-table pt-30 pb-30 pl-10 pr-10 bg-white mb-30 table-responsive">
                   <table className="table">
                     <thead className="table-light">
                       <tr>
@@ -182,7 +205,7 @@ const SingleOrder = ({ params }) => {
                     </tbody>
                   </table>
                 </div>
-                <div className="invoice__total pt-40 pb-10 alert-success pl-40 pr-40 mb-30">
+                <div className="invoice__total pt-40 pb-10 alert-success pl-0 pr-0 mb-30">
                   <div className="row">
                     <div className="col-lg-3 col-md-4">
                       <div className="invoice__payment-method mb-30">
@@ -200,22 +223,40 @@ const SingleOrder = ({ params }) => {
                         </p>
                       </div>
                     </div>
-                    <div className="text-end  col-lg-6 col-md-4">
+                    <div className=" col-lg-6 col-md-4 mb-3">
                       <button
                         type="button"
-                        className="tp-btn tp-btn-danger me-3"
-                        onClick={()=>handleCancelOrder(order.order_id)}
+                        className="tp-btn mb-5  tp-btn-danger me-3"
+                        onClick={() => handleCancelOrder()}
                       >
                         Cancel Order
                       </button>
                       <button
                         type="button"
-                        className="tp-btn tp-btn-primary"
-                        onClick={()=>handleTrackOrder(order.order_id)}
+                        className="tp-btn  tp-btn-primary"
+                        onClick={() => handleTrackOrder()}
                       >
-                        Track Order
+                        Track Order{" "}
+                        <span
+                          style={{
+                            display: "inline-block",
+                            marginLeft: "5px",
+                            transition: "transform 0.3s ease",
+                            transform: trackOrderId
+                              ? "rotate(0deg)"
+                              : "rotate(-90deg)",
+                          }}
+                        >
+                          ▼
+                        </span>
                       </button>
                     </div>
+                    {trackOrderId && (
+                      <OrderTrackingComponent
+                        orderId={orderId}
+                        accessToken={accessToken}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

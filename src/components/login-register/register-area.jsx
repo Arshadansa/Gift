@@ -15,7 +15,7 @@ const RegisterArea = () => {
             <div className="col-xl-6 col-lg-8">
               <div className="tp-login-wrapper">
                 <div className=" text-center mb-30">
-                  <h3 className="tp-login-title">Sign Up Shofy.</h3>
+                  <h3 className="tp-login-title">Sign Up My Sweet Wishes.</h3>
                   <p
                     style={{
                       fontSize: "16px",

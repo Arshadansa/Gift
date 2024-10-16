@@ -5,7 +5,7 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import {
-    useCreateRazorpayOrderMutation,
+  useCreateRazorpayOrderMutation,
   useSaveOrderMutation,
 } from "@/redux/features/order/orderApi";
 import { set_shipping } from "@/redux/features/order/orderSlice";
@@ -22,11 +22,10 @@ const useCheckoutSubmit = () => {
   const { cart_products } = useSelector((state) => state.cart);
   const { shipping_info } = useSelector((state) => state.order);
   const { total } = useCartInfo(); // Assuming total is derived from useCartInfo
-  
 
   // Payment and coupon states
   const [saveOrder] = useSaveOrderMutation();
-  const [createPaymentIntent] =   useCreateRazorpayOrderMutation();
+  const [createPaymentIntent] = useCreateRazorpayOrderMutation();
   const [matchCoupon] = useMatchCouponMutation();
 
   const [couponInfo, setCouponInfo] = useState();
@@ -132,7 +131,6 @@ const useCheckoutSubmit = () => {
   const submitHandler = async (data) => {
     dispatch(set_shipping(data));
 
-
     // Construct the products array
     const products = cart_products
       .map((product) => ({
@@ -190,103 +188,96 @@ const useCheckoutSubmit = () => {
   // Handle payment with Razorpay
   const handlePaymentWithRazorpay = async (orderInfo) => {
     console.log(orderInfo?.accessToken); // Use optional chaining for safety
-    
+
     try {
-        // Check if orderInfo is provided
-        if (!orderInfo) {
-            notifyError("Order information is missing. Please try again.");
-            return;
-        }
+      // Check if orderInfo is provided
+      if (!orderInfo) {
+        notifyError("Order information is missing. Please try again.");
+        return;
+      }
 
-        // Create a Razorpay order on the server
-        const orderResponse = await createPaymentIntent(orderInfo);
-        if (!orderResponse || orderResponse.data?.status !== "success") {
-            notifyError("Failed to initiate payment. Please try again.");
-            return;
-        }
-
-        // Set Razorpay options
-        const options = {
-            key: "rzp_test_siQBNJWuNrwIYD", // Razorpay Key ID
-            amount: orderResponse.data.amount, // Amount from server in paise
-            currency: "INR",
-            name: "MySweetWishes",
-            description: "Order Payment",
-            order_id: orderResponse.data.razorpay_order_id, // Order ID
-            handler: async (response) => {
-                console.log("Payment successful:", response);
-                await verifyPayment(response, orderInfo);
-            },
-            prefill: {
-                name: `${orderInfo.first_name} ${orderInfo.last_name}`,
-                email: orderInfo.email,
-                contact: orderInfo.phone_number,
-            },
-            notes: {
-                address: orderInfo.address,
-            },
-            theme: {
-                color: "#F37254", // Customize the color
-            },
-        };
-
-        const razorpay = new window.Razorpay(options);
-        razorpay.open();
-    } catch (error) {
-        console.error("Error initiating Razorpay order:", error);
+      // Create a Razorpay order on the server
+      const orderResponse = await createPaymentIntent(orderInfo);
+      if (!orderResponse || orderResponse.data?.status !== "success") {
         notifyError("Failed to initiate payment. Please try again.");
-    }
-};
+        return;
+      }
 
-// Separate function to handle payment verification
-const verifyPayment = async (response, orderInfo) => {
-    try {
-        const verifyResponse = await fetch('https://apiv2.mysweetwishes.com/api/verifypayment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${orderInfo.accessToken}`,
-            },
-            body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-            }),
-        });
+      // Set Razorpay options
+      const options = {
+        key: "rzp_test_siQBNJWuNrwIYD", // Razorpay Key ID
+        amount: orderResponse.data.amount, // Amount from server in paise
+        currency: "INR",
+        name: "MySweetWishes",
+        description: "Order Payment",
+        order_id: orderResponse.data.razorpay_order_id, // Order ID
+        handler: async (response) => {
+          console.log("Payment successful:", response);
+          await verifyAndSaveOrder(response, orderInfo);
+        },
+        prefill: {
+          name: `${orderInfo.first_name} ${orderInfo.last_name}`,
+          email: orderInfo.email,
+          contact: orderInfo.phone_number,
+        },
+        notes: {
+          address: orderInfo.address,
+        },
+        theme: {
+          color: "#F37254", // Customize the color
+        },
+      };
 
-        const verifyData = await verifyResponse.json();
-
-        if (verifyData.success) {
-            notifySuccess("Your payment has been verified successfully!");
-
-            // Proceed with order saving
-            const saveOrderResponse = await saveOrder({
-                order_id: response.razorpay_order_id,
-                payment_id: response.razorpay_payment_id,
-                signature: response.razorpay_signature,
-                products: orderInfo.products || [], // Use orderInfo for products
-            });
-
-            if (!saveOrderResponse.error) {
-                localStorage.removeItem("cart_products");
-
-                // Redirect to the order confirmation page after successful order saving
-                router.push(`/order/${saveOrderResponse.data?.order_id}`);
-            } else {
-                notifyError("Error saving order. Please try again.");
-            }
-        } else {
-            notifyError("Payment verification failed. Please try again.");
-        }
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (error) {
-        console.error("Payment verification error:", error);
-        notifyError("Payment verification request failed. Please try again.");
+      console.error("Error initiating Razorpay order:", error);
+      notifyError("Failed to initiate payment. Please try again.");
     }
-};
+  };
 
-  
-  
-  
+  // Separate function to handle payment verification
+  const verifyAndSaveOrder = async (response, orderInfo) => {
+    try {
+      // Step 1: Send payment details to backend for verification
+      const verifyResponse = await fetch(
+        "https://apiv2.mysweetwishes.com/api/verifypayment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${orderInfo.accessToken}`,
+          },
+          body: JSON.stringify({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+          }),
+        }
+      );
+
+      const verifyData = await verifyResponse.json();
+
+      // Step 2: Check if the payment was verified successfully
+      if (verifyData.status === "success") {
+        notifySuccess("Your payment has been verified successfully!");
+
+        // Step 3: Save the order details after payment verification
+        const saveOrderResponse = await saveOrder(orderInfo);
+        if (!saveOrderResponse?.error) {
+          localStorage.removeItem("cart_products");
+          router.push(`/order/${saveOrderResponse.data?.order_id}`);
+        } else {
+          notifyError("Error saving order. Please try again.");
+        }
+      } else {
+        notifyError("Payment verification failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Payment verification error:", error);
+      notifyError("Payment verification request failed. Please try again.");
+    }
+  };
 
   return {
     register,
