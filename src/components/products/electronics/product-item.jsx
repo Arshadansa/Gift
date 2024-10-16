@@ -30,7 +30,6 @@ const ProductItem = ({ product, offer_style = false }) => {
   const { cart_products } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
 
-
   const isAddedToCart = cart_products.some((prd) => prd.id === id);
   const isAddedToWishlist = wishlist.some((prd) => prd.id === id);
 
@@ -59,7 +58,7 @@ const ProductItem = ({ product, offer_style = false }) => {
       name,
       image: images[0], // Use the first image
       price,
-      stock_quantity
+      stock_quantity,
       // Assuming there's a discount logic to be included here
     };
     dispatch(add_cart_product(productToAdd));
@@ -79,6 +78,7 @@ const ProductItem = ({ product, offer_style = false }) => {
     >
       <div
         style={{
+          overflow: "hidden",
           height: "320px",
           display: "flex",
           justifyContent: "center",
@@ -162,16 +162,16 @@ const ProductItem = ({ product, offer_style = false }) => {
 
       {/* Product content */}
       <div className="tp-product-content">
-        <div className="">
-          <Link href={`/shop?category/${categories[0]}`}>Category ID :{categories[0]}</Link>{" "}
-        </div>
         <h3 className="tp-product-title">
           <Link href={`/product-details/${id}`}>
             <span
               style={{
+                overflow: "hidden",
                 fontSize: "14px",
                 textTransform: "uppercase",
                 transition: "color 0.3s",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
               }}
               onMouseEnter={(e) => (e.target.style.color = "#990100")}
               onMouseLeave={(e) => (e.target.style.color = "")}

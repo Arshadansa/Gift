@@ -18,28 +18,43 @@ export const cartSlice = createSlice({
         (item) => item.product_id === payload.product_id
       );
 
-      if (existingProduct) {
-        // Check if there is enough stock to add more of the product
-        if (
-          existingProduct.orderQuantity + state.orderQuantity <=
-          payload.stock_quantity
-        ) {
-          existingProduct.orderQuantity += state.orderQuantity;
-          notifySuccess(
-            `${state.orderQuantity} more ${existingProduct.name} added to cart`
-          );
+      // Check if the available stock is only 1
+      if (payload.stock_quantity === 1) {
+        if (existingProduct) {
+          notifyError("Only one quantity available for this product!");
         } else {
-          notifyError("No more quantity available for this product!");
-          state.orderQuantity = 1; // Reset orderQuantity to 1 after the error
+          const newItem = {
+            ...payload,
+            orderQuantity: 1, // Only one quantity is allowed
+          };
+          state.cart_products.push(newItem);
+          notifySuccess(`1 ${payload.name} added to cart`);
         }
       } else {
-        // Add new product to cart
-        const newItem = {
-          ...payload,
-          orderQuantity: state.orderQuantity,
-        };
-        state.cart_products.push(newItem);
-        notifySuccess(`${state.orderQuantity} ${payload.name} added to cart`);
+        // If stock is greater than 1, proceed with existing logic
+        if (existingProduct) {
+          // Check if there is enough stock to add more of the product
+          if (
+            existingProduct.orderQuantity + state.orderQuantity <=
+            payload.stock_quantity
+          ) {
+            existingProduct.orderQuantity += state.orderQuantity;
+            notifySuccess(
+              `${state.orderQuantity} more ${existingProduct.name} added to cart`
+            );
+          } else {
+            notifyError("No more quantity available for this product!");
+            state.orderQuantity = 1; // Reset orderQuantity to 1 after the error
+          }
+        } else {
+          // Add new product to cart
+          const newItem = {
+            ...payload,
+            orderQuantity: state.orderQuantity,
+          };
+          state.cart_products.push(newItem);
+          notifySuccess(`${state.orderQuantity} ${payload.name} added to cart`);
+        }
       }
 
       // Update cart in local storage

@@ -187,8 +187,6 @@ const useCheckoutSubmit = () => {
 
   // Handle payment with Razorpay
   const handlePaymentWithRazorpay = async (orderInfo) => {
-    console.log(orderInfo?.accessToken); // Use optional chaining for safety
-
     try {
       // Check if orderInfo is provided
       if (!orderInfo) {
@@ -212,7 +210,6 @@ const useCheckoutSubmit = () => {
         description: "Order Payment",
         order_id: orderResponse.data.razorpay_order_id, // Order ID
         handler: async (response) => {
-          console.log("Payment successful:", response);
           await verifyAndSaveOrder(response, orderInfo);
         },
         prefill: {
@@ -231,7 +228,6 @@ const useCheckoutSubmit = () => {
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch (error) {
-      console.error("Error initiating Razorpay order:", error);
       notifyError("Failed to initiate payment. Please try again.");
     }
   };
@@ -274,7 +270,6 @@ const useCheckoutSubmit = () => {
         notifyError("Payment verification failed. Please try again.");
       }
     } catch (error) {
-      console.error("Payment verification error:", error);
       notifyError("Payment verification request failed. Please try again.");
     }
   };

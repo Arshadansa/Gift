@@ -60,9 +60,7 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
   };
   return (
     <div  className="tp-product-details-wrapper">
-      <div className="tp-product-details-category">
-        <span>{categories.length > 0 ? `Category ID: ${categories[0]}` : 'Unknown Category'}</span>
-      </div>
+     
       <h3 className="tp-product-details-title">{name}</h3>
 
       {/* inventory details */}
@@ -70,14 +68,7 @@ const DetailsWrapper = ({ productItem, handleImageActive, activeImg, detailsBott
         <div className="tp-product-details-stock mb-10">
           <span style={{color:"#990100"}}>{stock_quantity > 0 ? 'In Stock' : 'Out of Stock'}</span>
         </div>
-        {/* <div className="tp-product-details-rating-wrapper d-flex align-items-center mb-10">
-          <div className="tp-product-details-rating">
-            <Rating allowFraction size={16} initialValue={ratingVal} readonly={true} />
-          </div>
-          <div className="tp-product-details-reviews">
-            <span>({reviews.length > 0 ? reviews.length : 0} Review)</span>
-          </div>
-        </div> */}
+      
       </div>
       <p>
         {textMore ? description : `${description?.substring(0, 100)}...`}
