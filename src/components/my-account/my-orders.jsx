@@ -85,7 +85,7 @@ const MyOrders = ({ orderData }) => {
                     onMouseEnter={() => setHoveredOrderId(item.order_id)}
                     onMouseLeave={() => setHoveredOrderId(null)}
                   >
-                    Invoice
+                    View
                   </Link>
                 </td>
               </tr>
