@@ -32,7 +32,7 @@ const ContactForm = () => {
 
   const onSubmit = (data) => {
     const form = document.getElementById("contact-form");
-    sendForm("service_b7jixem", "template_z2gc50o", form)
+    sendForm("service_azzz72y", "template_z2gc50o", form)
       .then(() => {
         notifySuccess("Message sent successfully!");
         reset();

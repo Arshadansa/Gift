@@ -6,6 +6,7 @@ import { useResetPasswordMutation } from "@/redux/features/auth/authApi";
 import { notifyError, notifySuccess } from "@/utils/toast";
 import ErrorMsg from "../common/error-msg";
 import { useRouter } from "next/router";
+import emailjs from "emailjs-com"; // Import EmailJS
 
 const EmailForm = () => {
   const router = useRouter();
@@ -25,12 +26,40 @@ const EmailForm = () => {
 
   const [resetPassword] = useResetPasswordMutation();
 
+  // Function to send OTP via EmailJS
+  const sendOtpEmail = (email, otp) => {
+    const templateParams = {
+      to_email: email, // User's email (recipient address)
+      otp: otp,        // OTP generated
+      company_name: "MYSWEETWISHES",  // Optional: Company name for the email
+    };
+
+    // Ensure that all fields are populated correctly
+    if (!email) {
+      throw new Error("Recipient's email is empty");
+    }
+
+    // EmailJS send function
+    return emailjs.send(
+      "service_azzz72y",    // Replace with your EmailJS service ID
+      "template_6n3saf2",   // Replace with your EmailJS template ID
+      templateParams,
+      "b233R9hwalgmVSVG4"   // Replace with your EmailJS public ID
+    );
+  };
+
   const onSubmit = async (data) => {
     try {
       const response = await resetPassword({ email: data.email }).unwrap();
-      if (response.message === "OTP generated successfully") {
-        notifySuccess(response.message);
-        router.push("verify"); // Navigate to OTP verification page
+      
+      // Assuming the OTP is in the response
+      const otp = response?.otp;
+
+      if (response.message === "OTP generated successfully" && otp) {
+        // Send OTP to user's email
+        await sendOtpEmail(data.email, otp);
+        notifySuccess("OTP sent successfully via email");
+        router.push("/verify"); // Navigate to OTP verification page
       }
     } catch (error) {
       notifyError(error.data?.message || "Failed to send OTP.");

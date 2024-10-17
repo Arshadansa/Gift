@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import dayjs from "dayjs";
 import ReactToPrint from "react-to-print";
-// internal
 import SEO from "@/components/seo";
 import Wrapper from "@/layout/wrapper";
 import HeaderTwo from "@/layout/headers/header-2";
@@ -28,43 +27,42 @@ const SingleOrder = ({ params }) => {
   });
   const router = useRouter(); // For navigation
 
-  // Handle any redirection if needed based on authentication or accessToken
   useEffect(() => {
     if (!accessToken) {
       router.push("/login"); // Redirect to login if no access token
     }
   }, [accessToken, router]);
 
-  const orderId = params.id; // Extract the order ID from params
+  const { id: orderId } = router.query; // Extract `id` from query params
   const printRef = useRef();
   const { data, isError, isLoading } = useGetUserOrderByIdQuery({
     id: orderId,
     accessToken: accessToken,
-  }); // Pass access token
+  });
 
-  let content = null;
+  const [isCanceled, setIsCanceled] = useState(false); // State to track order cancellation
 
-  if (isLoading) {
-    content = <PrdDetailsLoader loading={isLoading} />;
-  }
-
-  if (isError) {
-    content = <ErrorMsg msg="There was an error" />;
-  }
+  useEffect(() => {
+    // Retrieve canceled status from localStorage
+    const canceledStatus = localStorage.getItem(`canceled_${orderId}`);
+    if (canceledStatus) {
+      setIsCanceled(JSON.parse(canceledStatus)); // Set state from localStorage
+    }
+  }, [orderId]);
 
   const [cancelOrder, { isLoading: isCanceling }] = useCancelOrderMutation();
 
   const handleCancelOrder = async () => {
     try {
-      // Trigger the cancelOrder mutation
       const response = await cancelOrder({
         order_id: orderId,
         accessToken,
       }).unwrap();
 
-      // Check the status and message from the response
       if (response.status === "success") {
-        notifySuccess(response.message); // Example: "Order canceled and stock restored."
+        notifySuccess(response.message);
+        setIsCanceled(true);
+        localStorage.setItem(`canceled_${orderId}`, true); // Save state to localStorage
       } else {
         notifyError("Failed to cancel order. Please try again.");
       }
@@ -80,8 +78,18 @@ const SingleOrder = ({ params }) => {
     setTrackOrderId(!trackOrderId);
   };
 
+  let content = null;
+
+  if (isLoading) {
+    content = <PrdDetailsLoader loading={isLoading} />;
+  }
+
+  if (isError) {
+    content = <ErrorMsg msg="There was an error" />;
+  }
+
   if (!isLoading && !isError && data) {
-    const order = data.order; // Directly access the order object
+    const order = data.order;
 
     if (order) {
       const {
@@ -96,24 +104,13 @@ const SingleOrder = ({ params }) => {
         price,
         payment_type,
         created_at,
+        status, // Get the status of the order
       } = order;
 
       content = (
         <>
           <section className="invoice__area pt-120 pb-120">
             <div className="container">
-              <div className="invoice__msg-wrapper">
-                <div className="row">
-                  <div className="col-xl-12">
-                    <div className="invoice_msg mb-40">
-                      <p className="text-black alert alert-success">
-                        Thank you <strong>{email}</strong>! Your order has been
-                        received!
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div
                 ref={printRef}
                 className="invoice__wrapper grey-bg-2 pt-40 pb-40 pl-40 pr-40 tp-invoice-print-wrapper"
@@ -180,7 +177,6 @@ const SingleOrder = ({ params }) => {
                     </div>
                   </div>
                 </div>
-                {/* Table wrapped with table-responsive */}
                 <div className="invoice__order-table pt-30 pb-30 pl-10 pr-10 bg-white mb-30 table-responsive">
                   <table className="table">
                     <thead className="table-light">
@@ -223,43 +219,35 @@ const SingleOrder = ({ params }) => {
                         </p>
                       </div>
                     </div>
-                    <div className=" col-lg-6 col-md-4 mb-3">
-                      <button
-                        type="button"
-                        className="tp-btn mb-5  tp-btn-danger me-3"
-                        onClick={() => handleCancelOrder()}
-                      >
-                        Cancel Order
-                      </button>
-                      <button
-                        type="button"
-                        className="tp-btn  tp-btn-primary"
-                        onClick={() => handleTrackOrder()}
-                      >
-                        Track Order{" "}
-                        <span
-                          style={{
-                            display: "inline-block",
-                            marginLeft: "5px",
-                            transition: "transform 0.3s ease",
-                            transform: trackOrderId
-                              ? "rotate(0deg)"
-                              : "rotate(-90deg)",
-                          }}
-                        >
-                          ▼
-                        </span>
-                      </button>
+                    <div className="col-lg-6 col-md-4 mb-3">
+                      {/* Only show buttons if the order is not canceled */}
+                      {!isCanceled && status !== "canceled" && (
+                        <>
+                          <button
+                            type="button"
+                            className="tp-btn mb-5 tp-btn-danger me-3"
+                            onClick={handleCancelOrder}
+                          >
+                            Cancel Order
+                          </button>
+                          <button
+                            type="button"
+                            className="tp-btn tp-btn-primary"
+                            onClick={handleTrackOrder}
+                          >
+                            {trackOrderId ? "Hide" : "Track"} Order
+                          </button>
+                        </>
+                      )}
+                      {isCanceled || status === "canceled" ? (
+                        <p className="text-danger">This order has been canceled</p>
+                      ) : null}
                     </div>
-                    {trackOrderId && (
-                      <OrderTrackingComponent
-                        orderId={orderId}
-                        accessToken={accessToken}
-                      />
-                    )}
                   </div>
                 </div>
+                {trackOrderId && <OrderTrackingComponent />}
               </div>
+
               <div className="invoice__print text-end mt-3">
                 <div className="row">
                   <div className="col-xl-12">
@@ -289,25 +277,13 @@ const SingleOrder = ({ params }) => {
   }
 
   return (
-    <>
-      <Wrapper>
-        <SEO pageTitle={"Order Details"} />
-        <HeaderTwo style_2={true} />
-        {/* content */}
-        {content}
-        {/* content */}
-        {/* footer start */}
-        <Footer primary_style={true} />
-        {/* footer end */}
-      </Wrapper>
-    </>
+    <Wrapper>
+      <SEO pageTitle="Invoice" />
+      <HeaderTwo style_2={true} />
+      {content}
+      <Footer />
+    </Wrapper>
   );
-};
-
-export const getServerSideProps = async ({ params }) => {
-  return {
-    props: { params },
-  };
 };
 
 export default SingleOrder;

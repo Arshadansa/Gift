@@ -203,7 +203,7 @@ const useCheckoutSubmit = () => {
 
       // Set Razorpay options
       const options = {
-        key: "rzp_test_siQBNJWuNrwIYD", // Razorpay Key ID
+        key: "rzp_live_2sTBLvpxef5qxP", // Razorpay Key ID
         amount: orderResponse.data.amount, // Amount from server in paise
         currency: "INR",
         name: "MySweetWishes",

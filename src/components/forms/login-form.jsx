@@ -75,6 +75,7 @@ const LoginForm = () => {
         dispatch(userLoggedIn(userInfo));
 
         // Redirect the user
+        localStorage.removeItem("cart_products");
         router.push(redirect || "/");
       } else {
         notifyError("Login failed");
